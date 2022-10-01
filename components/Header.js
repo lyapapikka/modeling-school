@@ -21,7 +21,7 @@ export default function Header({ article }) {
       {!article && (
         <div className="flex space-x-2 overflow-auto">
           <Link href="/">
-            <a className="whitespace-nowrap bg-neutral-600 rounded-full py-1 px-3">
+            <a className="whitespace-nowrap text-black bg-white rounded-full py-1 px-3">
               Все темы
             </a>
           </Link>
