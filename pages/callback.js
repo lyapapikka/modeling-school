@@ -17,7 +17,7 @@ export default function Callback() {
     Cookies.set("access_token", access_token);
 
     router.replace(state);
-  }, []);
+  }, [router]);
 
   return null;
 }

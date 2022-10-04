@@ -1,9 +1,9 @@
 import Link from "next/link";
 import classNames from "classnames";
 
-export default function Card({ title, small }) {
+export default function Card({ title, small, href }) {
   return (
-    <Link href="/geometria/nahozdenie-ugla">
+    <Link href={href}>
       <a className="block">
         <div
           className={classNames("font-bold", {

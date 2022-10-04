@@ -1,48 +1,60 @@
 import Head from "next/head";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
+import { useRouter } from "next/router";
+import data from "../../data";
+import slugify from "slugify";
 
-export default function Theme() {
+export default function Theme({ article }) {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return null;
+  }
+
   return (
     <>
       <Head>
-        <title>Нахождение угла - Школа моделирования</title>
+        <title>
+          {`${
+            data.content.find((c) => slugify(c.title).toLowerCase() === article)
+              .title
+          } - Школа моделирования`}
+        </title>
       </Head>
       <Content>
         <Header article />
         <div className="mt-4 prose prose-invert max-w-none">
-          <h1>Нахождение угла</h1>
-          <p>
-            Ясность нашей позиции очевидна: новая модель организационной
-            деятельности предопределяет высокую востребованность стандартных
-            подходов. Есть над чем задуматься: сторонники тоталитаризма в науке
-            представляют собой не что иное, как квинтэссенцию победы маркетинга
-            над разумом и должны быть своевременно верифицированы. Наше дело не
-            так однозначно, как может показаться: глубокий уровень погружения
-            представляет собой интересный эксперимент проверки переосмысления
-            внешнеэкономических политик.
-          </p>
-          <div className="not-prose border-t border-b border-gray-500 py-4 space-y-4">
-            <div className="text-xl">Сложите числа 2 и 2</div>
-            <input className="block rounded py-1 px-3" />
-            <button className="bg-blue-600 text-lg font-bold px-3 py-1 rounded">
-              Проверить ответ
-            </button>
-          </div>
-          <p>
-            Имеется спорная точка зрения, гласящая примерно следующее:
-            стремящиеся вытеснить традиционное производство, нанотехнологии
-            формируют глобальную экономическую сеть и при этом — представлены в
-            исключительно положительном свете. А ещё тщательные исследования
-            конкурентов являются только методом политического участия и
-            представлены в исключительно положительном свете. Вот вам яркий
-            пример современных тенденций — существующая теория выявляет срочную
-            потребность дальнейших направлений развития. А также активно
-            развивающиеся страны третьего мира будут ассоциативно распределены
-            по отраслям.
-          </p>
+          <h1>
+            {
+              data.content.find(
+                (c) => slugify(c.title).toLowerCase() === article
+              ).title
+            }
+          </h1>
+          {
+            data.content.find((c) => slugify(c.title).toLowerCase() === article)
+              .body
+          }
         </div>
       </Content>
     </>
   );
+}
+
+export function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true,
+  };
+}
+
+export function getStaticProps({ params }) {
+  const { article } = params;
+
+  return {
+    props: {
+      article,
+    },
+  };
 }

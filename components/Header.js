@@ -1,6 +1,8 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import data from "../data";
+import slugify from "slugify";
 
 export default function Header({ article }) {
   const [pathname, setPathname] = useState("");
@@ -50,21 +52,13 @@ export default function Header({ article }) {
               Все темы
             </a>
           </Link>
-          <Link href="/algebra">
-            <a className="whitespace-nowrap bg-neutral-800 rounded-full py-1 px-3">
-              Алгебра
-            </a>
-          </Link>
-          <Link href="/geometria">
-            <a className="whitespace-nowrap bg-neutral-800 rounded-full py-1 px-3">
-              Геометрия
-            </a>
-          </Link>
-          <Link href="/nachala-analiza">
-            <a className="whitespace-nowrap bg-neutral-800 rounded-full py-1 px-3">
-              Начала анализа
-            </a>
-          </Link>
+          {data.content.map(({ theme }, i) => (
+            <Link href={slugify(theme).toLowerCase()} key={i}>
+              <a className="whitespace-nowrap bg-neutral-800 rounded-full py-1 px-3">
+                {theme}
+              </a>
+            </Link>
+          ))}
           <Link href="/more">
             <a className="text-blue-500 py-1 px-3">ЕЩЁ</a>
           </Link>
