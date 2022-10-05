@@ -9,12 +9,14 @@ import {
 } from "@heroicons/react/24/outline";
 import data from "../data";
 import slugify from "slugify";
+import Cookies from "js-cookie";
 
 export default function Header({ article }) {
   const [pathname, setPathname] = useState("");
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   function showModal() {
     setModal(true);
@@ -47,6 +49,13 @@ export default function Header({ article }) {
   useEffect(() => {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
+
+  useEffect(() => {
+    if (Cookies.get("access_token")) {
+      setIsAuthorized(true);
+      return;
+    }
+  }, []);
 
   return (
     <div className="flex justify-between py-4">
@@ -123,22 +132,19 @@ export default function Header({ article }) {
           </a>
         </Link>
       </div>
-      <div className="flex">
-        {article && (
-          <button
-            onClick={showModal}
-            className="block bg-blue-500 rounded px-3 py-1"
-          >
-            Выдать
-          </button>
-        )}
+      {article && isAuthorized && (
+        <button onClick={showModal} className="block bg-blue-500 rounded px-3">
+          Выдать группе
+        </button>
+      )}
+      {!isAuthorized && (
         <a
           href={`//oauth.vk.com/authorize?client_id=51441314&display=page&response_type=token&scope=offline&v=5.131&redirect_uri=https://modeling-school.vercel.app/callback&state=${pathname}`}
           className="flex items-center bg-blue-500 rounded px-3 ml-4"
         >
           Войти
         </a>
-      </div>
+      )}
     </div>
   );
 }
