@@ -8,10 +8,17 @@ import List from "../components/List";
 import data from "../data";
 import Card from "../components/Card";
 import slugify from "slugify";
+import Cookies from "js-cookie";
 
 export default function Groups() {
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
 
   function showModal() {
     setModal(true);
@@ -32,6 +39,12 @@ export default function Groups() {
   useEffect(() => {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
+
+  useEffect(() => {
+    if (Cookies.get("access_token")) {
+      setIsAuthorized(true);
+    }
+  }, []);
 
   return (
     <>
@@ -66,27 +79,36 @@ export default function Groups() {
           <Menu />
           <div className="w-full">
             <Title>Группы</Title>
-            <div className="text-lg font-bold mt-7">АИС-20-1</div>
-            <List>
-              {data.content.map(({ title, theme }, i) => (
-                <Card
-                  title={title}
-                  href={`${slugify(theme).toLowerCase()}/${slugify(
-                    title
-                  ).toLowerCase()}`}
-                  key={i}
-                />
+            {mount &&
+              (isAuthorized ? (
+                <>
+                  <div className="text-lg font-bold mt-7">АИС-20-1</div>
+                  <List>
+                    {data.content.map(({ title, theme }, i) => (
+                      <Card
+                        title={title}
+                        href={`${slugify(theme).toLowerCase()}/${slugify(
+                          title
+                        ).toLowerCase()}`}
+                        key={i}
+                      />
+                    ))}
+                    {data.content.map(({ title, theme }, i) => (
+                      <Card
+                        title={title}
+                        href={`${slugify(theme).toLowerCase()}/${slugify(
+                          title
+                        ).toLowerCase()}`}
+                        key={i}
+                      />
+                    ))}
+                  </List>
+                </>
+              ) : (
+                <div className="text-lg mt-8">
+                  Войдите в аккаунт, чтобы видеть группы
+                </div>
               ))}
-              {data.content.map(({ title, theme }, i) => (
-                <Card
-                  title={title}
-                  href={`${slugify(theme).toLowerCase()}/${slugify(
-                    title
-                  ).toLowerCase()}`}
-                  key={i}
-                />
-              ))}
-            </List>
           </div>
         </div>
       </Content>

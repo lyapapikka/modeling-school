@@ -17,6 +17,11 @@ export default function Header({ article }) {
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
 
   function showModal() {
     setModal(true);
@@ -132,12 +137,12 @@ export default function Header({ article }) {
           </a>
         </Link>
       </div>
-      {article && isAuthorized && (
+      {mount && article && isAuthorized && (
         <button onClick={showModal} className="block bg-blue-500 rounded px-3">
           Выдать группе
         </button>
       )}
-      {!isAuthorized && (
+      {mount && !isAuthorized && (
         <a
           href={`//oauth.vk.com/authorize?client_id=51441314&display=page&response_type=token&scope=offline&v=5.131&redirect_uri=https://modeling-school.vercel.app/callback&state=${pathname}`}
           className="flex items-center bg-blue-500 rounded px-3 ml-4"

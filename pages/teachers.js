@@ -8,10 +8,17 @@ import List from "../components/List";
 import data from "../data";
 import slugify from "slugify";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function Teachers() {
   const [modal, setModal] = useState(false);
   const [teacher, setTeacher] = useState("");
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [mount, setMount] = useState(false);
+
+  useEffect(() => {
+    setMount(true);
+  }, []);
 
   function showModal() {
     setModal(true);
@@ -32,6 +39,12 @@ export default function Teachers() {
   useEffect(() => {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
+
+  useEffect(() => {
+    if (Cookies.get("access_token")) {
+      setIsAuthorized(true);
+    }
+  }, []);
 
   return (
     <>
@@ -66,33 +79,44 @@ export default function Teachers() {
           <Menu />
           <div className="w-full">
             <Title>Преподаватели</Title>
-            <button
-              onClick={showModal}
-              className="bg-blue-500 rounded px-3 py-1 my-7"
-            >
-              Добавить преподавателя
-            </button>
-            <div className="text-lg font-bold">Мельников Юрий Борисович</div>
-            <List>
-              {data.content.map(({ title, theme }, i) => (
-                <Card
-                  title={title}
-                  href={`${slugify(theme).toLowerCase()}/${slugify(
-                    title
-                  ).toLowerCase()}`}
-                  key={i}
-                />
+            {mount &&
+              (isAuthorized ? (
+                <>
+                  <button
+                    onClick={showModal}
+                    className="bg-blue-500 rounded px-3 py-1 my-7"
+                  >
+                    Добавить преподавателя
+                  </button>
+                  <div className="text-lg font-bold">
+                    Мельников Юрий Борисович
+                  </div>
+                  <List>
+                    {data.content.map(({ title, theme }, i) => (
+                      <Card
+                        title={title}
+                        href={`${slugify(theme).toLowerCase()}/${slugify(
+                          title
+                        ).toLowerCase()}`}
+                        key={i}
+                      />
+                    ))}
+                    {data.content.map(({ title, theme }, i) => (
+                      <Card
+                        title={title}
+                        href={`${slugify(theme).toLowerCase()}/${slugify(
+                          title
+                        ).toLowerCase()}`}
+                        key={i}
+                      />
+                    ))}
+                  </List>
+                </>
+              ) : (
+                <div className="text-lg mt-8">
+                  Войдите в аккаунт, чтобы добавить преподавателей
+                </div>
               ))}
-              {data.content.map(({ title, theme }, i) => (
-                <Card
-                  title={title}
-                  href={`${slugify(theme).toLowerCase()}/${slugify(
-                    title
-                  ).toLowerCase()}`}
-                  key={i}
-                />
-              ))}
-            </List>
           </div>
         </div>
       </Content>
