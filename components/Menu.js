@@ -1,6 +1,7 @@
 import {
   HomeIcon,
   ArrowRightIcon,
+  AcademicCapIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -9,7 +10,7 @@ import data from "../data";
 
 export default function Menu() {
   return (
-    <div className="w-64 shrink-0 space-y-4 mt-4 pr-6">
+    <div className="hidden sm:block w-64 shrink-0 space-y-4 mt-4 pr-6">
       <Link href="/">
         <a className="flex items-center">
           <HomeIcon className="w-6 mr-6" />
@@ -18,8 +19,14 @@ export default function Menu() {
       </Link>
       <Link href="/teachers">
         <a className="flex items-center">
-          <UserGroupIcon className="w-6 mr-6" />
+          <AcademicCapIcon className="w-6 mr-6" />
           Преподаватели
+        </a>
+      </Link>
+      <Link href="/groups">
+        <a className="flex items-center">
+          <UserGroupIcon className="w-6 mr-6" />
+          Группы
         </a>
       </Link>
       <div className="border-b border-neutral-500"></div>

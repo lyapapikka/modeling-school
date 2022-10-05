@@ -1,3 +1,3 @@
 export default function Content({ children }) {
-  return <div className="px-6">{children}</div>;
+  return <div className="sm:px-6 px-4">{children}</div>;
 }

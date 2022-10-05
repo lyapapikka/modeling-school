@@ -1,17 +1,17 @@
-import Content from "../components/Content";
-import Menu from "../components/Menu";
 import Head from "next/head";
 import Header from "../components/Header";
+import Content from "../components/Content";
+import Menu from "../components/Menu";
 import Title from "../components/Title";
-import Card from "../components/Card";
+import { useEffect, useState } from "react";
 import List from "../components/List";
 import data from "../data";
+import Card from "../components/Card";
 import slugify from "slugify";
-import { useEffect, useState } from "react";
 
-export default function Teachers() {
+export default function Groups() {
   const [modal, setModal] = useState(false);
-  const [teacher, setTeacher] = useState("");
+  const [group, setGroup] = useState("");
 
   function showModal() {
     setModal(true);
@@ -21,8 +21,8 @@ export default function Teachers() {
     setModal(false);
   }
 
-  function changeTeacher({ target: { value } }) {
-    setTeacher(value);
+  function changeGroup({ target: { value } }) {
+    setGroup(value);
   }
 
   function save() {
@@ -36,7 +36,7 @@ export default function Teachers() {
   return (
     <>
       <Head>
-        <title>Преподаватели - Школа моделирования</title>
+        <title>Группы - Школа моделирования</title>
       </Head>
       <Content>
         {modal && (
@@ -45,11 +45,11 @@ export default function Teachers() {
               onClick={hideModal}
               className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
             ></div>
-            <div className="bottom-0 rounded-t sm:bottom-auto sm:rounded text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
-              Введите код преподавателя
+            <div className="text-lg absolute mx-auto left-0 right-0 bg-neutral-800 rounded px-4 py-3 w-full max-w-lg mt-32">
+              Введите название группы
               <input
-                value={teacher}
-                onChange={changeTeacher}
+                value={group}
+                onChange={changeGroup}
                 className="block w-full mt-4 rounded px-3 py-2"
               />
               <button
@@ -65,14 +65,8 @@ export default function Teachers() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Преподаватели</Title>
-            <button
-              onClick={showModal}
-              className="bg-blue-500 rounded px-3 py-1 my-7"
-            >
-              Добавить преподавателя
-            </button>
-            <div className="text-lg font-bold">Мельников Юрий Борисович</div>
+            <Title>Группы</Title>
+            <div className="text-lg font-bold mt-7">АИС-20-1</div>
             <List>
               {data.content.map(({ title, theme }, i) => (
                 <Card
