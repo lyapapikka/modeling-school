@@ -6,7 +6,7 @@ export default function Card({ title, small, href }) {
     <Link href={href}>
       <a className="block">
         <div
-          className={classNames("font-bold", {
+          className={classNames({
             "py-8 text-lg": !small,
             "py-2": small,
           })}

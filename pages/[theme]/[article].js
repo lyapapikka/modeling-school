@@ -4,6 +4,7 @@ import Content from "../../components/Content";
 import { useRouter } from "next/router";
 import data from "../../data";
 import slugify from "slugify";
+import Menu from "../../components/Menu";
 
 export default function Theme({ article }) {
   const router = useRouter();
@@ -24,18 +25,22 @@ export default function Theme({ article }) {
       </Head>
       <Content>
         <Header article />
-        <div className="mt-4 prose prose-invert max-w-none">
-          <h1>
+        <div className="flex">
+          <Menu />
+          <div className="mt-4 prose prose-invert max-w-2xl w-full">
+            <h1>
+              {
+                data.content.find(
+                  (c) => slugify(c.title).toLowerCase() === article
+                ).title
+              }
+            </h1>
             {
               data.content.find(
                 (c) => slugify(c.title).toLowerCase() === article
-              ).title
+              ).body
             }
-          </h1>
-          {
-            data.content.find((c) => slugify(c.title).toLowerCase() === article)
-              .body
-          }
+          </div>
         </div>
       </Content>
     </>
