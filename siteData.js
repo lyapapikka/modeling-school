@@ -1,4 +1,4 @@
-const data = {
+const siteData = {
   content: [
     {
       title: "Нахождение угла",
@@ -60,4 +60,4 @@ const data = {
   ],
 };
 
-export default data;
+export default siteData;

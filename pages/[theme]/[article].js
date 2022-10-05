@@ -2,7 +2,7 @@ import Head from "next/head";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
 import { useRouter } from "next/router";
-import data from "../../data";
+import siteData from "../../siteData";
 import slugify from "slugify";
 import Menu from "../../components/Menu";
 
@@ -18,7 +18,7 @@ export default function Theme({ article }) {
       <Head>
         <title>
           {`${
-            data.content.find((c) => slugify(c.title).toLowerCase() === article)
+            siteData.content.find((c) => slugify(c.title).toLowerCase() === article)
               .title
           } - Школа моделирования`}
         </title>
@@ -30,13 +30,13 @@ export default function Theme({ article }) {
           <div className="mt-4 prose prose-invert max-w-2xl w-full">
             <h1>
               {
-                data.content.find(
+                siteData.content.find(
                   (c) => slugify(c.title).toLowerCase() === article
                 ).title
               }
             </h1>
             {
-              data.content.find(
+              siteData.content.find(
                 (c) => slugify(c.title).toLowerCase() === article
               ).body
             }

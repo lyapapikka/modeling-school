@@ -5,20 +5,15 @@ import Header from "../components/Header";
 import Title from "../components/Title";
 import Card from "../components/Card";
 import List from "../components/List";
-import data from "../data";
+import siteData from "../siteData";
 import slugify from "slugify";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import useSWR from "swr";
 
 export default function Teachers() {
   const [modal, setModal] = useState(false);
   const [teacher, setTeacher] = useState("");
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [mount, setMount] = useState(false);
-
-  useEffect(() => {
-    setMount(true);
-  }, []);
+  const { data } = useSWR("/api/auth");
 
   function showModal() {
     setModal(true);
@@ -39,12 +34,6 @@ export default function Teachers() {
   useEffect(() => {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
-
-  useEffect(() => {
-    if (Cookies.get("access_token")) {
-      setIsAuthorized(true);
-    }
-  }, []);
 
   return (
     <>
@@ -79,8 +68,8 @@ export default function Teachers() {
           <Menu />
           <div className="w-full">
             <Title>Преподаватели</Title>
-            {mount &&
-              (isAuthorized ? (
+            {data &&
+              (data.isAuthorized ? (
                 <>
                   <button
                     onClick={showModal}
@@ -92,7 +81,7 @@ export default function Teachers() {
                     Мельников Юрий Борисович
                   </div>
                   <List>
-                    {data.content.map(({ title, theme }, i) => (
+                    {siteData.content.map(({ title, theme }, i) => (
                       <Card
                         title={title}
                         href={`${slugify(theme).toLowerCase()}/${slugify(
@@ -101,7 +90,7 @@ export default function Teachers() {
                         key={i}
                       />
                     ))}
-                    {data.content.map(({ title, theme }, i) => (
+                    {siteData.content.map(({ title, theme }, i) => (
                       <Card
                         title={title}
                         href={`${slugify(theme).toLowerCase()}/${slugify(

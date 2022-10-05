@@ -5,20 +5,15 @@ import Menu from "../components/Menu";
 import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import List from "../components/List";
-import data from "../data";
+import siteData from "../siteData";
 import Card from "../components/Card";
 import slugify from "slugify";
-import Cookies from "js-cookie";
+import useSWR from "swr";
 
 export default function Groups() {
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [mount, setMount] = useState(false);
-
-  useEffect(() => {
-    setMount(true);
-  }, []);
+  const { data } = useSWR("/api/auth");
 
   function showModal() {
     setModal(true);
@@ -39,12 +34,6 @@ export default function Groups() {
   useEffect(() => {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
-
-  useEffect(() => {
-    if (Cookies.get("access_token")) {
-      setIsAuthorized(true);
-    }
-  }, []);
 
   return (
     <>
@@ -79,12 +68,12 @@ export default function Groups() {
           <Menu />
           <div className="w-full">
             <Title>Группы</Title>
-            {mount &&
-              (isAuthorized ? (
+            {data &&
+              (data.isAuthorized ? (
                 <>
                   <div className="text-lg font-bold mt-7">АИС-20-1</div>
                   <List>
-                    {data.content.map(({ title, theme }, i) => (
+                    {siteData.content.map(({ title, theme }, i) => (
                       <Card
                         title={title}
                         href={`${slugify(theme).toLowerCase()}/${slugify(
@@ -93,7 +82,7 @@ export default function Groups() {
                         key={i}
                       />
                     ))}
-                    {data.content.map(({ title, theme }, i) => (
+                    {siteData.content.map(({ title, theme }, i) => (
                       <Card
                         title={title}
                         href={`${slugify(theme).toLowerCase()}/${slugify(

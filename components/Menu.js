@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import slugify from "slugify";
-import data from "../data";
+import siteData from "../siteData";
 
 export default function Menu() {
   return (
@@ -30,7 +30,7 @@ export default function Menu() {
         </a>
       </Link>
       <div className="border-b border-neutral-500"></div>
-      {data.content.map(({ theme }, i) => (
+      {siteData.content.map(({ theme }, i) => (
         <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
           <a className="flex items-center">
             <ArrowRightIcon className="w-6 mr-6" />

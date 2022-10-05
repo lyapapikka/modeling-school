@@ -7,21 +7,16 @@ import {
   ArrowRightIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import data from "../data";
+import siteData from "../siteData";
 import slugify from "slugify";
-import Cookies from "js-cookie";
+import useSWR from "swr";
 
 export default function Header({ article }) {
   const [pathname, setPathname] = useState("");
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [mount, setMount] = useState(false);
-
-  useEffect(() => {
-    setMount(true);
-  }, []);
+  const { data } = useSWR("/api/auth");
 
   function showModal() {
     setModal(true);
@@ -55,13 +50,6 @@ export default function Header({ article }) {
     document.body.style.overflow = modal ? "hidden" : "auto";
   }, [modal]);
 
-  useEffect(() => {
-    if (Cookies.get("access_token")) {
-      setIsAuthorized(true);
-      return;
-    }
-  }, []);
-
   return (
     <div className="flex justify-between py-4">
       {menu && (
@@ -90,7 +78,7 @@ export default function Header({ article }) {
               </a>
             </Link>
             <div className="border-b border-neutral-500 my-2"></div>
-            {data.content.map(({ theme }, i) => (
+            {siteData.content.map(({ theme }, i) => (
               <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
                 <a className="flex items-center p-2" onClick={hideMenu}>
                   <ArrowRightIcon className="w-6 mr-6" />
@@ -137,12 +125,12 @@ export default function Header({ article }) {
           </a>
         </Link>
       </div>
-      {mount && article && isAuthorized && (
+      {article && data && data.isAuthorized && (
         <button onClick={showModal} className="block bg-blue-500 rounded px-3">
           Выдать группе
         </button>
       )}
-      {mount && !isAuthorized && (
+      {data && !data.isAuthorized && (
         <a
           href={`//oauth.vk.com/authorize?client_id=51441314&display=page&response_type=token&scope=offline&v=5.131&redirect_uri=https://modeling-school.vercel.app/callback&state=${pathname}`}
           className="flex items-center bg-blue-500 rounded px-3 ml-4"

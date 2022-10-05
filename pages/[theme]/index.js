@@ -2,7 +2,7 @@ import Head from "next/head";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
 import Card from "../../components/Card";
-import data from "../../data";
+import siteData from "../../siteData";
 import slugify from "slugify";
 import { useRouter } from "next/router";
 import Menu from "../../components/Menu";
@@ -21,7 +21,7 @@ export default function Theme({ theme }) {
       <Head>
         <title>
           {`${
-            data.content.find((c) => slugify(c.theme).toLowerCase() === theme)
+            siteData.content.find((c) => slugify(c.theme).toLowerCase() === theme)
               .theme
           } - Школа моделирования`}
         </title>
@@ -33,13 +33,13 @@ export default function Theme({ theme }) {
           <div className="w-full">
             <Title>
               {
-                data.content.find(
+                siteData.content.find(
                   (c) => slugify(c.theme).toLowerCase() === theme
                 ).theme
               }
             </Title>
             <List>
-              {data.content
+              {siteData.content
                 .filter((c) => slugify(c.theme).toLowerCase() === theme)
                 .map(({ title, theme }, i) => (
                   <Card
