@@ -5,12 +5,21 @@ import Header from "../components/Header";
 import Content from "../components/Content";
 import useSWR from "swr";
 import Image from "next/image";
+import Cookies from "js-cookie";
+import useRouter from "next/router";
 
 export default function Library() {
   const { data } = useSWR("/api/auth");
   const { data: user } = useSWR(
     data && data.isAuthorized ? "/api/library" : null
   );
+  const router = useRouter();
+
+  function logout() {
+    Cookies.remove("access_token");
+    Cookies.remove("user_id");
+    router.push("/");
+  }
 
   return (
     <>
@@ -38,7 +47,9 @@ export default function Library() {
                         <div className="text-lg">
                           {user[0].first_name + " " + user[0].last_name}
                         </div>
-                        <button className="text-blue-500">Выйти</button>
+                        <button onClick={logout} className="text-blue-500">
+                          Выйти
+                        </button>
                       </div>
                     </div>
                     <div className="flex items-center my-6">
