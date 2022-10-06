@@ -6,7 +6,7 @@ import Content from "../components/Content";
 import useSWR from "swr";
 import Image from "next/image";
 import Cookies from "js-cookie";
-import useRouter from "next/router";
+import { useRouter } from "next/router";
 
 export default function Library() {
   const { data } = useSWR("/api/auth");
