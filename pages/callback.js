@@ -13,8 +13,8 @@ export default function Callback() {
     const user_id = location.hash.match(new RegExp("user_id=([^&]*)"))[1];
     const state = location.hash.match(new RegExp("state=([^&]*)"))[1];
 
-    Cookies.set("user_id", user_id);
-    Cookies.set("access_token", access_token);
+    Cookies.set("user_id", user_id, { expires: 365 });
+    Cookies.set("access_token", access_token, { expires: 365 });
 
     router.replace(state);
   }, [router]);
