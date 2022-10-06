@@ -88,14 +88,14 @@ export default function Teachers() {
                 <>
                   <button
                     onClick={showModal}
-                    className="bg-blue-500 rounded-lg px-3 py-1 my-7"
+                    className="bg-blue-500 rounded-lg px-3 py-1 mt-2"
                   >
                     Добавить учителя
                   </button>
                   {teachers &&
                     teachers.map((t, i) => (
                       <div key={i}>
-                        <div className="flex items-center mt-7 mb-2">
+                        <div className="flex items-center mt-6 mb-2">
                           <div className="text-lg font-bold">{t.name}</div>
                           <button className="text-blue-500 ml-auto">Удалить</button>
                         </div>
