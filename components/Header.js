@@ -37,7 +37,7 @@ export default function Header({ article, slug }) {
   function save() {
     setModal(false);
     fetch(
-      `/api/issue?group=group-${slugify(group).toLowerCase()}&article=${slug}`
+      `/api/issue?group=${group}&article=${slug}`
     );
   }
 

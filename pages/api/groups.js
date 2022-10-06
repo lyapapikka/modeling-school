@@ -1,4 +1,5 @@
 import { VK } from "vk-io";
+import slugify from "slugify";
 
 export default async function hanlder(req, res) {
   const vk = new VK({
@@ -9,11 +10,17 @@ export default async function hanlder(req, res) {
     g.startsWith("group-")
   );
 
+  const names = JSON.parse(
+    (await vk.api.storage.get({ key: "names" }))[0].value
+  );
+
   let groups = [];
 
   for (const k of groupKeys) {
+    const name = names.filter((n) => "group-" + slugify(n).toLowerCase() === k);
+
     const group = (await vk.api.storage.get({ key: k }))[0];
-    groups.push({ key: group.key, value: JSON.parse(group.value) });
+    groups.push({ name, value: JSON.parse(group.value) });
   }
 
   res.json(groups);
