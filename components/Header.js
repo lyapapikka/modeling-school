@@ -11,7 +11,7 @@ import siteData from "../siteData";
 import slugify from "slugify";
 import useSWR from "swr";
 
-export default function Header({ article }) {
+export default function Header({ article, slug }) {
   const [pathname, setPathname] = useState("");
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
@@ -36,6 +36,7 @@ export default function Header({ article }) {
 
   function save() {
     setModal(false);
+    fetch(`/api/issue?group=group-${slugify(group).toLowerCase()}&article=${slug}`);
   }
 
   function changeGroup({ target: { value } }) {
@@ -95,16 +96,16 @@ export default function Header({ article }) {
             onClick={hideModal}
             className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
           ></div>
-          <div className="bottom-0 rounded-t sm:bottom-auto sm:rounded text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+          <div className="bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
             Введите название группы
             <input
               value={group}
               onChange={changeGroup}
-              className="block w-full mt-4 rounded px-3 py-2"
+              className="block w-full mt-4 rounded-lg px-3 py-2"
             />
             <button
               onClick={save}
-              className="rounded bg-blue-500 py-2 mt-6 mb-1 w-full"
+              className="rounded-lg bg-blue-500 py-2 mt-6 mb-1 w-full"
             >
               Выдать
             </button>
@@ -126,14 +127,17 @@ export default function Header({ article }) {
         </Link>
       </div>
       {article && data && data.isAuthorized && (
-        <button onClick={showModal} className="block bg-blue-500 rounded px-3">
+        <button
+          onClick={showModal}
+          className="block bg-blue-500 rounded-lg px-3"
+        >
           Выдать группе
         </button>
       )}
       {data && !data.isAuthorized && (
         <a
           href={`//oauth.vk.com/authorize?client_id=51441314&display=page&response_type=token&scope=offline&v=5.131&redirect_uri=https://modeling-school.vercel.app/callback&state=${pathname}`}
-          className="flex items-center bg-blue-500 rounded px-3 ml-4"
+          className="flex items-center bg-blue-500 rounded-lg px-3 ml-4"
         >
           Войти
         </a>

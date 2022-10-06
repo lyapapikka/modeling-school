@@ -47,16 +47,16 @@ export default function Teachers() {
               onClick={hideModal}
               className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
             ></div>
-            <div className="bottom-0 rounded-t sm:bottom-auto sm:rounded text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+            <div className="bottom-0 rounded-lg-t-lg sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
               Введите код преподавателя
               <input
                 value={teacher}
                 onChange={changeTeacher}
-                className="block w-full mt-4 rounded px-3 py-2"
+                className="block w-full mt-4 rounded-lg px-3 py-2"
               />
               <button
                 onClick={save}
-                className="rounded bg-blue-500 py-2 mt-6 mb-1 w-full"
+                className="rounded-lg bg-blue-500 py-2 mt-6 mb-1 w-full"
               >
                 Сохранить
               </button>
@@ -73,7 +73,7 @@ export default function Teachers() {
                 <>
                   <button
                     onClick={showModal}
-                    className="bg-blue-500 rounded px-3 py-1 my-7"
+                    className="bg-blue-500 rounded-lg px-3 py-1 my-7"
                   >
                     Добавить преподавателя
                   </button>

@@ -24,7 +24,7 @@ export default function Theme({ article }) {
         </title>
       </Head>
       <Content>
-        <Header article />
+        <Header article slug={article} />
         <div className="flex">
           <Menu />
           <div className="mt-4 prose prose-invert max-w-2xl w-full">
