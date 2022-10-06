@@ -76,7 +76,7 @@ export default function Groups() {
                 groups &&
                 groups.map((g, i) => (
                   <div key={i}>
-                    <div className="text-lg font-bold mt-7">{g.name}</div>
+                    <div className="text-lg font-bold mt-7 mb-2">{g.name}</div>
                     <List>
                       {g.value.map((slug, j) => (
                         <Card

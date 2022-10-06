@@ -21,8 +21,9 @@ export default function Theme({ theme }) {
       <Head>
         <title>
           {`${
-            siteData.content.find((c) => slugify(c.theme).toLowerCase() === theme)
-              .theme
+            siteData.content.find(
+              (c) => slugify(c.theme).toLowerCase() === theme
+            ).theme
           } - Школа моделирования`}
         </title>
       </Head>

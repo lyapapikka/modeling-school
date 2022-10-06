@@ -95,7 +95,7 @@ export default function Teachers() {
                   {teachers &&
                     teachers.map((t, i) => (
                       <div key={i}>
-                        <div className="text-lg font-bold">{t.name}</div>
+                        <div className="text-lg font-bold mb-2">{t.name}</div>
                         <List>
                           {t.articles.map((a, j) => (
                             <Card
