@@ -82,7 +82,7 @@ export default function Teachers() {
                 onChange={changeTeacher}
                 className="block w-full my-4 rounded-lg px-3 py-2"
               />
-              Ваша группа
+              Группа
               <input
                 value={group}
                 onChange={changeGroup}
@@ -104,7 +104,7 @@ export default function Teachers() {
               onClick={hideRemoveModal}
               className="fixed z-10 cursor-pointer left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
             ></div>
-            <div className="fixed z-20 bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+            <div className="fixed z-30 bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
               Вы хотите удалить этого учителя?
               <button
                 onClick={remove}
@@ -135,45 +135,46 @@ export default function Teachers() {
                   >
                     Добавить учителя
                   </button>
-                  {teachers && teachers.length > 0 ? (
-                    teachers.map((t, i) => (
-                      <div key={i}>
-                        <div className="flex items-center mt-6 mb-2">
-                          <div className="text-lg font-bold">{t.name}</div>
-                          <button
-                            onClick={() => {
-                              setRemovingTeacher(t.id);
-                              showRemoveModal();
-                            }}
-                            className="text-blue-500 ml-auto"
-                          >
-                            Удалить
-                          </button>
+                  {teachers &&
+                    (teachers.length > 0 ? (
+                      teachers.map((t, i) => (
+                        <div key={i}>
+                          <div className="flex items-center mt-6 mb-2">
+                            <div className="text-lg font-bold">{t.name}</div>
+                            <button
+                              onClick={() => {
+                                setRemovingTeacher(t.id);
+                                showRemoveModal();
+                              }}
+                              className="text-blue-500 ml-auto"
+                            >
+                              Удалить
+                            </button>
+                          </div>
+                          <List>
+                            {t.articles.map((a, j) => (
+                              <Card
+                                title={
+                                  siteData.content.find(
+                                    (c) => slugify(c.title).toLowerCase() === a
+                                  ).title
+                                }
+                                href={`${slugify(
+                                  siteData.content.find(
+                                    (c) => slugify(c.title).toLowerCase() === a
+                                  ).theme
+                                ).toLowerCase()}/${a}`}
+                                key={j}
+                              />
+                            ))}
+                          </List>
                         </div>
-                        <List>
-                          {t.articles.map((a, j) => (
-                            <Card
-                              title={
-                                siteData.content.find(
-                                  (c) => slugify(c.title).toLowerCase() === a
-                                ).title
-                              }
-                              href={`${slugify(
-                                siteData.content.find(
-                                  (c) => slugify(c.title).toLowerCase() === a
-                                ).theme
-                              ).toLowerCase()}/${a}`}
-                              key={j}
-                            />
-                          ))}
-                        </List>
+                      ))
+                    ) : (
+                      <div className="text-lg mt-4">
+                        Добавьте учителя, чтобы видеть выданные задания
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-lg mt-4">
-                      Добавьте учителя, чтобы видеть выданные задания
-                    </div>
-                  )}
+                    ))}
                 </>
               ) : (
                 <div className="text-lg mt-8">
