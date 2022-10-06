@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import {
   AcademicCapIcon,
   UserGroupIcon,
-  ArrowRightIcon,
+  HashtagIcon,
   HomeIcon,
   BookOpenIcon,
+  RectangleStackIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -36,9 +37,7 @@ export default function Header({ article, slug }) {
 
   function save() {
     setModal(false);
-    fetch(
-      `/api/issue?group=${group}&article=${slug}`
-    );
+    fetch(`/api/issue?group=${group}&article=${slug}`);
   }
 
   function changeGroup({ target: { value } }) {
@@ -65,7 +64,7 @@ export default function Header({ article, slug }) {
             {siteData.content.map(({ theme }, i) => (
               <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
                 <a className="flex items-center p-2" onClick={hideMenu}>
-                  <ArrowRightIcon className="w-6 mr-6" />
+                  <HashtagIcon className="w-6 mr-4" />
                   {theme}
                 </a>
               </Link>
@@ -73,27 +72,33 @@ export default function Header({ article, slug }) {
           </div>
         </>
       )}
-      <div className="sm:hidden fixed flex w-full justify-around bottom-0 left-0 right-0 bg-neutral-800 py-2">
+      <div className="sm:hidden fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-800 p-2">
         <Link href="/">
-          <a className="text-sm">
+          <a className="text-xs w-full flex flex-col items-center">
             <HomeIcon className="w-6 mx-auto" />
             Главная
           </a>
         </Link>
-        <button onClick={showMenu} className="text-sm">
+        <button onClick={showMenu} className="text-xs w-full flex flex-col items-center">
           <BookOpenIcon className="w-6 mx-auto" />
           Темы
         </button>
         <Link href="/teachers">
-          <a className="text-sm">
+          <a className="text-xs w-full flex flex-col items-center">
             <AcademicCapIcon className="w-6 mx-auto" />
             Учителя
           </a>
         </Link>
         <Link href="/groups">
-          <a className="text-sm">
+          <a className="text-xs w-full flex flex-col items-center">
             <UserGroupIcon className="w-6 mx-auto" />
             Группы
+          </a>
+        </Link>
+        <Link href="/library">
+          <a className="text-xs w-full flex flex-col items-center">
+            <RectangleStackIcon className="w-6 mx-auto" />
+            Библиотека
           </a>
         </Link>
       </div>
