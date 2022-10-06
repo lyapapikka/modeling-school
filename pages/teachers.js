@@ -56,7 +56,7 @@ export default function Teachers() {
               onClick={hideModal}
               className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
             ></div>
-            <div className="bottom-0 rounded-t-lg z-20 sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+            <div className="bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
               Код учителя
               <input
                 value={teacher}
@@ -95,7 +95,10 @@ export default function Teachers() {
                   {teachers &&
                     teachers.map((t, i) => (
                       <div key={i}>
-                        <div className="text-lg font-bold mb-2">{t.name}</div>
+                        <div className="flex items-center mt-7 mb-2">
+                          <div className="text-lg font-bold">{t.name}</div>
+                          <button className="text-blue-500 ml-auto">Удалить</button>
+                        </div>
                         <List>
                           {t.articles.map((a, j) => (
                             <Card

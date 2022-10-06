@@ -76,10 +76,14 @@ export default function Groups() {
                 groups &&
                 groups.map((g, i) => (
                   <div key={i}>
-                    <div className="text-lg font-bold mt-7 mb-2">{g.name}</div>
+                    <div className="flex items-center mt-7 mb-2">
+                      <div className="text-lg font-bold">{g.name}</div>
+                      <button className="text-blue-500 ml-auto">Удалить</button>
+                    </div>
                     <List>
                       {g.value.map((slug, j) => (
                         <Card
+                          group
                           title={
                             siteData.content.find(
                               (c) => slugify(c.title).toLowerCase() === slug

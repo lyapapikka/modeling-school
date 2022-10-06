@@ -60,7 +60,7 @@ export default function Header({ article, slug }) {
             onClick={hideMenu}
             className="fixed top-0 bottom-0 left-0 right-0 opacity-70 bg-black"
           ></div>
-          <div className="overflow-auto z-20 fixed h-1/2 bottom-0 left-0 right-0 bg-neutral-800 p-2">
+          <div className="overflow-auto z-10 fixed h-1/2 bottom-0 left-0 right-0 bg-neutral-800 p-2">
             {siteData.content.map(({ theme }, i) => (
               <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
                 <a className="flex items-center p-2" onClick={hideMenu}>
@@ -72,7 +72,7 @@ export default function Header({ article, slug }) {
           </div>
         </>
       )}
-      <div className="sm:hidden fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-800 p-2">
+      <div className="sm:hidden z-10 fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-800 p-2">
         <Link href="/">
           <a className="text-xs w-full flex flex-col items-center">
             <HomeIcon className="w-6 mx-auto" />
