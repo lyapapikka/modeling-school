@@ -15,9 +15,19 @@ export default function Teachers() {
   const [teacher, setTeacher] = useState("");
   const [group, setGroup] = useState("");
   const { data } = useSWR("/api/auth");
-  const { data: teachers } = useSWR(
+  const { data: teachers, mutate } = useSWR(
     data && data.isAuthorized ? "/api/teachers" : null
   );
+  const [removeModal, setRemoveModal] = useState(false);
+  const [removingTeacher, setRemovingTeacher] = useState("");
+
+  function showRemoveModal() {
+    setRemoveModal(true);
+  }
+
+  function hideRemoveModal() {
+    setRemoveModal(false);
+  }
 
   function showModal() {
     setModal(true);
@@ -37,12 +47,21 @@ export default function Teachers() {
 
   function save() {
     setModal(false);
-    fetch(`/api/teachers/new?group=${group}&teacher=${teacher}`);
+    fetch(`/api/teachers/new?group=${group}&teacher=${teacher}`).then(() => {
+      mutate();
+    });
+  }
+
+  function remove() {
+    setRemoveModal(false);
+    fetch(`/api/teachers/remove?teacher=${removingTeacher}`).then(() => {
+      mutate();
+    });
   }
 
   useEffect(() => {
-    document.body.style.overflow = modal ? "hidden" : "auto";
-  }, [modal]);
+    document.body.style.overflow = modal || removeModal ? "hidden" : "auto";
+  }, [modal, removeModal]);
 
   return (
     <>
@@ -54,9 +73,9 @@ export default function Teachers() {
           <>
             <div
               onClick={hideModal}
-              className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
+              className="z-20 cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
             ></div>
-            <div className="bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+            <div className="bottom-0 rounded-t-lg z-20 sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
               Код учителя
               <input
                 value={teacher}
@@ -78,6 +97,30 @@ export default function Teachers() {
             </div>
           </>
         )}
+        {removeModal && (
+          <>
+            {" "}
+            <div
+              onClick={hideRemoveModal}
+              className="fixed z-10 cursor-pointer left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
+            ></div>
+            <div className="fixed z-20 bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+              Вы хотите удалить этого учителя?
+              <button
+                onClick={remove}
+                className="rounded-lg bg-blue-500 py-2 mt-2 mb-1 w-full"
+              >
+                Удалить
+              </button>
+              <button
+                onClick={hideRemoveModal}
+                className="rounded-lg bg-white text-black py-2 mt-2 mb-1 w-full"
+              >
+                Отмена
+              </button>
+            </div>
+          </>
+        )}
         <Header />
         <div className="flex">
           <Menu />
@@ -92,12 +135,20 @@ export default function Teachers() {
                   >
                     Добавить учителя
                   </button>
-                  {teachers &&
+                  {teachers && teachers.length > 0 ? (
                     teachers.map((t, i) => (
                       <div key={i}>
                         <div className="flex items-center mt-6 mb-2">
                           <div className="text-lg font-bold">{t.name}</div>
-                          <button className="text-blue-500 ml-auto">Удалить</button>
+                          <button
+                            onClick={() => {
+                              setRemovingTeacher(t.id);
+                              showRemoveModal();
+                            }}
+                            className="text-blue-500 ml-auto"
+                          >
+                            Удалить
+                          </button>
                         </div>
                         <List>
                           {t.articles.map((a, j) => (
@@ -117,7 +168,12 @@ export default function Teachers() {
                           ))}
                         </List>
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <div className="text-lg mt-4">
+                      Добавьте учителя, чтобы видеть выданные задания
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className="text-lg mt-8">

@@ -48,7 +48,7 @@ export default function Groups() {
           <>
             <div
               onClick={hideModal}
-              className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
+              className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
             ></div>
             <div className="text-lg absolute mx-auto left-0 right-0 bg-neutral-800 rounded-lg px-4 py-3 w-full max-w-lg mt-32">
               Введите название группы

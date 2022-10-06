@@ -14,7 +14,7 @@ export default async function hanlder(req, res) {
 
   for (const t of teachers) {
     const user = await vk.api.users.get({ user_ids: [t.teacher] });
-    const { first_name, last_name } = user[0];
+    const { first_name, last_name, id } = user[0];
     const name = first_name + " " + last_name;
 
     const articles = JSON.parse(
@@ -26,7 +26,7 @@ export default async function hanlder(req, res) {
       )[0].value
     );
 
-    response.push({ name, articles });
+    response.push({ name, id, articles });
   }
 
   res.json(response);

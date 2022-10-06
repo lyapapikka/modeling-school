@@ -49,8 +49,8 @@ export default function Header({ article, slug }) {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = modal ? "hidden" : "auto";
-  }, [modal]);
+    document.body.style.overflow = modal || menu ? "hidden" : "auto";
+  }, [modal, menu]);
 
   return (
     <div className="flex justify-between py-4">
@@ -79,7 +79,10 @@ export default function Header({ article, slug }) {
             Главная
           </a>
         </Link>
-        <button onClick={showMenu} className="text-xs w-full flex flex-col items-center">
+        <button
+          onClick={showMenu}
+          className="text-xs w-full flex flex-col items-center"
+        >
           <BookOpenIcon className="w-6 mx-auto" />
           Темы
         </button>
@@ -106,10 +109,10 @@ export default function Header({ article, slug }) {
         <>
           <div
             onClick={hideModal}
-            className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
+            className="cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
           ></div>
-          <div className="bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
-            Введите название группы
+          <div className="z-10 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+            Группа
             <input
               value={group}
               onChange={changeGroup}
