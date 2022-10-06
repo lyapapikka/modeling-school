@@ -45,7 +45,7 @@ export default function Teachers() {
     setGroup(value);
   }
 
-  function save() {
+  function add() {
     setModal(false);
     fetch(`/api/teachers/new?group=${group}&teacher=${teacher}`).then(() => {
       mutate();
@@ -89,10 +89,16 @@ export default function Teachers() {
                 className="block w-full mt-4 rounded-lg px-3 py-2"
               />
               <button
-                onClick={save}
+                onClick={add}
                 className="rounded-lg bg-blue-500 py-2 mt-6 mb-1 w-full"
               >
-                Сохранить
+                Добавить
+              </button>
+              <button
+                onClick={add}
+                className="rounded-lg bg-white text-black py-2 mt-2 mb-1 w-full"
+              >
+                Отмена
               </button>
             </div>
           </>

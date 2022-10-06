@@ -124,6 +124,12 @@ export default function Header({ article, slug }) {
             >
               Выдать
             </button>
+            <button
+              onClick={hideModal}
+              className="rounded-lg bg-white text-black py-2 mt-2 mb-1 w-full"
+            >
+              Отмена
+            </button>
           </div>
         </>
       )}
