@@ -13,7 +13,11 @@ import useSWR from "swr";
 export default function Teachers() {
   const [modal, setModal] = useState(false);
   const [teacher, setTeacher] = useState("");
+  const [group, setGroup] = useState("");
   const { data } = useSWR("/api/auth");
+  const { data: teachers } = useSWR(
+    data && data.isAuthorized ? "/api/teachers" : null
+  );
 
   function showModal() {
     setModal(true);
@@ -27,8 +31,13 @@ export default function Teachers() {
     setTeacher(value);
   }
 
+  function changeGroup({ target: { value } }) {
+    setGroup(value);
+  }
+
   function save() {
     setModal(false);
+    fetch(`/api/teachers/new?group=${group}&teacher=${teacher}`);
   }
 
   useEffect(() => {
@@ -47,11 +56,17 @@ export default function Teachers() {
               onClick={hideModal}
               className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
             ></div>
-            <div className="bottom-0 rounded-lg-t-lg sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
-              Введите код учителя
+            <div className="bottom-0 rounded-t-lg z-20 sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+              Код учителя
               <input
                 value={teacher}
                 onChange={changeTeacher}
+                className="block w-full my-4 rounded-lg px-3 py-2"
+              />
+              Ваша группа
+              <input
+                value={group}
+                onChange={changeGroup}
                 className="block w-full mt-4 rounded-lg px-3 py-2"
               />
               <button
@@ -75,31 +90,31 @@ export default function Teachers() {
                     onClick={showModal}
                     className="bg-blue-500 rounded-lg px-3 py-1 my-7"
                   >
-                    Добавить преподавателя
+                    Добавить учителя
                   </button>
-                  <div className="text-lg font-bold">
-                    Мельников Юрий Борисович
-                  </div>
-                  <List>
-                    {siteData.content.map(({ title, theme }, i) => (
-                      <Card
-                        title={title}
-                        href={`${slugify(theme).toLowerCase()}/${slugify(
-                          title
-                        ).toLowerCase()}`}
-                        key={i}
-                      />
+                  {teachers &&
+                    teachers.map((t, i) => (
+                      <div key={i}>
+                        <div className="text-lg font-bold">{t.name}</div>
+                        <List>
+                          {t.articles.map((a, j) => (
+                            <Card
+                              title={
+                                siteData.content.find(
+                                  (c) => slugify(c.title).toLowerCase() === a
+                                ).title
+                              }
+                              href={`${slugify(
+                                siteData.content.find(
+                                  (c) => slugify(c.title).toLowerCase() === a
+                                ).theme
+                              ).toLowerCase()}/${a}`}
+                              key={j}
+                            />
+                          ))}
+                        </List>
+                      </div>
                     ))}
-                    {siteData.content.map(({ title, theme }, i) => (
-                      <Card
-                        title={title}
-                        href={`${slugify(theme).toLowerCase()}/${slugify(
-                          title
-                        ).toLowerCase()}`}
-                        key={i}
-                      />
-                    ))}
-                  </List>
                 </>
               ) : (
                 <div className="text-lg mt-8">
