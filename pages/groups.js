@@ -11,32 +11,33 @@ import slugify from "slugify";
 import useSWR from "swr";
 
 export default function Groups() {
-  const [modal, setModal] = useState(false);
-  const [group, setGroup] = useState("");
   const { data } = useSWR("/api/auth");
-  const { data: groups } = useSWR(
+  const { data: groups, mutate } = useSWR(
     data && data.isAuthorized ? "/api/groups" : null
   );
+  const [removeArticleModal, setRemoveArticleModal] = useState(false);
+  const [removingArticle, setRemovingArticle] = useState("");
 
-  function showModal() {
-    setModal(true);
+  function showRemoveArticleModal() {
+    setRemoveArticleModal(true);
   }
 
-  function hideModal() {
-    setModal(false);
+  function hideRemoveArticleModal() {
+    setRemoveArticleModal(false);
   }
 
-  function changeGroup({ target: { value } }) {
-    setGroup(value);
-  }
-
-  function save() {
-    setModal(false);
+  function removeArticle() {
+    setRemoveArticleModal(false);
+    fetch(
+      `/api/remove-article-from-group?article=${removingArticle.slug}&group=${removingArticle.group}`
+    ).then(() => {
+      mutate();
+    });
   }
 
   useEffect(() => {
-    document.body.style.overflow = modal ? "hidden" : "auto";
-  }, [modal]);
+    document.body.style.overflow = removeArticleModal ? "hidden" : "auto";
+  }, [removeArticleModal]);
 
   return (
     <>
@@ -44,24 +45,25 @@ export default function Groups() {
         <title>Группы - Школа моделирования</title>
       </Head>
       <Content>
-        {modal && (
+        {removeArticleModal && (
           <>
             <div
-              onClick={hideModal}
-              className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
+              onClick={hideRemoveArticleModal}
+              className="fixed z-10 cursor-pointer left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
             ></div>
-            <div className="text-lg absolute mx-auto left-0 right-0 bg-neutral-800 rounded-lg px-4 py-3 w-full max-w-lg mt-32">
-              Введите название группы
-              <input
-                value={group}
-                onChange={changeGroup}
-                className="block w-full mt-4 rounded-lg px-3 py-2"
-              />
+            <div className="fixed z-30 bottom-0 rounded-t-lg z-10 sm:bottom-auto sm:rounded-lg text-lg mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
+              Вы хотите удалить эту группу?
               <button
-                onClick={save}
-                className="rounded-lg bg-blue-500 py-2 mt-6 mb-1 w-full"
+                onClick={removeArticle}
+                className="rounded-lg bg-blue-500 py-2 mt-2 mb-1 w-full"
               >
-                Сохранить
+                Удалить
+              </button>
+              <button
+                onClick={hideRemoveArticleModal}
+                className="rounded-lg bg-white text-black py-2 mt-2 mb-1 w-full"
+              >
+                Отмена
               </button>
             </div>
           </>
@@ -76,14 +78,15 @@ export default function Groups() {
                 groups &&
                 groups.map((g, i) => (
                   <div key={i}>
-                    <div className="flex items-center mt-7 mb-2">
-                      <div className="text-lg font-bold">{g.name}</div>
-                      <button className="text-blue-500 ml-auto">Удалить</button>
-                    </div>
+                    <div className="text-lg font-bold mt-7 mb-2">{g.name}</div>
                     <List>
                       {g.value.map((slug, j) => (
                         <Card
                           group
+                          onRemoveClick={() => {
+                            setRemovingArticle({ group: g.name, slug });
+                            showRemoveArticleModal();
+                          }}
                           title={
                             siteData.content.find(
                               (c) => slugify(c.title).toLowerCase() === slug

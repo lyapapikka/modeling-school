@@ -99,7 +99,6 @@ export default function Teachers() {
         )}
         {removeModal && (
           <>
-            {" "}
             <div
               onClick={hideRemoveModal}
               className="fixed z-10 cursor-pointer left-0 right-0 top-0 bottom-0 opacity-70 bg-black"

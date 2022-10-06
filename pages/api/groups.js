@@ -1,7 +1,7 @@
 import { VK } from "vk-io";
 import slugify from "slugify";
 
-export default async function hanlder(req, res) {
+export default async function handler(req, res) {
   const vk = new VK({
     token: req.cookies.access_token,
   });
@@ -17,7 +17,7 @@ export default async function hanlder(req, res) {
   let groups = [];
 
   for (const k of groupKeys) {
-    const name = names.filter((n) => "group-" + slugify(n).toLowerCase() === k);
+    const name = names.find((n) => "group-" + slugify(n).toLowerCase() === k);
 
     const group = (await vk.api.storage.get({ key: k }))[0];
     groups.push({ name, value: JSON.parse(group.value) });

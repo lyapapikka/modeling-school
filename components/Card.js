@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-export default function Card({ title, href, group }) {
+export default function Card({ title, href, group, onRemoveClick }) {
   return (
     <div className="relative">
       <Link href={href}>
@@ -10,7 +10,10 @@ export default function Card({ title, href, group }) {
         </a>
       </Link>
       {group && (
-        <button className="absolute right-0 top-1/2 -translate-y-1/2 mr-2">
+        <button
+          onClick={onRemoveClick}
+          className="absolute right-0 top-1/2 -translate-y-1/2 mr-2 sm:hover:bg-neutral-800 rounded-lg sm:p-1"
+        >
           <XMarkIcon className="w-6" />
         </button>
       )}
