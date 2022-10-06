@@ -27,7 +27,7 @@ export default function Theme({ article }) {
         <Header article slug={article} />
         <div className="flex">
           <Menu />
-          <div className="mt-4 prose prose-invert max-w-2xl w-full">
+          <div className="mt-4 prose prose-invert max-w-none w-full">
             <h1>
               {
                 siteData.content.find(

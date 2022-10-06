@@ -20,7 +20,7 @@ export default function Menu() {
       <Link href="/teachers">
         <a className="flex items-center">
           <AcademicCapIcon className="w-6 mr-6" />
-          Учители
+          Учителя
         </a>
       </Link>
       <Link href="/groups">
