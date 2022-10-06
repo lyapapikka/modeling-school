@@ -6,7 +6,7 @@ export default function Card({ title, href, group }) {
     <div className="relative">
       <Link href={href}>
         <a className="block sm:hover:bg-neutral-800 sm:px-4">
-          <div className="py-8 text-lg">{title}</div>
+          <div className="py-8 text-lg pr-10">{title}</div>
         </a>
       </Link>
       {group && (
