@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  Bars2Icon,
   AcademicCapIcon,
   UserGroupIcon,
   ArrowRightIcon,
   HomeIcon,
+  BookOpenIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -36,7 +36,9 @@ export default function Header({ article, slug }) {
 
   function save() {
     setModal(false);
-    fetch(`/api/issue?group=group-${slugify(group).toLowerCase()}&article=${slug}`);
+    fetch(
+      `/api/issue?group=group-${slugify(group).toLowerCase()}&article=${slug}`
+    );
   }
 
   function changeGroup({ target: { value } }) {
@@ -57,28 +59,9 @@ export default function Header({ article, slug }) {
         <>
           <div
             onClick={hideMenu}
-            className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
+            className="fixed top-0 bottom-0 left-0 right-0 opacity-70 bg-black"
           ></div>
-          <div className="absolute top-0 bottom-0 left-0 right-0 w-5/6 bg-neutral-800 p-4">
-            <Link href="/">
-              <a className="flex items-center p-2" onClick={hideMenu}>
-                <HomeIcon className="w-6 mr-6" />
-                Главная
-              </a>
-            </Link>
-            <Link href="/teachers">
-              <a className="flex items-center p-2" onClick={hideMenu}>
-                <AcademicCapIcon className="w-6 mr-6" />
-                Преподаватели
-              </a>
-            </Link>
-            <Link href="/groups">
-              <a className="flex items-center p-2" onClick={hideMenu}>
-                <UserGroupIcon className="w-6 mr-6" />
-                Группы
-              </a>
-            </Link>
-            <div className="border-b border-neutral-500 my-2"></div>
+          <div className="overflow-auto z-20 fixed h-1/2 bottom-0 left-0 right-0 bg-neutral-800 p-2">
             {siteData.content.map(({ theme }, i) => (
               <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
                 <a className="flex items-center p-2" onClick={hideMenu}>
@@ -90,6 +73,30 @@ export default function Header({ article, slug }) {
           </div>
         </>
       )}
+      <div className="sm:hidden fixed flex w-full justify-around bottom-0 left-0 right-0 bg-neutral-800 py-2">
+        <Link href="/">
+          <a className="text-sm">
+            <HomeIcon className="w-6 mx-auto" />
+            Главная
+          </a>
+        </Link>
+        <button onClick={showMenu} className="text-sm">
+          <BookOpenIcon className="w-6 mx-auto" />
+          Темы
+        </button>
+        <Link href="/teachers">
+          <a className="text-sm">
+            <AcademicCapIcon className="w-6 mx-auto" />
+            Учителя
+          </a>
+        </Link>
+        <Link href="/groups">
+          <a className="text-sm">
+            <UserGroupIcon className="w-6 mx-auto" />
+            Группы
+          </a>
+        </Link>
+      </div>
       {modal && (
         <>
           <div
@@ -113,7 +120,6 @@ export default function Header({ article, slug }) {
         </>
       )}
       <div className="flex">
-        <Bars2Icon onClick={showMenu} className="sm:hidden w-6 mr-4" />
         <Link href="/">
           <a className="flex items-center">
             <svg width="30" viewBox="0 0 347 347">

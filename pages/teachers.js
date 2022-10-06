@@ -38,7 +38,7 @@ export default function Teachers() {
   return (
     <>
       <Head>
-        <title>Преподаватели - Школа моделирования</title>
+        <title>Учителя - Школа моделирования</title>
       </Head>
       <Content>
         {modal && (
@@ -48,7 +48,7 @@ export default function Teachers() {
               className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 opacity-50 bg-black"
             ></div>
             <div className="bottom-0 rounded-lg-t-lg sm:bottom-auto sm:rounded-lg text-lg absolute mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
-              Введите код преподавателя
+              Введите код учителя
               <input
                 value={teacher}
                 onChange={changeTeacher}
@@ -67,7 +67,7 @@ export default function Teachers() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Преподаватели</Title>
+            <Title>Учителя</Title>
             {data &&
               (data.isAuthorized ? (
                 <>
