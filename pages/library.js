@@ -42,6 +42,7 @@ export default function Library() {
                         width={50}
                         height={50}
                         className="rounded-full"
+                        alt=""
                       />
                       <div className="ml-4">
                         <div className="text-lg">
