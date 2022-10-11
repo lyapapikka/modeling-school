@@ -37,7 +37,7 @@ export default function Groups() {
   return (
     <>
       <Head>
-        <title>Папки - Школа моделирования</title>
+        <title>Группы - Школа моделирования</title>
       </Head>
       <Content>
         {removeArticleModal && (
@@ -67,7 +67,7 @@ export default function Groups() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Папки</Title>
+            <Title>Группы</Title>
             {false && groups &&
               groups.map((g, i) => (
                 <div key={i}>

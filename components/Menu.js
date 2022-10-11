@@ -2,7 +2,7 @@ import {
   HomeIcon,
   HashtagIcon,
   AcademicCapIcon,
-  FolderIcon,
+  UsersIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -18,10 +18,10 @@ export default function Menu() {
           Главная
         </a>
       </Link>
-      <Link href="/folders">
+      <Link href="/groups">
         <a className="flex items-center hover:bg-neutral-800 rounded p-2">
-          <FolderIcon className="w-6 mr-4" />
-          Папки
+          <UsersIcon className="w-6 mr-4" />
+          Группы
         </a>
       </Link>
       {siteData.content.map(({ theme }, i) => (

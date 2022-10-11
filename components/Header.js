@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  FolderIcon,
+  UsersIcon,
   HashtagIcon,
   HomeIcon,
   BookOpenIcon,
-  FolderPlusIcon,
+  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -83,10 +83,10 @@ export default function Header({ article, slug }) {
           <BookOpenIcon className="w-6 mx-auto" />
           Темы
         </button>
-        <Link href="/folders">
+        <Link href="/groups">
           <a className="text-xs w-full flex flex-col items-center">
-            <FolderIcon className="w-6 mx-auto" />
-            Папки
+            <UsersIcon className="w-6 mx-auto" />
+            Группы
           </a>
         </Link>
       </div>
@@ -133,7 +133,7 @@ export default function Header({ article, slug }) {
       </div>
       {article && (
         <button onClick={showModal}>
-          <FolderPlusIcon className="w-6" />
+          <UserPlusIcon className="w-6" />
         </button>
       )}
     </div>
