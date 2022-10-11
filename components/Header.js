@@ -1,23 +1,20 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  AcademicCapIcon,
-  UserGroupIcon,
+  FolderIcon,
   HashtagIcon,
   HomeIcon,
   BookOpenIcon,
-  RectangleStackIcon,
+  FolderPlusIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
-import useSWR from "swr";
 
 export default function Header({ article, slug }) {
   const [pathname, setPathname] = useState("");
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
-  const { data } = useSWR("/api/auth");
 
   function showModal() {
     setModal(true);
@@ -86,22 +83,10 @@ export default function Header({ article, slug }) {
           <BookOpenIcon className="w-6 mx-auto" />
           Темы
         </button>
-        <Link href="/teachers">
+        <Link href="/folders">
           <a className="text-xs w-full flex flex-col items-center">
-            <AcademicCapIcon className="w-6 mx-auto" />
-            Учителя
-          </a>
-        </Link>
-        <Link href="/groups">
-          <a className="text-xs w-full flex flex-col items-center">
-            <UserGroupIcon className="w-6 mx-auto" />
-            Группы
-          </a>
-        </Link>
-        <Link href="/library">
-          <a className="text-xs w-full flex flex-col items-center">
-            <RectangleStackIcon className="w-6 mx-auto" />
-            Библиотека
+            <FolderIcon className="w-6 mx-auto" />
+            Папки
           </a>
         </Link>
       </div>
@@ -140,27 +125,16 @@ export default function Header({ article, slug }) {
               <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
               <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
             </svg>
-            <div className="hidden sm:block ml-4 font-bold whitespace-nowrap">
+            <div className="ml-4 font-bold whitespace-nowrap">
               Школа моделирования
             </div>
           </a>
         </Link>
       </div>
-      {article && data && data.isAuthorized && (
-        <button
-          onClick={showModal}
-          className="block bg-blue-500 rounded-lg px-3"
-        >
-          Выдать группе
+      {article && (
+        <button onClick={showModal}>
+          <FolderPlusIcon className="w-6" />
         </button>
-      )}
-      {data && !data.isAuthorized && (
-        <a
-          href={`//oauth.vk.com/authorize?client_id=51441314&display=page&response_type=token&scope=offline&v=5.131&redirect_uri=https://modeling-school.vercel.app/callback&state=${pathname}`}
-          className="flex items-center bg-blue-500 rounded-lg px-3 ml-4"
-        >
-          Войти
-        </a>
       )}
     </div>
   );

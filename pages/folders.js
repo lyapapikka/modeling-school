@@ -8,13 +8,8 @@ import List from "../components/List";
 import siteData from "../siteData";
 import Card from "../components/Card";
 import slugify from "slugify";
-import useSWR from "swr";
 
 export default function Groups() {
-  const { data } = useSWR("/api/auth");
-  const { data: groups, mutate } = useSWR(
-    data && data.isAuthorized ? "/api/groups" : null
-  );
   const [removeArticleModal, setRemoveArticleModal] = useState(false);
   const [removingArticle, setRemovingArticle] = useState("");
 
@@ -42,7 +37,7 @@ export default function Groups() {
   return (
     <>
       <Head>
-        <title>Группы - Школа моделирования</title>
+        <title>Папки - Школа моделирования</title>
       </Head>
       <Content>
         {removeArticleModal && (
@@ -72,40 +67,33 @@ export default function Groups() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Группы</Title>
-            {data &&
-              (data.isAuthorized ? (
-                groups &&
-                groups.map((g, i) => (
-                  <div key={i}>
-                    <div className="text-lg font-bold mt-7 mb-2">{g.name}</div>
-                    <List>
-                      {g.value.map((slug, j) => (
-                        <Card
-                          group
-                          onRemoveClick={() => {
-                            setRemovingArticle({ group: g.name, slug });
-                            showRemoveArticleModal();
-                          }}
-                          title={
-                            siteData.content.find(
-                              (c) => slugify(c.title).toLowerCase() === slug
-                            ).title
-                          }
-                          href={`${slugify(
-                            siteData.content.find(
-                              (c) => slugify(c.title).toLowerCase() === slug
-                            ).theme
-                          ).toLowerCase()}/${slugify(slug).toLowerCase()}`}
-                          key={j}
-                        />
-                      ))}
-                    </List>
-                  </div>
-                ))
-              ) : (
-                <div className="text-lg mt-8">
-                  Войдите в аккаунт, чтобы видеть группы
+            <Title>Папки</Title>
+            {false && groups &&
+              groups.map((g, i) => (
+                <div key={i}>
+                  <div className="text-lg font-bold mt-7 mb-2">{g.name}</div>
+                  <List>
+                    {g.value.map((slug, j) => (
+                      <Card
+                        group
+                        onRemoveClick={() => {
+                          setRemovingArticle({ group: g.name, slug });
+                          showRemoveArticleModal();
+                        }}
+                        title={
+                          siteData.content.find(
+                            (c) => slugify(c.title).toLowerCase() === slug
+                          ).title
+                        }
+                        href={`${slugify(
+                          siteData.content.find(
+                            (c) => slugify(c.title).toLowerCase() === slug
+                          ).theme
+                        ).toLowerCase()}/${slugify(slug).toLowerCase()}`}
+                        key={j}
+                      />
+                    ))}
+                  </List>
                 </div>
               ))}
           </div>
