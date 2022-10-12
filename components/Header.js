@@ -6,15 +6,22 @@ import {
   HomeIcon,
   BookOpenIcon,
   UserPlusIcon,
+  PlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
+import groupsAtom from "../groupsAtom";
+import { useAtom } from "jotai";
+import { useRouter } from "next/router";
 
-export default function Header({ article, slug }) {
-  const [pathname, setPathname] = useState("");
+export default function Header({ article }) {
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
+  const [groups, setGroups] = useAtom(groupsAtom);
+  const [newGroup, setNewGroup] = useState(false);
+  const router = useRouter();
 
   function showModal() {
     setModal(true);
@@ -22,6 +29,8 @@ export default function Header({ article, slug }) {
 
   function hideModal() {
     setModal(false);
+    setNewGroup(false);
+    setGroup("");
   }
 
   function showMenu() {
@@ -32,22 +41,21 @@ export default function Header({ article, slug }) {
     setMenu(false);
   }
 
-  function save() {
+  function create() {
+    setGroups([...groups, { name: group, articles: [router.query.article] }]);
+
     setModal(false);
-    fetch(`/api/issue?group=${group}&article=${slug}`);
+    setNewGroup(false);
+    setGroup("");
   }
 
   function changeGroup({ target: { value } }) {
     setGroup(value);
   }
 
-  useEffect(() => {
-    setPathname(location.pathname);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = modal || menu ? "hidden" : "auto";
-  }, [modal, menu]);
+  function addNewGroup() {
+    setNewGroup(true);
+  }
 
   return (
     <div className="flex justify-between py-4">
@@ -96,25 +104,50 @@ export default function Header({ article, slug }) {
             onClick={hideModal}
             className="cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
           ></div>
-          <div className="z-10 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-800 px-4 py-3 w-full max-w-lg mt-32">
-            Группа
-            <input
-              value={group}
-              onChange={changeGroup}
-              className="block w-full mt-4 rounded-lg px-3 py-2"
-            />
-            <button
-              onClick={save}
-              className="rounded-lg bg-blue-500 py-2 mt-6 mb-1 w-full"
-            >
-              Выдать
-            </button>
-            <button
-              onClick={hideModal}
-              className="rounded-lg bg-white text-black py-2 mt-2 mb-1 w-full"
-            >
-              Отмена
-            </button>
+          <div className="p-4 z-10 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-900 w-full max-w-xs mt-32">
+            <div className="flex items-center justify-between ml-3">
+              Выберите группу
+              <button
+                className="md:hover:bg-neutral-800 p-2 rounded-lg"
+                onClick={hideModal}
+              >
+                <XMarkIcon className="w-6" />
+              </button>
+            </div>
+            {groups.map((g, i) => (
+              <button
+                key={i}
+                className="md:hover:bg-neutral-800 w-full text-left px-3 py-2 rounded-lg mt-2"
+              >
+                {g.name}
+              </button>
+            ))}
+            {!newGroup && (
+              <button
+                onClick={addNewGroup}
+                className="flex items-center w-full mt-4 md:hover:bg-neutral-800 p-2 rounded-lg"
+              >
+                <PlusIcon className="w-6 mr-2" /> Новая группа
+              </button>
+            )}
+            {newGroup && (
+              <>
+                <div className="mx-3">
+                  <div className="mt-4">Название</div>
+                  <input
+                    value={group}
+                    onChange={changeGroup}
+                    className="rounded-lg mt-2 px-3 py-2 w-full"
+                  />
+                </div>
+                <button
+                  onClick={create}
+                  className="ml-auto block mt-4 px-3 py-2 md:hover:bg-neutral-800 rounded-lg"
+                >
+                  Создать
+                </button>
+              </>
+            )}
           </div>
         </>
       )}
