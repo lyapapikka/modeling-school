@@ -57,54 +57,35 @@ export default function Header({ article }) {
     setNewGroup(true);
   }
 
+  function addToGroup(group) {
+    if (
+      !groups
+        .find((g) => g.name === group)
+        .articles.includes(router.query.article)
+    ) {
+      setGroups(
+        groups.map((g) =>
+          g.name === group
+            ? { name: g.name, articles: [...g.articles, router.query.article] }
+            : g
+        )
+      );
+    }
+
+    setModal(false);
+    setNewGroup(false);
+    setGroup("");
+  }
+
   return (
-    <div className="flex justify-between py-4">
-      {menu && (
-        <>
-          <div
-            onClick={hideMenu}
-            className="z-10 fixed top-0 bottom-0 left-0 right-0 opacity-70 bg-black"
-          ></div>
-          <div className="overflow-auto z-20 fixed h-1/2 bottom-0 left-0 right-0 bg-neutral-800 p-2">
-            {siteData.content.map(({ theme }, i) => (
-              <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
-                <a className="flex items-center p-2" onClick={hideMenu}>
-                  <HashtagIcon className="w-6 mr-4" />
-                  {theme}
-                </a>
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
-      <div className="sm:hidden z-10 fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-800 p-2">
-        <Link href="/">
-          <a className="text-xs w-full flex flex-col items-center">
-            <HomeIcon className="w-6 mx-auto" />
-            Главная
-          </a>
-        </Link>
-        <button
-          onClick={showMenu}
-          className="text-xs w-full flex flex-col items-center"
-        >
-          <BookOpenIcon className="w-6 mx-auto" />
-          Темы
-        </button>
-        <Link href="/groups">
-          <a className="text-xs w-full flex flex-col items-center">
-            <UsersIcon className="w-6 mx-auto" />
-            Группы
-          </a>
-        </Link>
-      </div>
+    <>
       {modal && (
         <>
           <div
             onClick={hideModal}
             className="cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
           ></div>
-          <div className="p-4 z-10 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-900 w-full max-w-xs mt-32">
+          <div className="p-4 z-20 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-900 w-full w-full sm:max-w-xs mt-32">
             <div className="flex items-center justify-between ml-3">
               Выберите группу
               <button
@@ -118,6 +99,7 @@ export default function Header({ article }) {
               <button
                 key={i}
                 className="md:hover:bg-neutral-800 w-full text-left px-3 py-2 rounded-lg mt-2"
+                onClick={() => addToGroup(g.name)}
               >
                 {g.name}
               </button>
@@ -141,6 +123,7 @@ export default function Header({ article }) {
                   />
                 </div>
                 <button
+                  disabled={!group}
                   onClick={create}
                   className="ml-auto block mt-4 px-3 py-2 md:hover:bg-neutral-800 rounded-lg"
                 >
@@ -151,9 +134,48 @@ export default function Header({ article }) {
           </div>
         </>
       )}
-      <div className="flex">
+      {menu && (
+        <>
+          <div
+            onClick={hideMenu}
+            className="z-10 fixed top-0 bottom-0 left-0 right-0 opacity-70 bg-black"
+          ></div>
+          <div className="rounded-t-lg pt-4 overflow-auto z-20 fixed h-1/2 bottom-0 left-0 right-0 bg-neutral-900 p-2">
+            {siteData.content.map(({ theme }, i) => (
+              <Link href={`/${slugify(theme).toLowerCase()}`} key={i}>
+                <a className="flex items-center p-2" onClick={hideMenu}>
+                  <HashtagIcon className="w-6 mr-4" />
+                  {theme}
+                </a>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+      <div className="flex justify-between items-center">
+        <div className="sm:hidden z-10 fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-900 p-2">
+          <Link href="/">
+            <a className="text-xs w-full flex flex-col items-center">
+              <HomeIcon className="w-6 mx-auto" />
+              Главная
+            </a>
+          </Link>
+          <button
+            onClick={showMenu}
+            className="text-xs w-full flex flex-col items-center"
+          >
+            <BookOpenIcon className="w-6 mx-auto" />
+            Темы
+          </button>
+          <Link href="/groups">
+            <a className="text-xs w-full flex flex-col items-center">
+              <UsersIcon className="w-6 mx-auto" />
+              Группы
+            </a>
+          </Link>
+        </div>
         <Link href="/">
-          <a className="flex items-center">
+          <a className="flex items-center my-3 sm:ml-2">
             <svg width="30" viewBox="0 0 347 347">
               <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
               <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
@@ -163,12 +185,15 @@ export default function Header({ article }) {
             </div>
           </a>
         </Link>
+        {article && (
+          <button
+            className="sm:hover:bg-neutral-800 rounded-lg p-2 box-border"
+            onClick={showModal}
+          >
+            <UserPlusIcon className="w-6" />
+          </button>
+        )}
       </div>
-      {article && (
-        <button onClick={showModal}>
-          <UserPlusIcon className="w-6" />
-        </button>
-      )}
-    </div>
+    </>
   );
 }
