@@ -10,6 +10,7 @@ import Card from "../components/Card";
 import slugify from "slugify";
 import { useAtom } from "jotai";
 import groupsAtom from "../groupsAtom";
+import { ShareIcon } from "@heroicons/react/24/outline";
 
 export default function Groups() {
   const [groups, setGroups] = useAtom(groupsAtom);
@@ -45,38 +46,53 @@ export default function Groups() {
           <Menu />
           <div className="w-full">
             <Title>Группы</Title>
-            {mount && groups.length === 0 ? (
-              <div className="mt-7 sm:ml-4 text-lg">У вас еще нет ни одной группы</div>
-            ) : (
-              groups.map((g, i) => (
-                <div key={i}>
-                  <div className="sm:ml-4 text-lg font-bold mt-7 mb-2">
-                    {g.name}
-                  </div>
-                  <List>
-                    {g.articles.map((slug, j) => (
-                      <Card
-                        group
-                        onRemoveClick={() => {
-                          removeArticle(g.name, slug);
-                        }}
-                        title={
-                          siteData.content.find(
-                            (c) => slugify(c.title).toLowerCase() === slug
-                          ).title
-                        }
-                        href={`${slugify(
-                          siteData.content.find(
-                            (c) => slugify(c.title).toLowerCase() === slug
-                          ).theme
-                        ).toLowerCase()}/${slugify(slug).toLowerCase()}`}
-                        key={j}
-                      />
-                    ))}
-                  </List>
+            {mount &&
+              (groups.length === 0 ? (
+                <div className="mt-7 sm:ml-4 text-lg">
+                  У вас еще нет ни одной группы
                 </div>
-              ))
-            )}
+              ) : (
+                groups.map((g, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between items-center mt-7 mb-2">
+                      <div className="sm:ml-4 text-lg font-bold">{g.name}</div>
+                      <button
+                        onClick={() =>
+                          navigator.share({
+                            url: `https://modeling-school.vercel.app/new-group?data=${JSON.stringify(
+                              g
+                            )}`,
+                          })
+                        }
+                        className="p-2 sm:mr-2 sm:hover:bg-neutral-800 rounded-xl"
+                      >
+                        <ShareIcon className="w-6" />
+                      </button>
+                    </div>
+                    <List>
+                      {g.articles.map((slug, j) => (
+                        <Card
+                          group
+                          onRemoveClick={() => {
+                            removeArticle(g.name, slug);
+                          }}
+                          title={
+                            siteData.content.find(
+                              (c) => slugify(c.title).toLowerCase() === slug
+                            ).title
+                          }
+                          href={`${slugify(
+                            siteData.content.find(
+                              (c) => slugify(c.title).toLowerCase() === slug
+                            ).theme
+                          ).toLowerCase()}/${slugify(slug).toLowerCase()}`}
+                          key={j}
+                        />
+                      ))}
+                    </List>
+                  </div>
+                ))
+              ))}
           </div>
         </div>
       </Content>
