@@ -6,7 +6,6 @@ import siteData from "../../siteData";
 import slugify from "slugify";
 import { useRouter } from "next/router";
 import Menu from "../../components/Menu";
-import Title from "../../components/Title";
 import List from "../../components/List";
 
 export default function Theme({ theme }) {
@@ -32,13 +31,6 @@ export default function Theme({ theme }) {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>
-              {
-                siteData.content.find(
-                  (c) => slugify(c.theme).toLowerCase() === theme
-                ).theme
-              }
-            </Title>
             <List>
               {siteData.content
                 .filter((c) => slugify(c.theme).toLowerCase() === theme)

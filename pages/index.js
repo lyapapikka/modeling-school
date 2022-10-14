@@ -5,7 +5,6 @@ import Card from "../components/Card";
 import siteData from "../siteData";
 import slugify from "slugify";
 import Menu from "../components/Menu";
-import Title from "../components/Title";
 import List from "../components/List";
 
 export default function Home() {
@@ -19,7 +18,6 @@ export default function Home() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Главная</Title>
             <List>
               {siteData.content.map(({ title, theme }, i) => (
                 <Card

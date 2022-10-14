@@ -2,7 +2,6 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Content from "../components/Content";
 import Menu from "../components/Menu";
-import Title from "../components/Title";
 import { useEffect, useState } from "react";
 import List from "../components/List";
 import siteData from "../siteData";
@@ -45,10 +44,9 @@ export default function Groups() {
         <div className="flex">
           <Menu />
           <div className="w-full">
-            <Title>Группы</Title>
             {mount &&
               (groups.length === 0 ? (
-                <div className="mt-7 sm:ml-4 text-lg">
+                <div className="mt-8 sm:ml-4 text-lg">
                   У вас еще нет ни одной группы
                 </div>
               ) : (

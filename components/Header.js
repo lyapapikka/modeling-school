@@ -187,7 +187,7 @@ export default function Header({ article }) {
         </Link>
         {article && (
           <button
-            className="sm:hover:bg-neutral-800 rounded-lg p-2 box-border"
+            className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border"
             onClick={showModal}
           >
             <UserPlusIcon className="w-6" />
