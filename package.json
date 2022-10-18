@@ -11,7 +11,7 @@
   "dependencies": {
     "@heroicons/react": "^2.0.11",
     "@supabase/supabase-js": "^2.0.0",
-    "jotai": "^1.8.5",
+    "jotai": "^1.8.6",
     "next": "12.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

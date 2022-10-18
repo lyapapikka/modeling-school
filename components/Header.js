@@ -12,11 +12,30 @@ import {
 import siteData from "../siteData";
 import slugify from "slugify";
 import groupsAtom from "../groupsAtom";
-import { useAtom } from "jotai";
 import { useRouter } from "next/router";
 import { supabase } from "../supabase";
+import { useAtom } from "jotai";
+import sessionAtom from "../sessionAtom";
 
 export default function Header({ article }) {
+  const [session, setSession] = useAtom(sessionAtom);
+  const [loading, setLoading] = useState(session === false);
+
+  useEffect(() => {
+    async function func() {
+      if (session) {
+        return;
+      }
+
+      const { data } = await supabase.auth.getSession();
+
+      setSession(data);
+      setLoading(false);
+    }
+
+    func();
+  }, []);
+
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
@@ -186,17 +205,20 @@ export default function Header({ article }) {
             </div>
           </a>
         </Link>
-        {/* {article && (
-          <button
-            className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border"
-            onClick={showModal}
-          >
-            <UserPlusIcon className="w-6" />
-          </button>
-        )} */}
-        <Link href="/login">
-          <a className="bg-blue-500 px-2 py-1 rounded-lg ml-2">Войти</a>
-        </Link>
+        {!loading && !session.session ? (
+          <Link href="/login">
+            <a className="bg-blue-500 px-2 py-1 rounded-lg ml-2">Войти</a>
+          </Link>
+        ) : (
+          article && (
+            <button
+              className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border"
+              onClick={showModal}
+            >
+              <UserPlusIcon className="w-6" />
+            </button>
+          )
+        )}
       </div>
     </>
   );
