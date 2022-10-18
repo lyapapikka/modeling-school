@@ -1,9 +1,22 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
+import { useRouter } from "next/router";
 
 export default function Login() {
   const [email, setEmail] = useState("");
+  const [session, setSession] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    async function func() {
+      const { data } = await supabase.auth.getSession();
+
+      setSession(data);
+    }
+
+    func();
+  }, []);
 
   function changeEmail({ target: { value } }) {
     setEmail(value);
@@ -15,6 +28,16 @@ export default function Login() {
     });
 
     console.log({ data, error });
+  }
+
+  useEffect(() => {
+    if (session.session) {
+      router.replace("/");
+    }
+  }, [session]);
+
+  if (session.session) {
+    return null;
   }
 
   return (
