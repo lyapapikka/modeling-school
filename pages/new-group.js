@@ -12,7 +12,7 @@ export default function NewGroup() {
       setGroups((g) => [...g, JSON.parse(router.query.data)]);
       router.push("/groups");
     }
-  }, [router]);
+  }, [router, setGroups]);
 
   return null;
 }

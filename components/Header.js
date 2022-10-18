@@ -14,6 +14,7 @@ import slugify from "slugify";
 import groupsAtom from "../groupsAtom";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
+import { supabase } from "../supabase";
 
 export default function Header({ article }) {
   const [modal, setModal] = useState(false);
@@ -180,19 +181,22 @@ export default function Header({ article }) {
               <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
               <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
             </svg>
-            <div className="ml-4 font-bold whitespace-nowrap">
+            <div className="hidden sm:block ml-4 font-bold whitespace-nowrap">
               Школа моделирования
             </div>
           </a>
         </Link>
-        {article && (
+        {/* {article && (
           <button
             className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border"
             onClick={showModal}
           >
             <UserPlusIcon className="w-6" />
           </button>
-        )}
+        )} */}
+        <Link href="/login">
+          <a className="bg-blue-500 px-2 py-1 rounded-lg ml-2">Войти</a>
+        </Link>
       </div>
     </>
   );
