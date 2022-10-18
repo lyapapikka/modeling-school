@@ -36,7 +36,7 @@ export default function Login() {
     }
   }, [session]);
 
-  if (session.session) {
+  if (!session || session.session) {
     return null;
   }
 
