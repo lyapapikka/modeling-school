@@ -52,7 +52,10 @@ export default function Login() {
       <Head>
         <title>Вход - Школа моделирования</title>
       </Head>
-      <form className="flex mx-auto flex-col max-w-sm h-[calc(100vh-100px)] justify-center space-y-4 px-2">
+      <form
+        onSubmit={login}
+        className="flex mx-auto flex-col max-w-sm h-[calc(100vh-100px)] justify-center space-y-4 px-2"
+      >
         <Link href="/">
           <a className="flex items-center mx-auto">
             <svg width="30" viewBox="0 0 347 347">
@@ -71,13 +74,14 @@ export default function Login() {
               onChange={changeEmail}
               placeholder="Почта"
               className="w-full rounded-lg py-1 px-2"
+              type="email"
             />
             <button
-              onClick={login}
               className={`w-full ${
                 disabled ? "bg-neutral-500" : "bg-blue-500"
               } rounded-lg py-1`}
               disabled={disabled}
+              type="submit"
             >
               Войти
             </button>
