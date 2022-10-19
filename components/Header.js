@@ -171,7 +171,7 @@ export default function Header({ article }) {
         <>
           <div
             onClick={hideUserModal}
-            className="cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
+            className="cursor-pointer z-20 fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
           ></div>
           <div className="p-4 z-20 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-900 w-full w-full sm:max-w-xs mt-32">
             <div className="flex items-center justify-between ml-3">
