@@ -1,14 +1,14 @@
 import Head from "next/head";
-import Header from "../components/Header";
-import Content from "../components/Content";
-import Menu from "../components/Menu";
+import Header from "../../components/Header";
+import Content from "../../components/Content";
+import Menu from "../../components/Menu";
 import { useEffect, useState } from "react";
-import List from "../components/List";
-import siteData from "../siteData";
-import Card from "../components/Card";
+import List from "../../components/List";
+import siteData from "../../siteData";
+import Card from "../../components/Card";
 import slugify from "slugify";
 import { useAtom } from "jotai";
-import groupsAtom from "../groupsAtom";
+import groupsAtom from "../../groupsAtom";
 import { ShareIcon } from "@heroicons/react/24/outline";
 
 export default function Groups() {
