@@ -34,7 +34,7 @@ export default function Header({ article }) {
     }
 
     func();
-  }, []);
+  }, [session, setSession]);
 
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");

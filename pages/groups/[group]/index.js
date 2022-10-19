@@ -58,7 +58,7 @@ export default function Group() {
     }
 
     func();
-  }, [router, supabase]);
+  }, [router]);
 
   return (
     <>

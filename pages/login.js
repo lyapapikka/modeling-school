@@ -41,7 +41,7 @@ export default function Login() {
     if (session.session) {
       router.replace("/");
     }
-  }, [session]);
+  }, [session, router]);
 
   if (!session || session.session) {
     return null;
