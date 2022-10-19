@@ -11,7 +11,6 @@ import {
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
-import groupsAtom from "../groupsAtom";
 import { useRouter } from "next/router";
 import { supabase } from "../supabase";
 import { useAtom } from "jotai";
@@ -39,7 +38,6 @@ export default function Header({ article }) {
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
-  const [groups, setGroups] = useAtom(groupsAtom);
   const [newGroup, setNewGroup] = useState(false);
   const router = useRouter();
 
