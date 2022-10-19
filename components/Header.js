@@ -5,9 +5,10 @@ import {
   HashtagIcon,
   HomeIcon,
   BookOpenIcon,
-  UserPlusIcon,
   PlusIcon,
   XMarkIcon,
+  UserCircleIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -39,16 +40,25 @@ export default function Header({ article }) {
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
   const [newGroup, setNewGroup] = useState(false);
+  const [userModal, setUserModal] = useState(false);
   const router = useRouter();
 
   function showModal() {
     setModal(true);
   }
 
+  function showUserModal() {
+    setUserModal(true);
+  }
+
   function hideModal() {
     setModal(false);
     setNewGroup(false);
     setGroup("");
+  }
+
+  function hideUserModal() {
+    setUserModal(false);
   }
 
   function showMenu() {
@@ -93,6 +103,11 @@ export default function Header({ article }) {
     setModal(false);
     setNewGroup(false);
     setGroup("");
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    location.href = "/";
   }
 
   return (
@@ -152,6 +167,31 @@ export default function Header({ article }) {
           </div>
         </>
       )}
+      {userModal && (
+        <>
+          <div
+            onClick={hideUserModal}
+            className="cursor-pointer fixed left-0 right-0 top-0 bottom-0 opacity-70 bg-black"
+          ></div>
+          <div className="p-4 z-20 bottom-0 rounded-t-lg sm:bottom-auto sm:rounded-lg text-lg fixed mx-auto left-0 right-0 bg-neutral-900 w-full w-full sm:max-w-xs mt-32">
+            <div className="flex items-center justify-between ml-3">
+              Профиль
+              <button
+                className="md:hover:bg-neutral-800 p-2 rounded-lg"
+                onClick={hideUserModal}
+              >
+                <XMarkIcon className="w-6" />
+              </button>
+            </div>
+            <button
+              onClick={logout}
+              className="flex items-center w-full mt-4 md:hover:bg-neutral-800 p-2 rounded-lg"
+            >
+              <ArrowLeftOnRectangleIcon className="w-6 mr-2" /> Выйти
+            </button>
+          </div>
+        </>
+      )}
       {menu && (
         <>
           <div
@@ -208,14 +248,22 @@ export default function Header({ article }) {
             <a className="bg-blue-500 px-2 py-1 rounded-lg ml-2">Войти</a>
           </Link>
         ) : (
-          article && (
+          <div className="ml-auto">
+            {article && (
+              <button
+                className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border mr-4 sm:mr-0"
+                onClick={showModal}
+              >
+                <PlusIcon className="w-6" />
+              </button>
+            )}
             <button
-              className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border"
-              onClick={showModal}
+              onClick={showUserModal}
+              className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border -mr-2"
             >
-              <UserPlusIcon className="w-6" />
+              <UserCircleIcon className="w-6" />
             </button>
-          )
+          </div>
         )}
       </div>
     </>
