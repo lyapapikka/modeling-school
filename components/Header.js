@@ -1,43 +1,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import {
-  UsersIcon,
   HashtagIcon,
-  HomeIcon,
   BookOpenIcon,
   PlusIcon,
   XMarkIcon,
-  UserCircleIcon,
   ArrowLeftOnRectangleIcon,
   MagnifyingGlassIcon,
   HeartIcon,
 } from "@heroicons/react/24/outline";
-import siteData from "../siteData";
-import slugify from "slugify";
 import { useRouter } from "next/router";
-import { supabase } from "../supabase";
-import { useAtom } from "jotai";
-import sessionAtom from "../sessionAtom";
+import { useUser } from "@supabase/auth-helpers-react";
 
-export default function Header({ article }) {
-  const [session, setSession] = useAtom(sessionAtom);
-  const [loading, setLoading] = useState(session === false);
-
-  useEffect(() => {
-    async function func() {
-      if (session) {
-        return;
-      }
-
-      const { data } = await supabase.auth.getSession();
-
-      setSession(data);
-      setLoading(false);
-    }
-
-    func();
-  }, [session, setSession]);
-
+export default function Header() {
   const [modal, setModal] = useState(false);
   const [group, setGroup] = useState("");
   const [menu, setMenu] = useState(false);
