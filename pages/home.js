@@ -9,7 +9,8 @@ export default function Home() {
         <title>Школа моделирования</title>
       </Head>
       <Content>
-        Вход
+        <Header />
+        <div className="mt-2 bg-neutral-800 rounded-2xl py-2 px-3">Личный</div>
       </Content>
     </>
   );

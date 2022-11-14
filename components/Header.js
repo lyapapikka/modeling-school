@@ -9,6 +9,7 @@ import {
   XMarkIcon,
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
+  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -211,60 +212,23 @@ export default function Header({ article }) {
         </>
       )}
       <div className="flex justify-between items-center">
-        <div className="sm:hidden z-10 fixed flex w-full justify-between bottom-0 left-0 right-0 bg-neutral-900 p-2">
-          <Link href="/">
-            <a className="text-xs w-full flex flex-col items-center">
-              <HomeIcon className="w-6 mx-auto" />
-              Главная
-            </a>
-          </Link>
-          <button
-            onClick={showMenu}
-            className="text-xs w-full flex flex-col items-center"
-          >
-            <BookOpenIcon className="w-6 mx-auto" />
-            Темы
-          </button>
-          <Link href="/groups">
-            <a className="text-xs w-full flex flex-col items-center">
-              <UsersIcon className="w-6 mx-auto" />
-              Группы
-            </a>
-          </Link>
-        </div>
         <Link href="/">
-          <a className="flex items-center my-3 sm:ml-2">
+          <a className="flex items-center my-3">
             <svg width="30" viewBox="0 0 347 347">
               <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
               <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
             </svg>
-            <div className="hidden sm:block ml-4 font-bold whitespace-nowrap">
-              Школа моделирования
-            </div>
           </a>
         </Link>
-        {!loading && !session.session ? (
-          <Link href="/login">
-            <a className="bg-blue-500 px-2 py-1 rounded-lg ml-2">Войти</a>
-          </Link>
-        ) : (
-          <div className="ml-auto">
-            {article && (
-              <button
-                className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border mr-4 sm:mr-0"
-                onClick={showModal}
-              >
-                <PlusIcon className="w-6" />
-              </button>
-            )}
-            <button
-              onClick={showUserModal}
-              className="sm:hover:bg-neutral-800 rounded-lg sm:p-2 box-border -mr-2"
-            >
-              <UserCircleIcon className="w-6" />
-            </button>
-          </div>
-        )}
+        <button className="flex ml-auto mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+          <MagnifyingGlassIcon className="w-6" />
+        </button>
+        <button className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+          <BookOpenIcon className="w-6" />
+        </button>
+        <button className="sm:hover:bg-neutral-700 rounded-full p-2">
+          <ArrowLeftOnRectangleIcon className="w-6" />
+        </button>
       </div>
     </>
   );
