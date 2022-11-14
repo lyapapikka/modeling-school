@@ -60,7 +60,7 @@ export default function Login() {
               value={email}
               onChange={changeEmail}
               placeholder="Почта"
-              className="w-full rounded-2xl py-2 px-3"
+              className="w-full rounded-2xl py-2 px-3 bg-neutral-700"
               type="email"
             />
             {!disabled && (
