@@ -10,6 +10,7 @@ import {
   UserCircleIcon,
   ArrowLeftOnRectangleIcon,
   MagnifyingGlassIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 import siteData from "../siteData";
 import slugify from "slugify";
@@ -222,6 +223,9 @@ export default function Header({ article }) {
         </Link>
         <button className="flex ml-auto mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
           <MagnifyingGlassIcon className="w-6" />
+        </button>
+        <button className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+          <HeartIcon className="w-6" />
         </button>
         <button className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
           <BookOpenIcon className="w-6" />
