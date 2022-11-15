@@ -37,19 +37,19 @@ export default function Header() {
         </button>
       </div>
       <div className="sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full bg-neutral-800">
-        <button className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-2">
+        <button className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
           <HomeIcon className="w-6" />
         </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-2">
+        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
           <BookmarkIcon className="w-6" />
         </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-2">
+        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
           <PlusIcon className="w-6" />
         </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-2">
+        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
           <BookOpenIcon className="w-6" />
         </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-2">
+        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
           <Cog6ToothIcon className="w-6" />
         </button>
       </div>
