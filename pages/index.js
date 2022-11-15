@@ -31,7 +31,7 @@ export default function Login() {
     if (user) {
       router.replace("/home");
     }
-  }, [user]);
+  }, [user, router]);
 
   if (user) {
     return null;

@@ -18,7 +18,7 @@ export default function Home() {
     if (!user) {
       router.replace("/");
     }
-  }, [user]);
+  }, [user, router]);
 
   if (!user) {
     return null;
