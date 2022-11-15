@@ -6,9 +6,11 @@ import {
   Cog6ToothIcon,
   PlusIcon,
   HomeIcon,
+  XMarkIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/outline";
 
-export default function Header() {
+export default function Header({ home }) {
   return (
     <div className="flex justify-between items-center my-2">
       <Link href="/">
@@ -19,40 +21,75 @@ export default function Header() {
           </svg>
         </a>
       </Link>
-      <button className="flex ml-auto sm:hover:bg-neutral-700 p-2 rounded-full">
-        <MagnifyingGlassIcon className="w-6" />
-      </button>
-      <div className="sm:flex hidden">
-        <button className="flex mx-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-          <PlusIcon className="w-6" />
-        </button>
-        <button className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-          <BookmarkIcon className="w-6" />
-        </button>
-        <button className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-          <BookOpenIcon className="w-6" />
-        </button>
-        <button className="sm:hover:bg-neutral-700 rounded-full p-2">
-          <Cog6ToothIcon className="w-6" />
-        </button>
-      </div>
-      <div className="sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full bg-neutral-800">
-        <button className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
-          <HomeIcon className="w-6" />
-        </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-          <BookmarkIcon className="w-6" />
-        </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-          <PlusIcon className="w-6" />
-        </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-          <BookOpenIcon className="w-6" />
-        </button>
-        <button className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-          <Cog6ToothIcon className="w-6" />
-        </button>
-      </div>
+      {home ? (
+        <>
+          <button className="flex ml-auto sm:hover:bg-neutral-700 p-2 rounded-full -mr-2">
+            <MagnifyingGlassIcon className="w-6" />
+          </button>
+          <div className="sm:flex hidden">
+            <Link href="/new">
+              <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <PlusIcon className="w-6" />
+              </a>
+            </Link>
+            <Link href="/home">
+              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <HomeIcon className="w-6" />
+              </a>
+            </Link>
+            <Link href="/saved">
+              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <BookmarkIcon className="w-6" />
+              </a>
+            </Link>
+            <Link href="/tutor">
+              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <BookOpenIcon className="w-6" />
+              </a>
+            </Link>
+            <Link href="/other">
+              <a className="sm:hover:bg-neutral-700 rounded-full p-2">
+                <Bars3Icon className="w-6" />
+              </a>
+            </Link>
+          </div>
+        </>
+      ) : (
+        <Link href="/home">
+          <a className="sm:hover:bg-neutral-700 rounded-full p-2 -mr-2">
+            <XMarkIcon className="w-6" />
+          </a>
+        </Link>
+      )}
+      {home && (
+        <div className="sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full bg-neutral-800">
+          <Link href="/home">
+            <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
+              <HomeIcon className="w-6" />
+            </a>
+          </Link>
+          <Link href="/saved">
+            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+              <BookmarkIcon className="w-6" />
+            </a>
+          </Link>
+          <Link href="/new">
+            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+              <PlusIcon className="w-6" />
+            </a>
+          </Link>
+          <Link href="/tutor">
+            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+              <BookOpenIcon className="w-6" />
+            </a>
+          </Link>
+          <Link href="/other">
+            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+              <Bars3Icon className="w-6" />
+            </a>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

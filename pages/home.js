@@ -8,7 +8,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const router = useRouter();
-  const user = useUser();
+  const user = true;
   const [tab, setTab] = useState("posts");
 
   const postsTab = () => setTab("posts");
@@ -30,7 +30,7 @@ export default function Home() {
         <title>Школа моделирования</title>
       </Head>
       <Content>
-        <Header />
+        <Header home />
         <div className="flex space-x-2 mb-4 mt-2">
           <button
             onClick={postsTab}
