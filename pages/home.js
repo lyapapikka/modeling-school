@@ -4,10 +4,11 @@ import Content from "../components/Content";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "@supabase/auth-helpers-react";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const router = useRouter();
-  const user = true;
+  const user = useUser();
   const [tab, setTab] = useState("posts");
 
   const postsTab = () => setTab("posts");
@@ -48,32 +49,38 @@ export default function Home() {
             Виджеты
           </button>
         </div>
-        <div className="bg-neutral-800 rounded-2xl mt-2 px-4 py-3 w-full">
-          {tab === "widgets" && (
-            <div className="w-full">
-              <div className="text-neutral-500 bg-neutral-800 rounded-2xl">
-                У вас пока нет виджетов
-              </div>
+        {tab === "widgets" && (
+          <div className="space-y-4">
+            <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
+              <div className="py-2 rounded-2xl pr-6">Калькулятор</div>
+              <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
+                <EllipsisVerticalIcon className="w-6" />
+              </button>
             </div>
-          )}
-          {tab === "posts" && (
-            <div className="w-full">
-              <div className="text-neutral-500 bg-neutral-800 rounded-2xl">
-                У вас пока нет записей
+          </div>
+        )}
+        {tab === "posts" && (
+          <div className="space-y-4">
+            <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
+              <div className="py-2 rounded-2xl pr-6">
+                Длинный текст записи, приведенный здесь лишь для демонстрации
+                того, каквыглядят много строк текста в реальном интерфейсе
               </div>
-              {/* <div className="divide-y divide-neutral-500 bg-neutral-800 rounded-2xl px-4 py-3">
-              <div className="py-2">
+              <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
+                <EllipsisVerticalIcon className="w-6" />
+              </button>
+            </div>
+            <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
+              <div className="py-2 rounded-2xl pr-6">
                 Длинный текст записи, приведенный здесь лишь для демонстрации
                 того, как выглядят много строк текста в реальном интерфейсе
               </div>
-              <div className="py-2">
-                Длинный текст записи, приведенный здесь лишь для демонстрации
-                того, как выглядят много строк текста в реальном интерфейсе
-              </div>
-            </div> */}
+              <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
+                <EllipsisVerticalIcon className="w-6" />
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </Content>
     </>
   );
