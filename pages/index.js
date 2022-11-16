@@ -46,14 +46,12 @@ export default function Login() {
         onSubmit={login}
         className="flex mx-auto flex-col max-w-sm justify-center space-y-4 px-3 mt-40"
       >
-        <Link href="/">
-          <a className="mx-auto">
-            <svg width="30" viewBox="0 0 347 347">
-              <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
-              <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
-            </svg>
-          </a>
-        </Link>
+        <div className="mx-auto">
+          <svg width="30" viewBox="0 0 347 347">
+            <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
+            <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
+          </svg>
+        </div>
         {!logined ? (
           <>
             <input

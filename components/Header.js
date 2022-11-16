@@ -8,6 +8,11 @@ import {
   XMarkIcon,
   Bars3Icon,
 } from "@heroicons/react/24/outline";
+import {
+  HomeIcon as HomeIconSolid,
+  HeartIcon as HeartIconSolid,
+  BookOpenIcon as BookOpenIconSolid,
+} from "@heroicons/react/24/solid";
 
 export default function Header({ home }) {
   return (
@@ -66,12 +71,20 @@ export default function Header({ home }) {
         <div className="sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full bg-neutral-800">
           <Link href="/home">
             <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
-              <HomeIcon className="w-6" />
+              {location.pathname === "/home" ? (
+                <HomeIconSolid className="w-6" />
+              ) : (
+                <HomeIcon className="w-6" />
+              )}
             </a>
           </Link>
           <Link href="/saved">
             <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <HeartIcon className="w-6" />
+              {location.pathname === "/saved" ? (
+                <HeartIconSolid className="w-6" />
+              ) : (
+                <HeartIcon className="w-6" />
+              )}
             </a>
           </Link>
           <Link href="/new">
@@ -81,7 +94,11 @@ export default function Header({ home }) {
           </Link>
           <Link href="/tutor">
             <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <BookOpenIcon className="w-6" />
+              {location.pathname === "/tutor" ? (
+                <BookOpenIconSolid className="w-6" />
+              ) : (
+                <BookOpenIcon className="w-6" />
+              )}
             </a>
           </Link>
           <Link href="/other">
