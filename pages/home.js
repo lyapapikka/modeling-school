@@ -3,24 +3,24 @@ import Header from "../components/Header";
 import Content from "../components/Content";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "@supabase/auth-helpers-react";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 
 export default function Home() {
   const router = useRouter();
-  const user = true;
+  const { isLoading, session } = useSessionContext();
   const [tab, setTab] = useState("posts");
 
   const postsTab = () => setTab("posts");
   const widgetsTab = () => setTab("widgets");
 
   useEffect(() => {
-    if (!user) {
+    if (!isLoading && !session) {
       router.replace("/");
     }
-  }, [user, router]);
+  }, [session, router, isLoading]);
 
-  if (!user) {
+  if (isLoading || !session) {
     return null;
   }
 

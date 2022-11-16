@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useUser } from "@supabase/auth-helpers-react";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function Login() {
@@ -10,7 +10,7 @@ export default function Login() {
   const [logined, setLogined] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const router = useRouter();
-  const user = useUser();
+  const { isLoading, session } = useSessionContext();
   const supabaseClient = useSupabaseClient();
 
   useEffect(() => {
@@ -28,12 +28,12 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if (user) {
+    if (!isLoading && session) {
       router.replace("/home");
     }
-  }, [user, router]);
+  }, [session, router, isLoading]);
 
-  if (user) {
+  if (isLoading || session) {
     return null;
   }
 
