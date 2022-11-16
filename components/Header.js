@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   BookOpenIcon,
   MagnifyingGlassIcon,
-  BookmarkIcon,
+  HeartIcon,
   PlusIcon,
   HomeIcon,
   XMarkIcon,
@@ -12,7 +12,7 @@ import {
 export default function Header({ home }) {
   return (
     <div className="flex justify-between items-center my-2">
-      <Link href="/">
+      <Link href="/home">
         <a>
           <svg width="30" viewBox="0 0 347 347">
             <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
@@ -22,9 +22,11 @@ export default function Header({ home }) {
       </Link>
       {home ? (
         <>
-          <button className="flex ml-auto sm:hover:bg-neutral-700 p-2 rounded-full -mr-2">
-            <MagnifyingGlassIcon className="w-6" />
-          </button>
+          <Link href="/search">
+            <a className="flex ml-auto sm:hover:bg-neutral-700 p-2 rounded-full -mr-2">
+              <MagnifyingGlassIcon className="w-6" />
+            </a>
+          </Link>
           <div className="sm:flex hidden">
             <Link href="/new">
               <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
@@ -38,7 +40,7 @@ export default function Header({ home }) {
             </Link>
             <Link href="/saved">
               <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                <BookmarkIcon className="w-6" />
+                <HeartIcon className="w-6" />
               </a>
             </Link>
             <Link href="/tutor">
@@ -47,7 +49,7 @@ export default function Header({ home }) {
               </a>
             </Link>
             <Link href="/other">
-              <a className="sm:hover:bg-neutral-700 rounded-full p-2">
+              <a className="-mr-2 sm:hover:bg-neutral-700 rounded-full p-2">
                 <Bars3Icon className="w-6" />
               </a>
             </Link>
@@ -69,7 +71,7 @@ export default function Header({ home }) {
           </Link>
           <Link href="/saved">
             <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <BookmarkIcon className="w-6" />
+              <HeartIcon className="w-6" />
             </a>
           </Link>
           <Link href="/new">
