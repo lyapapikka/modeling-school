@@ -9,7 +9,9 @@ import {
   ShareIcon,
   TrashIcon,
   HeartIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/24/solid";
 import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import api from "../utils/api";
@@ -25,8 +27,10 @@ export default function Home() {
       : null,
     fetcher
   );
-  const { data: recommendedPosts } = useSWR(
-    !isLoading && session ? api("posts?select=*", session) : null,
+  const { data: recommendedPosts, mutate: mutateRecommended } = useSWR(
+    !isLoading && session
+      ? api("posts?select=*,saved(post_id)", session)
+      : null,
     fetcher
   );
   const [menu, setMenu] = useState(false);
@@ -55,6 +59,7 @@ export default function Home() {
     await supabaseClient
       .from("saved")
       .insert([{ post_id: id, user_id: session.user.id }]);
+    mutateRecommended();
   };
 
   useEffect(() => {
@@ -127,43 +132,52 @@ export default function Home() {
             </div>
           )}
           {tab === "posts" &&
-            (posts
-              ? posts.map((p) => (
-                  <div
-                    key={p.id}
-                    className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative"
-                  >
-                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                      {p.text}
-                    </div>
-                    <button
-                      onClick={() => showMenu(p.id)}
-                      className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                    >
-                      <EllipsisVerticalIcon className="w-6" />
-                    </button>
+            posts &&
+            (posts.length === 0 ? (
+              <div className="mt-40 text-lg text-center">
+                <PencilSquareIcon className="w-12 mb-4 mx-auto" />У вас нет
+                записей
+              </div>
+            ) : (
+              posts.map((p) => (
+                <div
+                  key={p.id}
+                  className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative"
+                >
+                  <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                    {p.text}
                   </div>
-                ))
-              : "Загрузка...")}
+                  <button
+                    onClick={() => showMenu(p.id)}
+                    className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
+                  >
+                    <EllipsisVerticalIcon className="w-6" />
+                  </button>
+                </div>
+              ))
+            ))}
           {tab === "recommendations" &&
-            (recommendedPosts
-              ? recommendedPosts.map((p) => (
-                  <div
-                    key={p.id}
-                    className="bg-neutral-800 rounded-2xl py-1 px-4 relative"
-                  >
-                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                      {p.text}
-                    </div>
-                    <button
-                      onClick={() => save(p.id)}
-                      className="-ml-2 sm:hover:bg-neutral-700 p-2 rounded-full"
-                    >
-                      <HeartIcon className="w-6" />
-                    </button>
-                  </div>
-                ))
-              : "Загрузка...")}
+            recommendedPosts &&
+            recommendedPosts.map((p) => (
+              <div
+                key={p.id}
+                className="bg-neutral-800 rounded-2xl py-1 px-4 relative"
+              >
+                <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                  {p.text}
+                </div>
+                <button
+                  onClick={() => save(p.id)}
+                  className="-ml-2 sm:hover:bg-neutral-700 p-2 rounded-full"
+                >
+                  {p.saved.length === 0 ? (
+                    <HeartIcon className="w-6" />
+                  ) : (
+                    <HeartIconSolid className="w-6" />
+                  )}
+                </button>
+              </div>
+            ))}
         </div>
       </Content>
     </>
