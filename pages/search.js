@@ -6,7 +6,6 @@ import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import useInterval from "../utils/useInterval";
-import { data } from "autoprefixer";
 
 export default function Search() {
   const { isLoading, session, supabaseClient } = useSessionContext();
