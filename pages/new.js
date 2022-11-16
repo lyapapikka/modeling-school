@@ -1,16 +1,33 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import Content from "../components/Content";
 import Header from "../components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSessionContext } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
 
 export default function New() {
-  const supabaseClient = useSupabaseClient();
-  const [text, changeText] = useState("");
+  const { isLoading, session, supabaseClient } = useSessionContext();
+  const [text, setText] = useState("");
+  const router = useRouter();
+
+  const changeText = ({ target: { value } }) => setText(value);
 
   const add = async () => {
-    // supabaseClient.from("posts").insert([{}]);
+    await supabaseClient
+      .from("posts")
+      .insert([{ text, user_id: session.user.id }]);
+    router.push("/home");
   };
+
+  useEffect(() => {
+    if (!isLoading && !session) {
+      router.replace("/");
+    }
+  }, [isLoading, session, router]);
+
+  if (isLoading || !session) {
+    return null;
+  }
 
   return (
     <>
@@ -23,7 +40,7 @@ export default function New() {
           onChange={changeText}
           value={text}
           placeholder="Текст записи..."
-          className="resize-none bg-neutral-700 w-full rounded-2xl h-40 px-4 py-3"
+          className="resize-none bg-neutral-800 w-full rounded-2xl h-40 px-4 py-3"
         />
         <button
           onClick={add}

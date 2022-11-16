@@ -4,15 +4,45 @@ import Content from "../components/Content";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSessionContext } from "@supabase/auth-helpers-react";
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import {
+  EllipsisVerticalIcon,
+  ShareIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import useSWR from "swr";
+import fetcher from "../utils/fetcher";
+import api from "../utils/api";
+import Menu from "../components/Menu";
 
 export default function Home() {
   const router = useRouter();
-  const { isLoading, session } = useSessionContext();
+  const { isLoading, session, supabaseClient } = useSessionContext();
   const [tab, setTab] = useState("posts");
+  const { data, mutate } = useSWR(
+    !isLoading && session ? api(`posts?select=*`, session) : null,
+    fetcher
+  );
+  const [menu, setMenu] = useState(false);
+  const [selection, setSelection] = useState(-1);
 
   const postsTab = () => setTab("posts");
   const widgetsTab = () => setTab("widgets");
+  const showMenu = (id) => {
+    setSelection(id);
+    setMenu(true);
+  };
+  const hideMenu = () => setMenu(false);
+  const share = () => {
+    navigator.share({
+      url: `https://modeling-school.vercel.app/sharePost?id=${selection}`,
+    });
+    setMenu(false);
+  };
+  const remove = async () => {
+    await supabaseClient.from("posts").delete().eq("id", selection);
+    mutate();
+    setMenu(false);
+  };
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -26,6 +56,23 @@ export default function Home() {
 
   return (
     <>
+      {menu && (
+        <Menu
+          onClose={hideMenu}
+          actions={[
+            {
+              title: "Поделиться",
+              icon: <ShareIcon className="w-6" />,
+              onClick: share,
+            },
+            {
+              title: "Удалить",
+              icon: <TrashIcon className="w-6" />,
+              onClick: remove,
+            },
+          ]}
+        />
+      )}
       <Head>
         <title>Школа моделирования</title>
       </Head>
@@ -49,38 +96,35 @@ export default function Home() {
             Виджеты
           </button>
         </div>
-        {tab === "widgets" && (
-          <div className="space-y-4">
+        <div className="space-y-4">
+          {tab === "widgets" && (
             <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
               <div className="py-2 rounded-2xl pr-6">Калькулятор</div>
               <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
                 <EllipsisVerticalIcon className="w-6" />
               </button>
             </div>
-          </div>
-        )}
-        {tab === "posts" && (
-          <div className="space-y-4">
-            <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
-              <div className="py-2 rounded-2xl pr-6">
-                Длинный текст записи, приведенный здесь лишь для демонстрации
-                того, каквыглядят много строк текста в реальном интерфейсе
-              </div>
-              <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
-                <EllipsisVerticalIcon className="w-6" />
-              </button>
-            </div>
-            <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
-              <div className="py-2 rounded-2xl pr-6">
-                Длинный текст записи, приведенный здесь лишь для демонстрации
-                того, как выглядят много строк текста в реальном интерфейсе
-              </div>
-              <button className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
-                <EllipsisVerticalIcon className="w-6" />
-              </button>
-            </div>
-          </div>
-        )}
+          )}
+          {tab === "posts" &&
+            (data
+              ? data.map((p) => (
+                  <div
+                    key={p.id}
+                    className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative"
+                  >
+                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                      {p.text}
+                    </div>
+                    <button
+                      onClick={() => showMenu(p.id)}
+                      className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
+                    >
+                      <EllipsisVerticalIcon className="w-6" />
+                    </button>
+                  </div>
+                ))
+              : "Загрузка...")}
+        </div>
       </Content>
     </>
   );

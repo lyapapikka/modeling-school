@@ -3,7 +3,6 @@ import {
   BookOpenIcon,
   MagnifyingGlassIcon,
   BookmarkIcon,
-  Cog6ToothIcon,
   PlusIcon,
   HomeIcon,
   XMarkIcon,
