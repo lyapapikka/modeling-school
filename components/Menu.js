@@ -8,7 +8,7 @@ export default function Menu({ actions, onClose }) {
       <div className="space-y-2 bg-neutral-800 fixed bottom-4 sm:bottom-auto left-4 right-4 mx-auto max-w-sm mt-60 z-10 rounded-2xl p-2">
         {actions.map((a, i) => (
           <button key={i} className="flex p-2 sm:hover:bg-neutral-700 w-full rounded-2xl" onClick={a.onClick}>
-            <div className="mr-2">{a.icon}</div>
+            <div className="mr-4">{a.icon}</div>
             {a.title}
           </button>
         ))}
