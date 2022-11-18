@@ -1,8 +1,6 @@
 import Link from "next/link";
 import {
   BookOpenIcon,
-  MagnifyingGlassIcon,
-  HeartIcon,
   PlusIcon,
   HomeIcon,
   XMarkIcon,
@@ -10,7 +8,6 @@ import {
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
-  HeartIcon as HeartIconSolid,
   BookOpenIcon as BookOpenIconSolid,
 } from "@heroicons/react/24/solid";
 
@@ -27,29 +24,14 @@ export default function Header({ home }) {
       </Link>
       {home ? (
         <>
-          <Link href="/search">
-            <a className="flex ml-auto sm:hover:bg-neutral-700 p-2 rounded-full -mr-2">
-              <MagnifyingGlassIcon className="w-6" />
+          <Link href="/new">
+            <a className="flex ml-auto -mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <PlusIcon className="w-6" />
             </a>
           </Link>
           <div className="sm:flex hidden">
-            <Link href="/new">
-              <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                <PlusIcon className="w-6" />
-              </a>
-            </Link>
-            <Link href="/home">
-              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                <HomeIcon className="w-6" />
-              </a>
-            </Link>
-            <Link href="/saved">
-              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                <HeartIcon className="w-6" />
-              </a>
-            </Link>
             <Link href="/tutor">
-              <a className="flex mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                 <BookOpenIcon className="w-6" />
               </a>
             </Link>
@@ -76,20 +58,6 @@ export default function Header({ home }) {
               ) : (
                 <HomeIcon className="w-6" />
               )}
-            </a>
-          </Link>
-          <Link href="/saved">
-            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              {location.pathname === "/saved" ? (
-                <HeartIconSolid className="w-6" />
-              ) : (
-                <HeartIcon className="w-6" />
-              )}
-            </a>
-          </Link>
-          <Link href="/new">
-            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <PlusIcon className="w-6" />
             </a>
           </Link>
           <Link href="/tutor">
