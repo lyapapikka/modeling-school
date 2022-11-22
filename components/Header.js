@@ -5,15 +5,17 @@ import {
   HomeIcon,
   XMarkIcon,
   Bars3Icon,
+  ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
 } from "@heroicons/react/24/solid";
+import Image from "next/image";
 
 export default function Header({ home, homePage, bookPage }) {
   return (
-    <div className="flex sm:justify-between justify-center items-center sm:my-2 my-4">
+    <div className="flex justify-between items-center my-4">
       <Link href="/home">
         <a>
           <svg width="30" viewBox="0 0 347 347">
@@ -24,18 +26,27 @@ export default function Header({ home, homePage, bookPage }) {
       </Link>
       {home ? (
         <>
-          <div className="sm:flex hidden">
+          <div className="sm:flex hidden ml-auto">
             <Link href="/tutor">
-              <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <a className="ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                 <BookOpenIcon className="w-6" />
               </a>
             </Link>
-            <Link href="/other">
-              <a className="-mr-2 sm:hover:bg-neutral-700 rounded-full p-2">
-                <Bars3Icon className="w-6" />
+            <Link href="/archive">
+              <a className="sm:hover:bg-neutral-700 p-2 rounded-full">
+                <ArchiveBoxIcon className="w-6" />
               </a>
             </Link>
           </div>
+          <button className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+            <div className="h-6 w-6 relative">
+              <Image
+                alt=""
+                layout="fill"
+                src="https://avatars.dicebear.com/api/identicon/Валерий Шашкин.svg"
+              />
+            </div>
+          </button>
         </>
       ) : (
         <Link href="/home">
@@ -45,7 +56,7 @@ export default function Header({ home, homePage, bookPage }) {
         </Link>
       )}
       {home && (
-        <div className="sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full border-t border-neutral-700">
+        <div className="z-10 backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full border-t border-neutral-700">
           <Link href="/home">
             <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
               {homePage ? (
@@ -64,9 +75,9 @@ export default function Header({ home, homePage, bookPage }) {
               )}
             </a>
           </Link>
-          <Link href="/other">
+          <Link href="/archive">
             <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <Bars3Icon className="w-6" />
+              <ArchiveBoxIcon className="w-6" />
             </a>
           </Link>
         </div>

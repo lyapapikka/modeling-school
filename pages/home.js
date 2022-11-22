@@ -15,6 +15,7 @@ import fetcher from "../utils/fetcher";
 import api from "../utils/api";
 import Menu from "../components/Menu";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -81,21 +82,51 @@ export default function Home() {
         <Header home homePage />
         <div className="space-y-4">
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
-              Геометрия и топология
-              <div className="text-neutral-500">40 участников</div>
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+              <div className="mt-2 ml-1">
+                <Image
+                  alt=""
+                  width={30}
+                  height={30}
+                  src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
+                />
+              </div>
+              <div>
+                Геометрия и топология
+                <div className="text-neutral-500">40 участников</div>
+              </div>
             </a>
           </Link>
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
-              Математическое моделирование
-              <div className="text-neutral-500">255 участников</div>
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+              <div className="mt-2 ml-1">
+                <Image
+                  alt=""
+                  width={30}
+                  height={30}
+                  src="https://avatars.dicebear.com/api/identicon/Математическое моделирование.svg"
+                />
+              </div>
+              <div>
+                Математическое моделирование
+                <div className="text-neutral-500">255 участников</div>
+              </div>
             </a>
           </Link>
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
-              Геометрия и топология
-              <div className="text-neutral-500">40 участников</div>
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+              <div className="mt-2 ml-1">
+                <Image
+                  alt=""
+                  width={30}
+                  height={30}
+                  src="https://avatars.dicebear.com/api/identicon/Алгебра и теория чисел.svg"
+                />
+              </div>
+              <div>
+                Алгебра и теория чисел
+                <div className="text-neutral-500">859 участников</div>
+              </div>
             </a>
           </Link>
         </div>
