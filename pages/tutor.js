@@ -27,7 +27,7 @@ export default function Tutor() {
         <title>Учебник - Школа моделирования</title>
       </Head>
       <Content>
-        <Header home />
+        <Header home bookPage />
         {tutors.map((t, i) => (
           <a
             target="_blanc"

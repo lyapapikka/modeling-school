@@ -77,7 +77,7 @@ export default function Home() {
         <title>Школа моделирования</title>
       </Head>
       <Content>
-        <Header home />
+        <Header home homePage />
         <div className="space-y-4">
           {posts &&
             (posts.length === 0 ? (
