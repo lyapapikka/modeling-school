@@ -13,7 +13,7 @@ import {
 
 export default function Header({ home, homePage, bookPage }) {
   return (
-    <div className="flex justify-between items-center my-2">
+    <div className="flex sm:justify-between justify-center items-center sm:my-2 my-4">
       <Link href="/home">
         <a>
           <svg width="30" viewBox="0 0 347 347">
@@ -24,11 +24,6 @@ export default function Header({ home, homePage, bookPage }) {
       </Link>
       {home ? (
         <>
-          <Link href="/new">
-            <a className="flex ml-auto -mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-              <PlusIcon className="w-6" />
-            </a>
-          </Link>
           <div className="sm:flex hidden">
             <Link href="/tutor">
               <a className="flex ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">

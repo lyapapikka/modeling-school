@@ -14,6 +14,7 @@ import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import api from "../utils/api";
 import Menu from "../components/Menu";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -79,30 +80,24 @@ export default function Home() {
       <Content>
         <Header home homePage />
         <div className="space-y-4">
-          {posts &&
-            (posts.length === 0 ? (
-              <div className="mt-40 text-lg text-center">
-                <PencilSquareIcon className="w-12 mb-4 mx-auto" />
-                Нет записей
-              </div>
-            ) : (
-              posts.map((p) => (
-                <div
-                  key={p.id}
-                  className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative"
-                >
-                  <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                    {p.text}
-                  </div>
-                  <button
-                    onClick={() => showMenu(p.id)}
-                    className="absolute right-3 top-3 p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                  >
-                    <EllipsisVerticalIcon className="w-6" />
-                  </button>
-                </div>
-              ))
-            ))}
+          <Link href="/group/random">
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
+              Геометрия и топология
+              <div className="text-neutral-500">40 участников</div>
+            </a>
+          </Link>
+          <Link href="/group/random">
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
+              Математическое моделирование
+              <div className="text-neutral-500">255 участников</div>
+            </a>
+          </Link>
+          <Link href="/group/random">
+            <a className="bg-neutral-800 rounded-2xl py-3 px-4 block">
+              Геометрия и топология
+              <div className="text-neutral-500">40 участников</div>
+            </a>
+          </Link>
         </div>
       </Content>
     </>

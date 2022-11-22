@@ -25,6 +25,7 @@ export default function Group({ id }) {
           40 участников
         </div>
         <div className="space-y-4">
+          <div className="bg-neutral-800 rounded-2xl py-3 px-4 text-neutral-500">Новая запись...</div>
           <div className="flex items-start bg-neutral-800 rounded-2xl py-1 px-4 relative">
             <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
               <ReactLinkify
