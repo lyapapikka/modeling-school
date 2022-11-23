@@ -15,12 +15,56 @@ import Image from "next/image";
 
 export default function Header({ home, homePage, bookPage }) {
   return (
-    <div className="flex justify-between items-center my-4">
+    <div className="flex justify-between items-center my-4 ml-2 px-2">
       <Link href="/home">
         <a>
-          <svg width="30" viewBox="0 0 347 347">
-            <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
-            <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
+          <svg
+            width="70"
+            viewBox="0 0 245 108"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              x1="140.876"
+              y1="5.39438"
+              x2="191.538"
+              y2="103.033"
+              stroke="#5E50FF"
+              strokeWidth="20"
+            />
+            <line
+              x1="10"
+              y1="2"
+              x2="10"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <line
+              x1="49"
+              y1="2"
+              x2="49"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <line
+              x1="184.876"
+              y1="5.39438"
+              x2="235.538"
+              y2="103.033"
+              stroke="#5E50FF"
+              strokeWidth="20"
+            />
+            <line
+              x1="88"
+              y1="2"
+              x2="88"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <circle cx="132" cy="93" r="15" fill="#5E50FF" />
           </svg>
         </a>
       </Link>

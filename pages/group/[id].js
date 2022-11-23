@@ -3,23 +3,27 @@ import Header from "../../components/Header";
 import Content from "../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
-  ArrowUpOnSquareIcon,
-  BookmarkIcon,
-  BookmarkSlashIcon,
-  BookmarkSquareIcon,
-  EllipsisVerticalIcon,
-  EyeIcon,
-  HeartIcon,
+  CheckCircleIcon,
+  CheckIcon,
   LinkIcon,
-  ShareIcon,
+  PencilIcon,
+  PencilSquareIcon,
+  PlusCircleIcon,
+  PlusIcon,
+  UserGroupIcon,
+  UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import ReactLinkify from "react-linkify";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function Group({ id }) {
   const [_origin, setOrigin] = useState("");
+  const [text, setText] = useState("");
+
+  const changeText = ({ target: { value } }) => setText(value);
 
   useEffect(() => {
     setOrigin(origin);
@@ -32,22 +36,32 @@ export default function Group({ id }) {
       </Head>
       <Content>
         <Header home homePage />
-        <div className="mt-10 mb-4 flex justify-center">
-          <Image
-            alt=""
-            width={50}
-            height={50}
-            src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
-          />
+        <div className="flex items-center">
+          <div className="p-4">
+            <Image
+              alt=""
+              width={40}
+              height={40}
+              src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
+            />
+          </div>
+          <div>
+            <h1 className="text-xl">Геометрия и топология</h1>
+            <div className="text-neutral-500">40 участников</div>
+          </div>
         </div>
-        <h1 className="text-2xl text-center">Геометрия и топология</h1>
-        <div className="text-center mt-2 mb-10 text-neutral-500">
-          40 участников
+        <div className="flex gap-4 px-2">
+          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+            <UserPlusIcon className="w-6" />
+          </button>
+          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+            <PlusIcon className="w-6" />
+          </button>
+          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+            <LinkIcon className="w-6" />
+          </button>
         </div>
         <div className="space-y-4 mb-8">
-          <div className="bg-neutral-800 rounded-2xl py-3 px-4 text-neutral-500">
-            Напишите что-нибудь...
-          </div>
           <div className="bg-neutral-800 rounded-2xl py-1 px-4">
             <div>
               <div className="flex gap-4">
@@ -97,10 +111,7 @@ export default function Group({ id }) {
               <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
                 <ArchiveBoxArrowDownIcon className="w-6" />
               </button>
-              <button
-                onClick={() => showMenu(p.id)}
-                className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
-              >
+              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
                 <LinkIcon className="w-6" />
               </button>
             </div>
@@ -154,10 +165,7 @@ export default function Group({ id }) {
               <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
                 <ArchiveBoxArrowDownIcon className="w-6" />
               </button>
-              <button
-                onClick={() => showMenu(p.id)}
-                className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
-              >
+              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
                 <LinkIcon className="w-6" />
               </button>
             </div>
@@ -211,10 +219,7 @@ export default function Group({ id }) {
               <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
                 <ArchiveBoxArrowDownIcon className="w-6" />
               </button>
-              <button
-                onClick={() => showMenu(p.id)}
-                className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
-              >
+              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
                 <LinkIcon className="w-6" />
               </button>
             </div>
