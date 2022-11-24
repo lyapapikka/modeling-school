@@ -68,13 +68,13 @@ export default function Home() {
           {newGroup ? (
             <div className="space-y-4 mb-4">
               <input
-                className="block w-full px-3 py-2 rounded-2xl"
+                className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
                 placeholder="Название"
                 value={groupName}
                 onChange={changeGroupName}
               />
               <TextareaAutosize
-                className="block w-full px-3 py-2 rounded-2xl resize-none"
+                className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
                 placeholder="Описание"
                 value={groupDescription}
                 onChange={changeGroupDescription}
