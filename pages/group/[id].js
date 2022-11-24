@@ -3,31 +3,54 @@ import Header from "../../components/Header";
 import Content from "../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
-  CheckCircleIcon,
-  CheckIcon,
   LinkIcon,
-  PencilIcon,
-  PencilSquareIcon,
-  PlusCircleIcon,
   PlusIcon,
-  UserGroupIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import ReactLinkify from "react-linkify";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useSessionContext } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import api from "../../utils/api";
+import fetcher from "../../utils/fetcher";
 import TextareaAutosize from "react-textarea-autosize";
 
 export default function Group({ id }) {
   const [_origin, setOrigin] = useState("");
-  const [text, setText] = useState("");
+  const { isLoading, session, supabaseClient } = useSessionContext();
+  const router = useRouter();
+  const [postText, setPostText] = useState("");
 
-  const changeText = ({ target: { value } }) => setText(value);
+  const changePostText = ({ target: { value } }) => setPostText(value);
+
+  const createPost = async () => {
+    setPostText("");
+    await supabaseClient
+      .from("posts")
+      .insert([{ text: postText, group_id: id }]);
+  };
+
+  const { data } = useSWR(
+    !isLoading && session ? api(`groups?id=eq.${id}`, session) : null,
+    fetcher
+  );
+
+  useEffect(() => {
+    if (!isLoading && !session) {
+      router.replace("/");
+    }
+  }, [session, router, isLoading]);
 
   useEffect(() => {
     setOrigin(origin);
   }, []);
+
+  if (isLoading || !session) {
+    return null;
+  }
 
   return (
     <>
@@ -36,32 +59,49 @@ export default function Group({ id }) {
       </Head>
       <Content>
         <Header home homePage />
-        <div className="flex items-center">
-          <div className="p-4">
-            <Image
-              alt=""
-              width={40}
-              height={40}
-              src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
-            />
-          </div>
-          <div>
-            <h1 className="text-xl">Геометрия и топология</h1>
-            <div className="text-neutral-500">40 участников</div>
-          </div>
-        </div>
-        <div className="mx-4">Описание группы</div>
-        <div className="flex gap-4 px-2">
-          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
-            <UserPlusIcon className="w-6" />
-          </button>
-          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
-            <PlusIcon className="w-6" />
-          </button>
-          <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
-            <LinkIcon className="w-6" />
-          </button>
-        </div>
+        {data && (
+          <>
+            <div className="flex items-center">
+              <div className="p-4">
+                <Image
+                  alt=""
+                  width={40}
+                  height={40}
+                  src={`https://avatars.dicebear.com/api/identicon/${data[0].id}.svg`}
+                />
+              </div>
+              <div>
+                <h1 className="text-xl">{data[0].name}</h1>
+                <div className="text-neutral-500">40 участников</div>
+              </div>
+            </div>
+            <div className="mx-4">{data[0].description}</div>
+            <div className="flex gap-4 px-2">
+              <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                <UserPlusIcon className="w-6" />
+              </button>
+              <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                <LinkIcon className="w-6" />
+              </button>
+            </div>
+            <div className="px-2 mb-4">
+              <TextareaAutosize
+                placeholder="Напишите что-нибудь..."
+                className="block w-full px-3 py-2 rounded-2xl resize-none"
+                value={postText}
+                onChange={changePostText}
+              />
+              {postText.trim() && (
+                <button
+                  onClick={createPost}
+                  className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                >
+                  <PlusIcon className="w-6" />
+                </button>
+              )}
+            </div>
+          </>
+        )}
         <div className="space-y-4 mb-8">
           <div className="bg-neutral-800 rounded-2xl py-1 px-4">
             <div>
@@ -238,10 +278,10 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ params: { id } }) {
   return {
     props: {
-      id: 0,
+      id,
     },
   };
 }

@@ -4,7 +4,6 @@ import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export default function Archive() {
   const { isLoading, session } = useSessionContext();
