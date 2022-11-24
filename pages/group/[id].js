@@ -17,6 +17,9 @@ import useSWR from "swr";
 import api from "../../utils/api";
 import fetcher from "../../utils/fetcher";
 import TextareaAutosize from "react-textarea-autosize";
+import { formatRelative } from "date-fns";
+import russianLocale from "date-fns/locale/ru";
+import { toast } from "react-toastify";
 
 export default function Group({ id }) {
   const [_origin, setOrigin] = useState("");
@@ -31,10 +34,35 @@ export default function Group({ id }) {
     await supabaseClient
       .from("posts")
       .insert([{ text: postText, group_id: id }]);
+    mutate();
+  };
+
+  const addToArchive = async (post_id) => {
+    await supabaseClient
+      .from("archive")
+      .insert([{ user_id: session.user.id, post_id }]);
+    toast.success("Запись сохранена в архиве", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      theme: "dark",
+      closeButton: false
+    });
   };
 
   const { data } = useSWR(
     !isLoading && session ? api(`groups?id=eq.${id}`, session) : null,
+    fetcher
+  );
+
+  const { data: posts, mutate } = useSWR(
+    !isLoading && session
+      ? api(`posts?group_id=eq.${id}&order=created_at.desc`, session)
+      : null,
     fetcher
   );
 
@@ -54,20 +82,20 @@ export default function Group({ id }) {
 
   return (
     <>
-      <Head>
-        <title>Группа</title>
-      </Head>
       <Content>
         <Header home homePage />
         {data && (
           <>
+            <Head>
+              <title>{data[0].name} - Школа моделирования</title>
+            </Head>
             <div className="flex items-center">
               <div className="p-4">
                 <Image
                   alt=""
                   width={40}
                   height={40}
-                  src={`https://avatars.dicebear.com/api/identicon/${data[0].id}.svg`}
+                  src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}
                 />
               </div>
               <div>
@@ -100,172 +128,78 @@ export default function Group({ id }) {
                 </button>
               )}
             </div>
+            <div className="space-y-4 mb-8">
+              {posts &&
+                posts.map((p) => (
+                  <div
+                    className="bg-neutral-800 rounded-2xl py-1 px-4"
+                    key={p.id}
+                  >
+                    <div>
+                      <div className="flex gap-4">
+                        <Link href={`/group/${id}`}>
+                          <a className="mt-4 ml-2">
+                            <Image
+                              alt=""
+                              width={30}
+                              height={30}
+                              src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}
+                            />
+                          </a>
+                        </Link>
+                        <div>
+                          <Link href={`/group/${id}`}>
+                            <a className="mt-2 inline-block">{data[0].name}</a>
+                          </Link>
+                          <div className="text-neutral-500">
+                            {formatRelative(
+                              new Date(p.created_at),
+                              new Date(),
+                              { locale: russianLocale }
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                        <ReactLinkify
+                          componentDecorator={(href, text, key) =>
+                            href.startsWith(_origin) ? (
+                              <Link href={href} key={key}>
+                                <a className="text-blue-500">{text}</a>
+                              </Link>
+                            ) : (
+                              <a
+                                target="_blank"
+                                rel="noreferrer"
+                                href={href}
+                                key={key}
+                                className="text-blue-500"
+                              >
+                                {text}
+                              </a>
+                            )
+                          }
+                        >
+                          {p.text}
+                        </ReactLinkify>
+                      </div>
+                    </div>
+                    <div className="flex justify-between mb-2 mt-2">
+                      <button
+                        onClick={() => addToArchive(p.id)}
+                        className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
+                      >
+                        <ArchiveBoxArrowDownIcon className="w-6" />
+                      </button>
+                      <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
+                        <LinkIcon className="w-6" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </>
         )}
-        <div className="space-y-4 mb-8">
-          <div className="bg-neutral-800 rounded-2xl py-1 px-4">
-            <div>
-              <div className="flex gap-4">
-                <Link href="/group/random">
-                  <a className="mt-4 ml-2">
-                    <Image
-                      alt=""
-                      width={30}
-                      height={30}
-                      src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
-                    />
-                  </a>
-                </Link>
-                <div>
-                  <Link href="/group/random">
-                    <a className="mt-2 inline-block">Геометрия и топология</a>
-                  </Link>
-                  <div className="text-neutral-500">17 февраля 2020</div>
-                </div>
-              </div>
-              <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                <ReactLinkify
-                  componentDecorator={(href, text, key) =>
-                    href.startsWith(_origin) ? (
-                      <Link href={href} key={key}>
-                        <a className="text-blue-500">{text}</a>
-                      </Link>
-                    ) : (
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={href}
-                        key={key}
-                        className="text-blue-500"
-                      >
-                        {text}
-                      </a>
-                    )
-                  }
-                >
-                  Новая запись со ссылкой http://localhost:3000/home и
-                  google.com
-                </ReactLinkify>
-              </div>
-            </div>
-            <div className="flex justify-between mb-2 mt-2">
-              <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
-                <ArchiveBoxArrowDownIcon className="w-6" />
-              </button>
-              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
-                <LinkIcon className="w-6" />
-              </button>
-            </div>
-          </div>
-          <div className="bg-neutral-800 rounded-2xl py-1 px-4">
-            <div>
-              <div className="flex gap-4">
-                <Link href="/group/random">
-                  <a className="mt-4 ml-2">
-                    <Image
-                      alt=""
-                      width={30}
-                      height={30}
-                      src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
-                    />
-                  </a>
-                </Link>
-                <div>
-                  <Link href="/group/random">
-                    <a className="mt-2 inline-block">Геометрия и топология</a>
-                  </Link>
-                  <div className="text-neutral-500">17 февраля 2020</div>
-                </div>
-              </div>
-              <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                <ReactLinkify
-                  componentDecorator={(href, text, key) =>
-                    href.startsWith(_origin) ? (
-                      <Link href={href} key={key}>
-                        <a className="text-blue-500">{text}</a>
-                      </Link>
-                    ) : (
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={href}
-                        key={key}
-                        className="text-blue-500"
-                      >
-                        {text}
-                      </a>
-                    )
-                  }
-                >
-                  Новая запись со ссылкой http://localhost:3000/home и
-                  google.com
-                </ReactLinkify>
-              </div>
-            </div>
-            <div className="flex justify-between mb-2 mt-2">
-              <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
-                <ArchiveBoxArrowDownIcon className="w-6" />
-              </button>
-              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
-                <LinkIcon className="w-6" />
-              </button>
-            </div>
-          </div>
-          <div className="bg-neutral-800 rounded-2xl py-1 px-4">
-            <div>
-              <div className="flex gap-4">
-                <Link href="/group/random">
-                  <a className="mt-4 ml-2">
-                    <Image
-                      alt=""
-                      width={30}
-                      height={30}
-                      src="https://avatars.dicebear.com/api/identicon/Геометрия и топология.svg"
-                    />
-                  </a>
-                </Link>
-                <div>
-                  <Link href="/group/random">
-                    <a className="mt-2 inline-block">Геометрия и топология</a>
-                  </Link>
-                  <div className="text-neutral-500">17 февраля 2020</div>
-                </div>
-              </div>
-              <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                <ReactLinkify
-                  componentDecorator={(href, text, key) =>
-                    href.startsWith(_origin) ? (
-                      <Link href={href} key={key}>
-                        <a className="text-blue-500">{text}</a>
-                      </Link>
-                    ) : (
-                      <a
-                        target="_blank"
-                        rel="noreferrer"
-                        href={href}
-                        key={key}
-                        className="text-blue-500"
-                      >
-                        {text}
-                      </a>
-                    )
-                  }
-                >
-                  Новая запись со ссылкой http://localhost:3000/home и
-                  google.com
-                </ReactLinkify>
-              </div>
-            </div>
-            <div className="flex justify-between mb-2 mt-2">
-              <button className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full">
-                <ArchiveBoxArrowDownIcon className="w-6" />
-              </button>
-              <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
-                <LinkIcon className="w-6" />
-              </button>
-            </div>
-          </div>
-        </div>
       </Content>
     </>
   );
