@@ -28,6 +28,7 @@ export default function Tutor() {
       </Head>
       <Content>
         <Header home bookPage />
+        <div className="text-xl ml-4 mb-4 font-bold">Учебник</div>
         {tutors.map((t, i) => (
           <a
             target="_blanc"

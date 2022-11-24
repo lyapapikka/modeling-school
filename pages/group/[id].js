@@ -50,6 +50,7 @@ export default function Group({ id }) {
             <div className="text-neutral-500">40 участников</div>
           </div>
         </div>
+        <div className="mx-4">Описание группы</div>
         <div className="flex gap-4 px-2">
           <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
             <UserPlusIcon className="w-6" />

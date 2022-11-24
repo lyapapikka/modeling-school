@@ -1,19 +1,18 @@
 import Link from "next/link";
 import {
   BookOpenIcon,
-  PlusIcon,
   HomeIcon,
   XMarkIcon,
-  Bars3Icon,
   ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
+  ArchiveBoxIcon as ArchiveBoxIconSolid,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
-export default function Header({ home, homePage, bookPage }) {
+export default function Header({ home, homePage, bookPage, archivePage }) {
   return (
     <div className="flex justify-between items-center my-4 ml-2 px-2">
       <Link href="/home">
@@ -121,7 +120,11 @@ export default function Header({ home, homePage, bookPage }) {
           </Link>
           <Link href="/archive">
             <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
-              <ArchiveBoxIcon className="w-6" />
+              {archivePage ? (
+                <ArchiveBoxIconSolid className="w-6" />
+              ) : (
+                <ArchiveBoxIcon className="w-6" />
+              )}
             </a>
           </Link>
         </div>
