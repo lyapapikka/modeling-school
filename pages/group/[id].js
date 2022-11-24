@@ -47,9 +47,9 @@ export default function Group({ id }) {
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: false,
-      draggable: false,
+      draggable: true,
       progress: undefined,
-      theme: "dark",
+      theme: "light",
       closeButton: false
     });
   };
@@ -115,7 +115,7 @@ export default function Group({ id }) {
             <div className="px-2 mb-4">
               <TextareaAutosize
                 placeholder="Напишите что-нибудь..."
-                className="block w-full px-3 py-2 rounded-2xl resize-none"
+                className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
                 value={postText}
                 onChange={changePostText}
               />
