@@ -64,62 +64,73 @@ export default function Home() {
       <Content>
         <Header home homePage />
         <div className="text-xl ml-4 mb-4 font-bold">Ваши группы</div>
-        <div className="px-2">
-          {newGroup ? (
-            <div className="space-y-4 mb-4">
-              <input
-                className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
-                placeholder="Название"
-                value={groupName}
-                onChange={changeGroupName}
-              />
-              <TextareaAutosize
-                className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
-                placeholder="Описание"
-                value={groupDescription}
-                onChange={changeGroupDescription}
-              />
-              {groupName.trim() && groupDescription.trim() && (
+        {data ? (
+          <>
+            <div className="px-2">
+              {newGroup ? (
+                <div className="space-y-4 mb-4">
+                  <input
+                    className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
+                    placeholder="Название"
+                    value={groupName}
+                    onChange={changeGroupName}
+                  />
+                  <TextareaAutosize
+                    className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
+                    placeholder="Описание"
+                    value={groupDescription}
+                    onChange={changeGroupDescription}
+                  />
+                  {groupName.trim() && groupDescription.trim() && (
+                    <button
+                      onClick={createGroup}
+                      className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                    >
+                      <CheckIcon className="w-6" />
+                    </button>
+                  )}
+                </div>
+              ) : (
                 <button
-                  onClick={createGroup}
+                  onClick={changeNewGroup}
                   className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
                 >
-                  <CheckIcon className="w-6" />
+                  <PlusIcon className="w-6" />
                 </button>
               )}
             </div>
-          ) : (
-            <button
-              onClick={changeNewGroup}
-              className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
-            >
-              <PlusIcon className="w-6" />
-            </button>
-          )}
-        </div>
-        <div className="space-y-4">
-          {data &&
-            data.map((g) => (
-              <Link href={`/group/${g.id}`} key={g.id}>
-                <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
-                  <div className="mt-2 ml-1">
-                    <Image
-                      alt=""
-                      width={30}
-                      height={30}
-                      src={`https://avatars.dicebear.com/api/identicon/${g.id}.svg`}
-                    />
-                  </div>
-                  <div>
-                    {g.name}
-                    <div className="text-neutral-500">40 участников</div>
-                  </div>
-                </a>
-              </Link>
-            ))}
-        </div>
-        <div className="text-xl ml-4 my-4 font-bold">Рекомендации</div>
-        <div className="space-y-4">
+            <div className="space-y-4">
+              {data.map((g) => (
+                <Link href={`/group/${g.id}`} key={g.id}>
+                  <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+                    <div className="mt-2 ml-1">
+                      <Image
+                        alt=""
+                        width={30}
+                        height={30}
+                        src={`https://avatars.dicebear.com/api/identicon/${g.id}.svg`}
+                      />
+                    </div>
+                    <div>
+                      {g.name}
+                      <div className="text-neutral-500">40 участников</div>
+                    </div>
+                  </a>
+                </Link>
+              ))}
+            </div>
+            <div className="text-xl ml-4 my-4 font-bold">Рекомендации</div>
+          </>
+        ) : (
+          <div className="space-y-4">
+            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+          </div>
+        )}
+        {/* <div className="space-y-4">
           <Link href="/group/random">
             <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
               <div className="mt-2 ml-1">
@@ -168,7 +179,7 @@ export default function Home() {
               </div>
             </a>
           </Link>
-        </div>
+        </div> */}
       </Content>
     </>
   );

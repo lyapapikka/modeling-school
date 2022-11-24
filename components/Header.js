@@ -4,15 +4,25 @@ import {
   HomeIcon,
   XMarkIcon,
   ArchiveBoxIcon,
+  ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
   ArchiveBoxIcon as ArchiveBoxIconSolid,
 } from "@heroicons/react/24/solid";
-import Image from "next/image";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
 
 export default function Header({ home, homePage, bookPage, archivePage }) {
+  const supabaseClient = useSupabaseClient();
+  const router = useRouter();
+
+  const logout = async () => {
+    await supabaseClient.auth.signOut();
+    router.push("/");
+  };
+
   return (
     <div className="flex justify-between items-center my-4 ml-2 px-2">
       <Link href="/home">
@@ -70,8 +80,13 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
       {home ? (
         <>
           <div className="sm:flex hidden ml-auto">
+            <Link href="/home">
+              <a className="mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <HomeIcon className="w-6" />
+              </a>
+            </Link>
             <Link href="/tutor">
-              <a className="ml-4 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <a className="mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                 <BookOpenIcon className="w-6" />
               </a>
             </Link>
@@ -81,14 +96,11 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
               </a>
             </Link>
           </div>
-          <button className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-            <div className="h-6 w-6 relative">
-              <Image
-                alt=""
-                layout="fill"
-                src="https://avatars.dicebear.com/api/identicon/Валерий Шашкин.svg"
-              />
-            </div>
+          <button
+            onClick={logout}
+            className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full"
+          >
+            <ArrowLeftOnRectangleIcon className="w-6" />
           </button>
         </>
       ) : (
@@ -99,7 +111,7 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
         </Link>
       )}
       {home && (
-        <div className="z-10 backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full border-t border-neutral-700">
+        <div className="z-10 backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full">
           <Link href="/home">
             <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
               {homePage ? (

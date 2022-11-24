@@ -29,8 +29,11 @@ export default function Archive() {
   );
 
   const removeFromArchive = async (id) => {
+    mutate(
+      data.filter((p) => p.id !== id),
+      false
+    );
     await supabaseClient.from("archive").delete().eq("id", id);
-    mutate();
   };
 
   useEffect(() => {
@@ -52,75 +55,91 @@ export default function Archive() {
         <Header home archivePage />
         <div className="text-xl ml-4 mb-4 font-bold">Архив</div>
         <div className="space-y-4 mb-8">
-          {data &&
-            data.map((p) => (
-              <div className="bg-neutral-800 rounded-2xl py-1 px-4" key={p.id}>
-                <div>
-                  <div className="flex gap-4">
-                    <Link href={`/group/${p.posts.groups.id}`}>
-                      <a className="mt-4 ml-2">
-                        <Image
-                          alt=""
-                          width={30}
-                          height={30}
-                          src={`https://avatars.dicebear.com/api/identicon/${p.posts.groups.id}.svg`}
-                        />
-                      </a>
-                    </Link>
-                    <div>
+          {data ? (
+            data.length === 0 ? (
+              <div className="text-center text-neutral-500 mt-10">Архив пуст</div>
+            ) : (
+              data.map((p) => (
+                <div
+                  className="bg-neutral-800 rounded-2xl py-1 px-4"
+                  key={p.id}
+                >
+                  <div>
+                    <div className="flex gap-4">
                       <Link href={`/group/${p.posts.groups.id}`}>
-                        <a className="mt-2 inline-block">
-                          {p.posts.groups.name}
+                        <a className="mt-4 ml-2">
+                          <Image
+                            alt=""
+                            width={30}
+                            height={30}
+                            src={`https://avatars.dicebear.com/api/identicon/${p.posts.groups.id}.svg`}
+                          />
                         </a>
                       </Link>
-                      <div className="text-neutral-500">
-                        {formatRelative(
-                          new Date(p.posts.created_at),
-                          new Date(),
-                          {
-                            locale: russianLocale,
-                          }
-                        )}
+                      <div>
+                        <Link href={`/group/${p.posts.groups.id}`}>
+                          <a className="mt-2 inline-block">
+                            {p.posts.groups.name}
+                          </a>
+                        </Link>
+                        <div className="text-neutral-500">
+                          {formatRelative(
+                            new Date(p.posts.created_at),
+                            new Date(),
+                            {
+                              locale: russianLocale,
+                            }
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                      <ReactLinkify
+                        componentDecorator={(href, text, key) =>
+                          href.startsWith(_origin) ? (
+                            <Link href={href} key={key}>
+                              <a className="text-blue-500">{text}</a>
+                            </Link>
+                          ) : (
+                            <a
+                              target="_blank"
+                              rel="noreferrer"
+                              href={href}
+                              key={key}
+                              className="text-blue-500"
+                            >
+                              {text}
+                            </a>
+                          )
+                        }
+                      >
+                        {p.posts.text}
+                      </ReactLinkify>
+                    </div>
                   </div>
-                  <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                    <ReactLinkify
-                      componentDecorator={(href, text, key) =>
-                        href.startsWith(_origin) ? (
-                          <Link href={href} key={key}>
-                            <a className="text-blue-500">{text}</a>
-                          </Link>
-                        ) : (
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={href}
-                            key={key}
-                            className="text-blue-500"
-                          >
-                            {text}
-                          </a>
-                        )
-                      }
+                  <div className="flex justify-between mb-2 mt-2">
+                    <button
+                      onClick={() => removeFromArchive(p.id)}
+                      className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                     >
-                      {p.posts.text}
-                    </ReactLinkify>
+                      <ArchiveBoxXMarkIcon className="w-6" />
+                    </button>
+                    <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
+                      <LinkIcon className="w-6" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex justify-between mb-2 mt-2">
-                  <button
-                    onClick={() => removeFromArchive(p.id)}
-                    className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                  >
-                    <ArchiveBoxXMarkIcon className="w-6" />
-                  </button>
-                  <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
-                    <LinkIcon className="w-6" />
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )
+          ) : (
+            <div className="space-y-4">
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            </div>
+          )}
         </div>
       </Content>
     </>

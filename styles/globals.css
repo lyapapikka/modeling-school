@@ -5,3 +5,7 @@
 :root {
   color-scheme: dark;
 }
+
+.Toastify__toast {
+  @apply rounded-2xl !important;
+}
