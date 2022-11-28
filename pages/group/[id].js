@@ -171,7 +171,7 @@ export default function Group() {
               {postText.trim() && !loading && (
                 <button
                   onClick={createPost}
-                  className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                  className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4"
                 >
                   <CheckIcon className="w-6 mr-2" />
                   <div className="leading-6">Опубликовать</div>
