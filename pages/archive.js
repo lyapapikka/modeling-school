@@ -37,6 +37,10 @@ export default function Archive() {
     await supabaseClient.from("archive").delete().eq("id", id);
   };
 
+  const sharePost = (id) => {
+    navigator.share({ url: `${origin}/post/${id}` });
+  };
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
@@ -131,7 +135,10 @@ export default function Archive() {
                     >
                       <ArchiveBoxXMarkIcon className="w-6" />
                     </button>
-                    <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
+                    <button
+                      onClick={() => sharePost(p.post_id)}
+                      className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
+                    >
                       <LinkIcon className="w-6" />
                     </button>
                   </div>

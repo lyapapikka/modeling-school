@@ -56,6 +56,14 @@ export default function Group() {
     });
   };
 
+  const shareGroup = () => {
+    navigator.share({ url: location.href });
+  };
+
+  const sharePost = (id) => {
+    navigator.share({ url: `${origin}/post/${id}` });
+  };
+
   const { data } = useSWR(
     !isLoading && session ? api(`groups?id=eq.${id}`, session) : null,
     fetcher
@@ -136,7 +144,10 @@ export default function Group() {
               <button className="w-full flex justify-center bg-white font-medium rounded-2xl text-sm px-3 py-2 my-4">
                 <UserPlusIcon className="w-6 stroke-black" />
               </button>
-              <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+              <button
+                onClick={shareGroup}
+                className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+              >
                 <LinkIcon className="w-6" />
               </button>
             </div>
@@ -219,7 +230,10 @@ export default function Group() {
                       >
                         <ArchiveBoxArrowDownIcon className="w-6" />
                       </button>
-                      <button className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full">
+                      <button
+                        onClick={() => sharePost(p.id)}
+                        className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
+                      >
                         <LinkIcon className="w-6" />
                       </button>
                     </div>

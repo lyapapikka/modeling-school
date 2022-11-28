@@ -4,7 +4,7 @@ import Content from "../components/Content";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSessionContext } from "@supabase/auth-helpers-react";
-import { PlusIcon, CheckIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
 import TextareaAutosize from "react-textarea-autosize";
@@ -30,7 +30,8 @@ export default function Home() {
   const changeGroupDescription = ({ target: { value } }) =>
     setGroupDescription(value);
 
-  const changeNewGroup = () => setNewGroup(true);
+  const showGroupDialog = () => setNewGroup(true);
+  const hideGroupDialog = () => setNewGroup(false);
 
   const createGroup = async () => {
     setNewGroup(false);
@@ -63,45 +64,49 @@ export default function Home() {
       </Head>
       <Content>
         <Header home homePage />
-        <div className="flex items-center justify-between ml-4 mb-2">
-        <div className="text-xl font-bold">Ваши группы</div>
-        {!newGroup && (
-          <button
-          onClick={changeNewGroup}
-          className="sm:hover:bg-neutral-700 p-2 rounded-full"
-          >
-            <PlusIcon className="w-6" />
-          </button>
-        )}
-        </div>
+        <div className="text-xl font-bold ml-4 mb-2">Ваши группы</div>
         {data ? (
           <>
-            <div className="px-2">
-              {newGroup && (
-                <div className="space-y-4 mb-4">
-                  <input
-                    className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
-                    placeholder="Название"
-                    value={groupName}
-                    onChange={changeGroupName}
-                  />
-                  <TextareaAutosize
-                    className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
-                    placeholder="Описание"
-                    value={groupDescription}
-                    onChange={changeGroupDescription}
-                  />
+            {!newGroup ? (
+              <button
+                onClick={showGroupDialog}
+                className="w-full bg-neutral-800 rounded-2xl py-6 px-4 flex my-4"
+              >
+                <PlusIcon className="w-6 ml-2 mr-4" />
+                Новая группа
+              </button>
+            ) : (
+              <div className="space-y-4 my-4">
+                <input
+                  className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
+                  placeholder="Название"
+                  value={groupName}
+                  onChange={changeGroupName}
+                />
+                <TextareaAutosize
+                  className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
+                  placeholder="Описание"
+                  value={groupDescription}
+                  onChange={changeGroupDescription}
+                />
+                <div className="flex gap-4">
                   {groupName.trim() && groupDescription.trim() && (
                     <button
                       onClick={createGroup}
-                      className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                      className="w-full flex justify-center bg-white font-medium rounded-2xl text-sm px-3 py-2"
                     >
-                      <CheckIcon className="w-6" />
+                      <CheckIcon className="w-6 stroke-black" />
                     </button>
                   )}
+                  <button
+                    onClick={hideGroupDialog}
+                    className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2"
+                  >
+                    <XMarkIcon className="w-6" />
+                  </button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
             <div className="space-y-4">
               {data.map((g) => (
                 <Link href={`/group/${g.id}`} key={g.id}>
