@@ -106,8 +106,8 @@ export default function Group({ id }) {
             </div>
             <div className="mx-4">{data[0].description}</div>
             <div className="flex gap-4 px-2">
-              <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
-                <UserPlusIcon className="w-6" />
+              <button className="w-full flex justify-center bg-white font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                <UserPlusIcon className="w-6 stroke-black" />
               </button>
               <button className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4">
                 <LinkIcon className="w-6" />

@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
@@ -47,9 +46,53 @@ export default function Login() {
         className="flex mx-auto flex-col max-w-sm justify-center space-y-4 px-3 mt-40"
       >
         <div className="mx-auto">
-          <svg width="30" viewBox="0 0 347 347">
-            <path d="M0 0L347 347H0V0Z" fill="#CB6BBC" />
-            <path d="M347 0L0 347H347V0Z" fill="#5D69D6" />
+          <svg
+            width="70"
+            viewBox="0 0 245 108"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <line
+              x1="140.876"
+              y1="5.39438"
+              x2="191.538"
+              y2="103.033"
+              stroke="#5E50FF"
+              strokeWidth="20"
+            />
+            <line
+              x1="10"
+              y1="2"
+              x2="10"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <line
+              x1="49"
+              y1="2"
+              x2="49"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <line
+              x1="184.876"
+              y1="5.39438"
+              x2="235.538"
+              y2="103.033"
+              stroke="#5E50FF"
+              strokeWidth="20"
+            />
+            <line
+              x1="88"
+              y1="2"
+              x2="88"
+              y2="108"
+              stroke="#FC6BE5"
+              strokeWidth="20"
+            />
+            <circle cx="132" cy="93" r="15" fill="#5E50FF" />
           </svg>
         </div>
         {!logined ? (
@@ -63,7 +106,7 @@ export default function Login() {
             />
             {!disabled && (
               <button
-                className={`w-full bg-blue-500 rounded-2xl py-2`}
+                className={`w-full bg-white text-black rounded-2xl py-2`}
                 type="submit"
               >
                 Войти

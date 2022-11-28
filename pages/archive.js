@@ -2,10 +2,10 @@ import Head from "next/head";
 import Content from "../components/Content";
 import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "../utils/api";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +17,7 @@ import { ArchiveBoxXMarkIcon, LinkIcon } from "@heroicons/react/24/outline";
 export default function Archive() {
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
+  const [_origin, setOrigin] = useState("");
 
   const { data, mutate } = useSWR(
     !isLoading && session
@@ -42,6 +43,10 @@ export default function Archive() {
     }
   }, [isLoading, session, router]);
 
+  useEffect(() => {
+    setOrigin(origin);
+  }, []);
+
   if (isLoading || !session) {
     return null;
   }
@@ -57,7 +62,9 @@ export default function Archive() {
         <div className="space-y-4 mb-8">
           {data ? (
             data.length === 0 ? (
-              <div className="text-center text-neutral-500 mt-10">Архив пуст</div>
+              <div className="text-center text-neutral-500 mt-10">
+                Архив пуст
+              </div>
             ) : (
               data.map((p) => (
                 <div
