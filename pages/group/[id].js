@@ -177,13 +177,55 @@ export default function Group() {
                   <div className="leading-6">Опубликовать</div>
                 </button>
               )}
-              {loading && (
-                <div className="w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-4">
-                  <EllipsisHorizontalIcon className="w-6 mr-2" />
-                  <div className="leading-6">Публикуем запись</div>
-                </div>
+              {session.user.id !== data[0].owner_id && (
+                <button className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                  <UserPlusIcon className="w-6 mr-2" />
+                  <div className="leading-6">Присоединиться</div>
+                </button>
               )}
+              <button
+                onClick={shareGroup}
+                className={`flex ${
+                  session.user.id !== data[0].owner_id
+                    ? "w-fit sm:w-full"
+                    : "w-full"
+                } justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4`}
+              >
+                <LinkIcon
+                  className={`w-6 ${
+                    session.user.id === data[0].owner_id ? "mr-2" : ""
+                  }`}
+                />
+                {session.user.id === data[0].owner_id && (
+                  <div className="leading-6">Поделиться</div>
+                )}
+              </button>
             </div>
+            {session.user.id === data[0].owner_id && (
+              <div className="px-2 mb-4">
+                <TextareaAutosize
+                  placeholder="Напишите что-нибудь..."
+                  className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
+                  value={postText}
+                  onChange={changePostText}
+                />
+                {postText.trim() && !loading && (
+                  <button
+                    onClick={createPost}
+                    className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                  >
+                    <CheckIcon className="w-6 mr-2" />
+                    <div className="leading-6">Опубликовать</div>
+                  </button>
+                )}
+                {loading && (
+                  <div className="w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                    <EllipsisHorizontalIcon className="w-6 mr-2" />
+                    <div className="leading-6">Публикуем запись</div>
+                  </div>
+                )}
+              </div>
+            )}
             <div className="space-y-4 mb-8">
               {posts &&
                 posts.map((p) => (
