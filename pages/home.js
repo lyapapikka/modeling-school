@@ -76,7 +76,7 @@ export default function Home() {
                 Новая группа
               </button>
             ) : (
-              <div className="space-y-4 my-4">
+              <div className="space-y-4 my-4 px-2">
                 <input
                   className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
                   placeholder="Название"
