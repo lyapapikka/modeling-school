@@ -21,7 +21,10 @@ export default function Home() {
 
   const { data, mutate } = useSWR(
     !isLoading && session
-      ? api(`groups?owner_id=eq.${session.user.id}`, session)
+      ? api(
+          `groups?owner_id=eq.${session.user.id}&select=*,members(id)`,
+          session
+        )
       : null,
     fetcher
   );
@@ -123,7 +126,9 @@ export default function Home() {
                     </div>
                     <div>
                       {g.name}
-                      <div className="text-neutral-500">40 участников</div>
+                      <div className="text-neutral-500">
+                        Участников: {g.members.length}
+                      </div>
                     </div>
                   </a>
                 </Link>
