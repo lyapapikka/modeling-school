@@ -4,6 +4,7 @@ import Content from "../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
+  ChevronLeftIcon,
   EllipsisHorizontalIcon,
   LinkIcon,
   PlusIcon,
@@ -47,7 +48,7 @@ export default function Group() {
 
   const leave = async () => {
     mutateMembers(
-      members.filter((m) => m.user_id !== session.user.id && m.group_id !== id),
+      members.filter((m) => m.user_id !== session.user.id),
       false
     );
 

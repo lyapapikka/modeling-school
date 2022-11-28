@@ -93,7 +93,7 @@ export default function Home() {
             {!newGroup ? (
               <button
                 onClick={showGroupDialog}
-                className="w-full bg-neutral-800 rounded-2xl py-6 px-4 flex my-4"
+                className="w-full bg-neutral-800 rounded-2xl py-5 px-4 flex my-4"
               >
                 <PlusIcon className="w-6 ml-2 mr-4" />
                 Новая группа
