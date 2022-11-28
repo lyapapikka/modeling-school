@@ -93,16 +93,18 @@ export default function Home() {
                   {groupName.trim() && groupDescription.trim() && (
                     <button
                       onClick={createGroup}
-                      className="w-full flex justify-center bg-white font-medium rounded-2xl text-sm px-3 py-2"
+                      className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2"
                     >
-                      <CheckIcon className="w-6 stroke-black" />
+                      <CheckIcon className="w-6 mr-2" />
+                      <div className="leading-6">Создать</div>
                     </button>
                   )}
                   <button
                     onClick={hideGroupDialog}
                     className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2"
                   >
-                    <XMarkIcon className="w-6" />
+                    <XMarkIcon className="w-6 mr-2" />
+                    <div className="leading-6">Отменить</div>
                   </button>
                 </div>
               </div>
