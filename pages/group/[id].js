@@ -4,6 +4,7 @@ import Content from "../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
+  EllipsisHorizontalIcon,
   LinkIcon,
   PlusIcon,
   UserPlusIcon,
@@ -28,15 +29,21 @@ export default function Group() {
   const router = useRouter();
   const { id } = router.query;
   const [postText, setPostText] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const changePostText = ({ target: { value } }) => setPostText(value);
 
   const createPost = async () => {
-    setPostText("");
+    setLoading(true);
+
     await supabaseClient
       .from("posts")
       .insert([{ text: postText, group_id: id }]);
+
     mutate();
+
+    setLoading(false);
+    setPostText("");
   };
 
   const addToArchive = async (post_id) => {
@@ -161,7 +168,7 @@ export default function Group() {
                 value={postText}
                 onChange={changePostText}
               />
-              {postText.trim() && (
+              {postText.trim() && !loading && (
                 <button
                   onClick={createPost}
                   className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
@@ -169,6 +176,12 @@ export default function Group() {
                   <CheckIcon className="w-6 mr-2" />
                   <div className="leading-6">Опубликовать</div>
                 </button>
+              )}
+              {loading && (
+                <div className="w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                  <EllipsisHorizontalIcon className="w-6 mr-2" />
+                  <div className="leading-6">Публикуем запись</div>
+                </div>
               )}
             </div>
             <div className="space-y-4 mb-8">
