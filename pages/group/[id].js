@@ -43,7 +43,7 @@ export default function Group() {
       .from("archive")
       .insert([{ user_id: session.user.id, post_id }]);
     toast.success("Запись сохранена в архиве", {
-      position: "top-right",
+      position: "bottom-right",
       autoClose: 2000,
       hideProgressBar: true,
       closeOnClick: false,
@@ -52,7 +52,7 @@ export default function Group() {
       progress: undefined,
       theme: "light",
       closeButton: false,
-      className: "m-2",
+      className: "bottom-14 sm:bottom-auto m-2",
     });
   };
 

@@ -111,7 +111,7 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
         </Link>
       )}
       {home && (
-        <div className="z-10 backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full">
+        <div className="z-[99999] backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full">
           <Link href="/home">
             <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
               {homePage ? (
