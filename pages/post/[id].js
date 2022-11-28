@@ -131,12 +131,14 @@ export default function Post() {
               </div>
               <div className="flex justify-between mb-2 mt-2">
                 <button
+                  title="Добавить в архив"
                   onClick={() => addToArchive(data[0].id)}
                   className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                 >
                   <ArchiveBoxArrowDownIcon className="w-6" />
                 </button>
                 <button
+                  title="Поделиться записью"
                   onClick={() => sharePost(data[0].id)}
                   className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
                 >

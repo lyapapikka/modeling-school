@@ -3,6 +3,7 @@ import Header from "../../components/Header";
 import Content from "../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
+  CheckIcon,
   LinkIcon,
   PlusIcon,
   UserPlusIcon,
@@ -140,15 +141,17 @@ export default function Group() {
               </div>
             </div>
             <div className="mx-4">{data[0].description}</div>
-            <div className="flex gap-4 px-2">
-              <button className="w-full flex justify-center bg-white font-medium rounded-2xl text-sm px-3 py-2 my-4">
-                <UserPlusIcon className="w-6 stroke-black" />
+            <div className="flex gap-2 px-2">
+              <button className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4">
+                <UserPlusIcon className="w-6 mr-2" />
+                <div className="leading-6">Присоединиться</div>
               </button>
               <button
                 onClick={shareGroup}
-                className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                className="sm:w-full flex w-fit justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
               >
-                <LinkIcon className="w-6" />
+                <LinkIcon className="w-6 sm:mr-2" />
+                <div className="leading-6 hidden sm:block">Поделиться</div>
               </button>
             </div>
             <div className="px-2 mb-4">
@@ -163,7 +166,8 @@ export default function Group() {
                   onClick={createPost}
                   className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
                 >
-                  <PlusIcon className="w-6" />
+                  <CheckIcon className="w-6 mr-2" />
+                  <div className="leading-6">Опубликовать</div>
                 </button>
               )}
             </div>
@@ -225,12 +229,14 @@ export default function Group() {
                     </div>
                     <div className="flex justify-between mb-2 mt-2">
                       <button
+                        title="Добавить в архив"
                         onClick={() => addToArchive(p.id)}
                         className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                       >
                         <ArchiveBoxArrowDownIcon className="w-6" />
                       </button>
                       <button
+                        title="Поделиться записью"
                         onClick={() => sharePost(p.id)}
                         className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
                       >

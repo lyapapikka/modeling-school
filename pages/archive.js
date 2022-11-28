@@ -130,12 +130,14 @@ export default function Archive() {
                   </div>
                   <div className="flex justify-between mb-2 mt-2">
                     <button
+                      title="Удалить из архива"
                       onClick={() => removeFromArchive(p.id)}
                       className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                     >
                       <ArchiveBoxXMarkIcon className="w-6" />
                     </button>
                     <button
+                      title="Поделиться записью"
                       onClick={() => sharePost(p.post_id)}
                       className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
                     >
