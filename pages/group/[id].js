@@ -97,7 +97,7 @@ export default function Group() {
                 <div className="bg-neutral-800 w-48 rounded-full">&nbsp;</div>
               </div>
             </div>
-            <div className="mx-4 bg-neutral-800 rounded-full w-96 mt-2">
+            <div className="mx-4 bg-neutral-800 rounded-full w-56 mt-2">
               &nbsp;
             </div>
             <div className="flex gap-4 px-2">
