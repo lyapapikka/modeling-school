@@ -29,6 +29,26 @@ export default function Home() {
     fetcher
   );
 
+  const { data: joinedGroups } = useSWR(
+    !isLoading && session
+      ? api(
+          `members?user_id=eq.${session.user.id}&select=*,groups(id,name)`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
+  const { data: groupJoins } = useSWR(
+    !isLoading && session && joinedGroups
+      ? api(
+          `groups?id=in.(${joinedGroups.map((g) => g.groups.id)})&select=*,members(id)`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
   const changeGroupName = ({ target: { value } }) => setGroupName(value);
   const changeGroupDescription = ({ target: { value } }) =>
     setGroupDescription(value);
@@ -68,7 +88,7 @@ export default function Home() {
       <Content>
         <Header home homePage />
         <div className="text-xl font-bold ml-4 mb-2">Ваши группы</div>
-        {data ? (
+        {data && groupJoins ? (
           <>
             {!newGroup ? (
               <button
@@ -114,6 +134,26 @@ export default function Home() {
             )}
             <div className="space-y-4">
               {data.map((g) => (
+                <Link href={`/group/${g.id}`} key={g.id}>
+                  <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+                    <div className="mt-2 ml-1">
+                      <Image
+                        alt=""
+                        width={30}
+                        height={30}
+                        src={`https://avatars.dicebear.com/api/identicon/${g.id}.svg`}
+                      />
+                    </div>
+                    <div>
+                      {g.name}
+                      <div className="text-neutral-500">
+                        Участников: {g.members.length}
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+              ))}
+              {groupJoins.map((g) => (
                 <Link href={`/group/${g.id}`} key={g.id}>
                   <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
                     <div className="mt-2 ml-1">
