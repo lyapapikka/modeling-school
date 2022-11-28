@@ -21,10 +21,11 @@ import { formatRelative } from "date-fns";
 import russianLocale from "date-fns/locale/ru";
 import { toast } from "react-toastify";
 
-export default function Group({ id }) {
+export default function Group() {
   const [_origin, setOrigin] = useState("");
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
+  const { id } = router.query;
   const [postText, setPostText] = useState("");
 
   const changePostText = ({ target: { value } }) => setPostText(value);
@@ -85,7 +86,33 @@ export default function Group({ id }) {
     <>
       <Content>
         <Header home homePage />
-        {data && (
+        {!data || !posts ? (
+          <>
+            <div className="flex items-center">
+              <div className="m-4 w-[40px] h-[40px] bg-neutral-800 rounded-full"></div>
+              <div className="space-y-2">
+                <div className="text-xl bg-neutral-800 w-56 rounded-full">
+                  &nbsp;
+                </div>
+                <div className="bg-neutral-800 w-48 rounded-full">&nbsp;</div>
+              </div>
+            </div>
+            <div className="mx-4 bg-neutral-800 rounded-full w-96 mt-2">
+              &nbsp;
+            </div>
+            <div className="flex gap-4 px-2">
+              <div className="h-10 w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-4"></div>
+              <div className="h-10 w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-4"></div>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            </div>
+          </>
+        ) : (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -204,19 +231,4 @@ export default function Group({ id }) {
       </Content>
     </>
   );
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: true,
-  };
-}
-
-export async function getStaticProps({ params: { id } }) {
-  return {
-    props: {
-      id,
-    },
-  };
 }

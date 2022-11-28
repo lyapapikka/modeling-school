@@ -63,11 +63,21 @@ export default function Home() {
       </Head>
       <Content>
         <Header home homePage />
-        <div className="text-xl ml-4 mb-4 font-bold">Ваши группы</div>
+        <div className="flex items-center justify-between ml-4 mb-2">
+        <div className="text-xl font-bold">Ваши группы</div>
+        {!newGroup && (
+          <button
+          onClick={changeNewGroup}
+          className="sm:hover:bg-neutral-700 p-2 rounded-full"
+          >
+            <PlusIcon className="w-6" />
+          </button>
+        )}
+        </div>
         {data ? (
           <>
             <div className="px-2">
-              {newGroup ? (
+              {newGroup && (
                 <div className="space-y-4 mb-4">
                   <input
                     className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
@@ -90,13 +100,6 @@ export default function Home() {
                     </button>
                   )}
                 </div>
-              ) : (
-                <button
-                  onClick={changeNewGroup}
-                  className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
-                >
-                  <PlusIcon className="w-6" />
-                </button>
               )}
             </div>
             <div className="space-y-4">
