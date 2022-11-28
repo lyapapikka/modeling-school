@@ -148,7 +148,7 @@ export default function Group() {
               </div>
             </div>
             <div className="mx-4">{data[0].description}</div>
-            <div className="px-2 mb-4">
+            <div className="px-2 flex gap-4">
               {session.user.id !== data[0].owner_id && (
                 <button className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4">
                   <UserPlusIcon className="w-6 mr-2" />
@@ -165,12 +165,16 @@ export default function Group() {
               >
                 <LinkIcon
                   className={`w-6 ${
-                    session.user.id === data[0].owner_id ? "mr-2" : ""
+                    session.user.id !== data[0].owner_id ? "sm:mr-2" : "mr-2"
                   }`}
                 />
-                {session.user.id === data[0].owner_id && (
-                  <div className="leading-6">Поделиться</div>
-                )}
+                <div
+                  className={`leading-6 ${
+                    session.user.id !== data[0].owner_id ? "hidden sm:block" : ""
+                  }`}
+                >
+                  Поделиться
+                </div>
               </button>
             </div>
             {session.user.id === data[0].owner_id && (
