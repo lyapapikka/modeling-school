@@ -7,6 +7,7 @@ import {
   EllipsisHorizontalIcon,
   LinkIcon,
   PlusIcon,
+  UserMinusIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import ReactLinkify from "react-linkify";
@@ -32,6 +33,30 @@ export default function Group() {
   const [loading, setLoading] = useState(false);
 
   const changePostText = ({ target: { value } }) => setPostText(value);
+
+  const join = async () => {
+    mutateMembers(
+      [...members, { id: "", user_id: session.user.id, group_id: id }],
+      false
+    );
+
+    await supabaseClient
+      .from("members")
+      .insert([{ user_id: session.user.id, group_id: id }]);
+  };
+
+  const leave = async () => {
+    mutateMembers(
+      members.filter((m) => m.user_id !== session.user.id && m.group_id !== id),
+      false
+    );
+
+    await supabaseClient
+      .from("members")
+      .delete()
+      .eq("user_id", session.user.id)
+      .eq("group_id", id);
+  };
 
   const createPost = async () => {
     setLoading(true);
@@ -84,6 +109,13 @@ export default function Group() {
     fetcher
   );
 
+  const { data: members, mutate: mutateMembers } = useSWR(
+    !isLoading && session
+      ? api(`members?group_id=eq.${id}&select=*`, session)
+      : null,
+    fetcher
+  );
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
@@ -102,7 +134,7 @@ export default function Group() {
     <>
       <Content>
         <Header home homePage />
-        {!data || !posts ? (
+        {!data || !posts || !members ? (
           <>
             <div className="flex items-center">
               <div className="m-4 w-[40px] h-[40px] bg-neutral-800 rounded-full"></div>
@@ -144,17 +176,33 @@ export default function Group() {
               </div>
               <div>
                 <h1 className="text-xl">{data[0].name}</h1>
-                <div className="text-neutral-500">40 участников</div>
+                <div className="text-neutral-500">
+                  Участников: {members.length}
+                </div>
               </div>
             </div>
             <div className="mx-4">{data[0].description}</div>
             <div className="px-2 flex gap-4">
-              {session.user.id !== data[0].owner_id && (
-                <button className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4">
-                  <UserPlusIcon className="w-6 mr-2" />
-                  <div className="leading-6">Присоединиться</div>
-                </button>
-              )}
+              {session.user.id !== data[0].owner_id &&
+                (members.find(
+                  (m) => m.user_id === session.user.id && m.group_id === id
+                ) ? (
+                  <button
+                    onClick={leave}
+                    className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                  >
+                    <UserMinusIcon className="w-6 mr-2" />
+                    <div className="leading-6">Покинуть</div>
+                  </button>
+                ) : (
+                  <button
+                    onClick={join}
+                    className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-4"
+                  >
+                    <UserPlusIcon className="w-6 mr-2" />
+                    <div className="leading-6">Присоединиться</div>
+                  </button>
+                ))}
               <button
                 onClick={shareGroup}
                 className={`flex ${
@@ -170,7 +218,9 @@ export default function Group() {
                 />
                 <div
                   className={`leading-6 ${
-                    session.user.id !== data[0].owner_id ? "hidden sm:block" : ""
+                    session.user.id !== data[0].owner_id
+                      ? "hidden sm:block"
+                      : ""
                   }`}
                 >
                   Поделиться
