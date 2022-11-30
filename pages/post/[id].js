@@ -13,7 +13,11 @@ import russianLocale from "date-fns/locale/ru";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import ReactLinkify from "react-linkify";
-import { ArchiveBoxArrowDownIcon, LinkIcon } from "@heroicons/react/24/outline";
+import {
+  ArchiveBoxArrowDownIcon,
+  LinkIcon,
+  ChevronLeftIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Post() {
   const { isLoading, session, supabaseClient } = useSessionContext();
@@ -67,15 +71,22 @@ export default function Post() {
     <>
       <Content>
         <Header home homePage />
+        <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
+          <Link href="/home">
+            <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <ChevronLeftIcon className="w-6" />
+            </a>
+          </Link>
+        </div>
         {!data ? (
-          <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+          <div className="bg-neutral-900 h-36 rounded-2xl"></div>
         ) : (
           <>
             <Head>
               <title>{data[0].groups.name} - Школа моделирования</title>
             </Head>
             <div
-              className="bg-neutral-800 rounded-2xl py-1 px-4"
+              className="bg-neutral-900 rounded-2xl py-1 px-4"
               key={data[0].id}
             >
               <div>

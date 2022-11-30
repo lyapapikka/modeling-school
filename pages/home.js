@@ -1,34 +1,39 @@
 import Head from "next/head";
 import Header from "../components/Header";
 import Content from "../components/Content";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSessionContext } from "@supabase/auth-helpers-react";
-import { PlusIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Image from "next/image";
-import TextareaAutosize from "react-textarea-autosize";
 import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import api from "../utils/api";
 
 export default function Home() {
   const router = useRouter();
-  const { isLoading, session, supabaseClient } = useSessionContext();
-  const [newGroup, setNewGroup] = useState(false);
-  const [groupName, setGroupName] = useState("");
-  const [groupDescription, setGroupDescription] = useState("");
+  const { isLoading, session } = useSessionContext();
 
-  const { data, mutate } = useSWR(
+  const { data } = useSWR(
     !isLoading && session
       ? api(
-          `groups?owner_id=eq.${session.user.id}&select=*,members(id)`,
+          `groups?owner_id=eq.${session.user.id}&select=*,members(id)&order=created_at.desc`,
           session
         )
       : null,
     fetcher
   );
 
+  const { data: recommended } = useSWR(
+    !isLoading && session
+      ? api(
+          `groups?public=eq.true&select=*,members(id)&order=created_at.desc`,
+          session
+        )
+      : null,
+    fetcher
+  );
   const { data: joinedGroups } = useSWR(
     !isLoading && session
       ? api(
@@ -42,33 +47,14 @@ export default function Home() {
   const { data: groupJoins } = useSWR(
     !isLoading && session && joinedGroups
       ? api(
-          `groups?id=in.(${joinedGroups.map((g) => g.groups.id)})&select=*,members(id)`,
+          `groups?id=in.(${joinedGroups.map(
+            (g) => g.groups.id
+          )})&select=*,members(id)`,
           session
         )
       : null,
     fetcher
   );
-
-  const changeGroupName = ({ target: { value } }) => setGroupName(value);
-  const changeGroupDescription = ({ target: { value } }) =>
-    setGroupDescription(value);
-
-  const showGroupDialog = () => setNewGroup(true);
-  const hideGroupDialog = () => setNewGroup(false);
-
-  const createGroup = async () => {
-    setNewGroup(false);
-    setGroupName("");
-    setGroupDescription("");
-    await supabaseClient.from("groups").insert([
-      {
-        owner_id: session.user.id,
-        name: groupName,
-        description: groupDescription,
-      },
-    ]);
-    mutate();
-  };
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -87,56 +73,20 @@ export default function Home() {
       </Head>
       <Content>
         <Header home homePage />
-        <div className="text-xl font-bold ml-4 mb-2">Ваши группы</div>
-        {data && groupJoins ? (
+        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">Ваши группы</div>
+        {data && groupJoins && recommended ? (
           <>
-            {!newGroup ? (
-              <button
-                onClick={showGroupDialog}
-                className="w-full bg-neutral-800 rounded-2xl py-5 px-4 flex my-4"
-              >
+            <Link href="/new">
+              <a className="w-full bg-neutral-900 rounded-2xl py-5 px-4 flex my-2">
                 <PlusIcon className="w-6 ml-2 mr-4" />
                 Новая группа
-              </button>
-            ) : (
-              <div className="space-y-4 my-4 px-2">
-                <input
-                  className="block w-full px-3 py-2 rounded-2xl bg-neutral-700"
-                  placeholder="Название"
-                  value={groupName}
-                  onChange={changeGroupName}
-                />
-                <TextareaAutosize
-                  className="block w-full px-3 py-2 rounded-2xl resize-none bg-neutral-700"
-                  placeholder="Описание"
-                  value={groupDescription}
-                  onChange={changeGroupDescription}
-                />
-                <div className="flex gap-4">
-                  {groupName.trim() && groupDescription.trim() && (
-                    <button
-                      onClick={createGroup}
-                      className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2"
-                    >
-                      <CheckIcon className="w-6 mr-2" />
-                      <div className="leading-6">Создать</div>
-                    </button>
-                  )}
-                  <button
-                    onClick={hideGroupDialog}
-                    className="w-full flex justify-center bg-neutral-600 font-medium rounded-2xl text-sm px-3 py-2"
-                  >
-                    <XMarkIcon className="w-6 mr-2" />
-                    <div className="leading-6">Отменить</div>
-                  </button>
-                </div>
-              </div>
-            )}
-            <div className="space-y-4">
+              </a>
+            </Link>
+            <div className="space-y-2">
               {data.map((g) => (
                 <Link href={`/group/${g.id}`} key={g.id}>
-                  <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
-                    <div className="mt-2 ml-1">
+                  <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
+                    <div className="mt-2 ml-1 shrink-0">
                       <Image
                         alt=""
                         width={30}
@@ -155,8 +105,8 @@ export default function Home() {
               ))}
               {groupJoins.map((g) => (
                 <Link href={`/group/${g.id}`} key={g.id}>
-                  <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
-                    <div className="mt-2 ml-1">
+                  <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
+                    <div className="mt-2 ml-1 shrink-0">
                       <Image
                         alt=""
                         width={30}
@@ -175,19 +125,44 @@ export default function Home() {
               ))}
             </div>
             <div className="text-xl ml-4 my-4 font-bold">Рекомендации</div>
+            <div className="space-y-2 mb-2">
+              {recommended.map((g) => (
+                <Link href={`/group/${g.id}`} key={g.id}>
+                  <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
+                    <div className="mt-2 ml-1 shrink-0">
+                      <Image
+                        alt=""
+                        width={30}
+                        height={30}
+                        src={`https://avatars.dicebear.com/api/identicon/${g.id}.svg`}
+                      />
+                    </div>
+                    <div>
+                      {g.name}
+                      <div className="text-neutral-500">
+                        Участников: {g.members.length}
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+              ))}
+            </div>
           </>
         ) : (
-          <div className="space-y-4">
-            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-            <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+          <div className="space-y-2 mt-2">
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+            <div className="bg-neutral-900 h-16 rounded-2xl"></div>
           </div>
         )}
         {/* <div className="space-y-4">
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+            <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
               <div className="mt-2 ml-1">
                 <Image
                   alt=""
@@ -203,7 +178,7 @@ export default function Home() {
             </a>
           </Link>
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+            <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
               <div className="mt-2 ml-1">
                 <Image
                   alt=""
@@ -219,7 +194,7 @@ export default function Home() {
             </a>
           </Link>
           <Link href="/group/random">
-            <a className="bg-neutral-800 rounded-2xl py-3 px-4 flex gap-4">
+            <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4">
               <div className="mt-2 ml-1">
                 <Image
                   alt=""

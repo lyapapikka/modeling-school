@@ -62,7 +62,8 @@ export default function Archive() {
       </Head>
       <Content>
         <Header home archivePage />
-        <div className="text-xl ml-4 mb-4 font-bold">Архив</div>
+        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">Архив</div>
+        
         <div className="space-y-4 mb-8">
           {data ? (
             data.length === 0 ? (
@@ -72,7 +73,7 @@ export default function Archive() {
             ) : (
               data.map((p) => (
                 <div
-                  className="bg-neutral-800 rounded-2xl py-1 px-4"
+                  className="bg-neutral-900 rounded-2xl py-1 px-4"
                   key={p.id}
                 >
                   <div>
@@ -148,12 +149,12 @@ export default function Archive() {
               ))
             )
           ) : (
-            <div className="space-y-4">
-              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
-              <div className="bg-neutral-800 h-20 rounded-2xl"></div>
+            <div className="space-y-2 mt-2">
+              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
             </div>
           )}
         </div>

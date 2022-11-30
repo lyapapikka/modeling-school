@@ -40,7 +40,9 @@ export default function Tutor() {
       </Head>
       <Content>
         <Header home bookPage />
-        <div className="text-xl ml-4 mb-4 font-bold">Учебник</div>
+        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-4">
+          Учебник
+        </div>
         <div className="relative px-2 mb-4">
           <input
             value={query}
@@ -52,7 +54,7 @@ export default function Tutor() {
         </div>
         {tutors.map((t, i) => (
           <a
-            className="sm:hover:bg-neutral-700 flex ml-auto block bg-neutral-800 px-4 py-2 rounded-2xl w-full"
+            className="sm:hover:bg-neutral-700 flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
             href={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${_origin}/tutors/${t.filename}`}
             key={i}
           >

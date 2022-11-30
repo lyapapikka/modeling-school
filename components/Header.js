@@ -24,7 +24,7 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
   };
 
   return (
-    <div className="flex justify-between items-center my-4 ml-2 px-2">
+    <div className="flex justify-between items-center py-4 px-4 bg-neutral-900">
       <Link href="/home">
         <a>
           <svg
