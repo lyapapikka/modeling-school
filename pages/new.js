@@ -4,14 +4,11 @@ import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import tutors from "../tutors";
 import {
   CheckIcon,
-  DocumentIcon,
   EllipsisHorizontalIcon,
   GlobeAltIcon,
   LockClosedIcon,
-  MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
@@ -58,7 +55,7 @@ export default function New() {
         <title>Новая группа - Школа моделирования</title>
       </Head>
       <Content>
-        <Header />
+        <Header href="/home" />
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-4">
           Новая группа
         </div>

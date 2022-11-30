@@ -1,10 +1,12 @@
 import Head from "next/head";
-import Header from "../../components/Header";
-import Content from "../../components/Content";
+import Header from "../../../components/Header";
+import Content from "../../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
   ChevronLeftIcon,
+  Cog6ToothIcon,
+  CogIcon,
   EllipsisHorizontalIcon,
   LinkIcon,
   PlusIcon,
@@ -18,8 +20,8 @@ import Image from "next/image";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import api from "../../utils/api";
-import fetcher from "../../utils/fetcher";
+import api from "../../../utils/api";
+import fetcher from "../../../utils/fetcher";
 import TextareaAutosize from "react-textarea-autosize";
 import { formatRelative } from "date-fns";
 import russianLocale from "date-fns/locale/ru";
@@ -172,12 +174,19 @@ export default function Group() {
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
-            <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
+            <div className="flex justify-between items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
               <Link href="/home">
-                <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <a className="inline-block -my-1 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
               </Link>
+              {session.user.id === data[0].owner_id && (
+                <Link href={`/group/${id}/settings`}>
+                  <a className="inline-block -my-1 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                    <Cog6ToothIcon className="w-6" />
+                  </a>
+                </Link>
+              )}
             </div>
             <div className="pr-2 mt-2 bg-neutral-900 rounded-2xl">
               <div className="flex items-center py-4">

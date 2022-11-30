@@ -14,7 +14,13 @@ import {
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 
-export default function Header({ home, homePage, bookPage, archivePage }) {
+export default function Header({
+  home,
+  homePage,
+  bookPage,
+  archivePage,
+  href,
+}) {
   const supabaseClient = useSupabaseClient();
   const router = useRouter();
 
@@ -104,7 +110,7 @@ export default function Header({ home, homePage, bookPage, archivePage }) {
           </button>
         </>
       ) : (
-        <Link href="/home">
+        <Link href={href}>
           <a className="sm:hover:bg-neutral-700 rounded-full p-2 -mr-2">
             <XMarkIcon className="w-6" />
           </a>
