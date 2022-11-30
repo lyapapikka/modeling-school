@@ -4,12 +4,14 @@ import Content from "../../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
+  ChevronDownIcon,
   ChevronLeftIcon,
   Cog6ToothIcon,
   CogIcon,
   EllipsisHorizontalIcon,
   LinkIcon,
   PlusIcon,
+  TrashIcon,
   UserMinusIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
@@ -34,7 +36,24 @@ export default function Group() {
   const { id } = router.query;
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [selection, setSelection] = useState("");
 
+  const deletePost = async () => {
+    mutate(
+      posts.filter((p) => p.id !== selection),
+      false
+    );
+    setDeleteDialog(false);
+
+    await supabaseClient.from("posts").delete().eq("id", selection);
+  };
+
+  const showDeleteDialog = (id) => {
+    setSelection(id);
+    setDeleteDialog(true);
+  };
+  const hideDeleteDialog = () => setDeleteDialog(false);
   const changePostText = ({ target: { value } }) => setPostText(value);
 
   const join = async () => {
@@ -137,6 +156,33 @@ export default function Group() {
     <>
       <Content>
         <Header home homePage />
+        {deleteDialog && (
+          <div className="fixed inset-0 flex justify-center sm:mt-52 z-[999999]">
+            <div
+              onClick={hideDeleteDialog}
+              className="fixed inset-0 bg-black opacity-70 cursor-pointer"
+            ></div>
+            <div className="fixed bg-neutral-900 rounded-2xl px-4 py-4 mx-2 bottom-2 sm:bottom-auto max-w-sm text-center">
+              <div className="text-lg mb-4">
+                Запись нельзя будет восстановить после удаления. Вы уверены?
+              </div>
+              <div className="flex gap-2 mt-2">
+                <button
+                  onClick={deletePost}
+                  className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
+                >
+                  Да
+                </button>
+                <button
+                  onClick={hideDeleteDialog}
+                  className="bg-white text-black rounded-2xl px-3 py-2 w-full"
+                >
+                  Нет
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {!data || !posts || !members ? (
           <>
             <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
@@ -351,10 +397,19 @@ export default function Group() {
                         >
                           <ArchiveBoxArrowDownIcon className="w-6" />
                         </button>
+                        {session.user.id === data[0].owner_id && (
+                          <button
+                            title="Удалить"
+                            onClick={() => showDeleteDialog(p.id)}
+                            className="p-2 -m-2 ml-auto mr-2 sm:hover:bg-neutral-700 rounded-full"
+                          >
+                            <TrashIcon className="w-6 stroke-red-500" />
+                          </button>
+                        )}
                         <button
                           title="Поделиться записью"
                           onClick={() => sharePost(p.id)}
-                          className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
+                          className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                         >
                           <LinkIcon className="w-6" />
                         </button>
