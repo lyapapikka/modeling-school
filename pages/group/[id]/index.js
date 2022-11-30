@@ -216,7 +216,7 @@ export default function Group() {
                 ) ? (
                   <button
                     onClick={leave}
-                    className="w-full flex justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
                   >
                     <UserMinusIcon className="w-6 mr-2" />
                     <div className="leading-6">Покинуть</div>
@@ -224,7 +224,7 @@ export default function Group() {
                 ) : (
                   <button
                     onClick={join}
-                    className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-white text-black rounded-2xl px-3 py-2 my-2"
                   >
                     <UserPlusIcon className="w-6 mr-2" />
                     <div className="leading-6">Присоединиться</div>
@@ -236,7 +236,7 @@ export default function Group() {
                   session.user.id !== data[0].owner_id
                     ? "w-fit sm:w-full"
                     : "w-full"
-                } justify-center bg-neutral-800 font-medium rounded-2xl text-sm px-3 py-2 my-2`}
+                } justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2`}
               >
                 <LinkIcon
                   className={`w-6 ${
