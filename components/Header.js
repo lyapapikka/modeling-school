@@ -104,7 +104,7 @@ export default function Header({
           </div>
           <button
             onClick={logout}
-            className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full"
+            className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full -mr-2"
           >
             <ArrowLeftOnRectangleIcon className="w-6" />
           </button>
