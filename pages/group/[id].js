@@ -180,8 +180,8 @@ export default function Group() {
               </Link>
             </div>
             <div className="pr-2 mt-2 bg-neutral-900 rounded-2xl">
-              <div className="flex items-center">
-                <div className="p-4 shrink-0">
+              <div className="flex items-center py-4">
+                <div className="px-4 shrink-0">
                   <Image
                     alt=""
                     width={40}
@@ -190,7 +190,7 @@ export default function Group() {
                   />
                 </div>
                 <div>
-                  <h1 className="text-xl">{data[0].name}</h1>
+                  <div>{data[0].name}</div>
                   <div className="text-neutral-500">
                     Участников: {members.length}
                   </div>
