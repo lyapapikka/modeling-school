@@ -192,22 +192,9 @@ export default function Group() {
                 </a>
               </Link>
             </div>
-            <div className="flex items-center mt-2">
-              <div className="m-4 w-[40px] h-[40px] bg-neutral-900 rounded-full"></div>
-              <div className="space-y-2">
-                <div className="text-xl bg-neutral-900 w-56 rounded-full">
-                  &nbsp;
-                </div>
-                <div className="bg-neutral-900 w-48 rounded-full">&nbsp;</div>
-              </div>
+            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20">
             </div>
-            <div className="mx-4 bg-neutral-900 rounded-full w-56 mt-2">
-              &nbsp;
-            </div>
-            <div className="flex gap-2 px-2">
-              <div className="h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm px-3 py-2 my-2"></div>
-              <div className="h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm px-3 py-2 my-2"></div>
-            </div>
+            <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
             <div className="space-y-2">
               <div className="bg-neutral-900 h-36 rounded-2xl"></div>
               <div className="bg-neutral-900 h-36 rounded-2xl"></div>
@@ -312,14 +299,14 @@ export default function Group() {
                 {postText.trim() && !loading && (
                   <button
                     onClick={createPost}
-                    className="w-full flex justify-center bg-white text-black font-medium rounded-2xl text-sm px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-white text-black rounded-2xl px-3 py-2 my-2"
                   >
                     <CheckIcon className="w-6 mr-2" />
                     <div className="leading-6">Опубликовать</div>
                   </button>
                 )}
                 {loading && (
-                  <div className="w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm px-3 py-2 my-2">
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
                     <EllipsisHorizontalIcon className="w-6 mr-2" />
                     <div className="leading-6">Публикуем запись</div>
                   </div>
@@ -401,7 +388,7 @@ export default function Group() {
                           <button
                             title="Удалить"
                             onClick={() => showDeleteDialog(p.id)}
-                            className="p-2 -m-2 ml-auto mr-2 sm:hover:bg-neutral-700 rounded-full"
+                            className="p-2 -m-2 ml-auto mr-3 sm:hover:bg-neutral-700 rounded-full"
                           >
                             <TrashIcon className="w-6 stroke-red-500" />
                           </button>

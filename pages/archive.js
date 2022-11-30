@@ -64,7 +64,7 @@ export default function Archive() {
         <Header home archivePage />
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">Архив</div>
         
-        <div className="space-y-4 mb-8">
+        <div className="space-y-2 mb-8">
           {data ? (
             data.length === 0 ? (
               <div className="text-center text-neutral-500 mt-10">

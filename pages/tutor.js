@@ -54,7 +54,7 @@ export default function Tutor() {
         </div>
         {tutors.map((t, i) => (
           <a
-            className="sm:hover:bg-neutral-700 flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
+            className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
             href={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${_origin}/tutors/${t.filename}`}
             key={i}
           >
