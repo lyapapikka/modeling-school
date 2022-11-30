@@ -32,9 +32,18 @@ export default function Post() {
   const [_origin, setOrigin] = useState("");
 
   const addToArchive = async (post_id) => {
-    await supabaseClient
+    const { data } = await supabaseClient
       .from("archive")
-      .insert([{ user_id: session.user.id, post_id }]);
+      .select()
+      .eq("user_id", session.user.id)
+      .eq("post_id", post_id);
+
+    if (data.length === 0) {
+      await supabaseClient
+        .from("archive")
+        .insert([{ user_id: session.user.id, post_id }]);
+    }
+
     toast.success("Запись сохранена в архиве", {
       position: "bottom-right",
       autoClose: 2000,

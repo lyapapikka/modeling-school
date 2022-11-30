@@ -94,9 +94,18 @@ export default function Group() {
   };
 
   const addToArchive = async (post_id) => {
-    await supabaseClient
+    const { data } = await supabaseClient
       .from("archive")
-      .insert([{ user_id: session.user.id, post_id }]);
+      .select()
+      .eq("user_id", session.user.id)
+      .eq("post_id", post_id);
+
+    if (data.length === 0) {
+      await supabaseClient
+        .from("archive")
+        .insert([{ user_id: session.user.id, post_id }]);
+    }
+
     toast.success("Запись сохранена в архиве", {
       position: "bottom-right",
       autoClose: 2000,
@@ -192,8 +201,7 @@ export default function Group() {
                 </a>
               </Link>
             </div>
-            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20">
-            </div>
+            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20"></div>
             <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
             <div className="space-y-2">
               <div className="bg-neutral-900 h-36 rounded-2xl"></div>
