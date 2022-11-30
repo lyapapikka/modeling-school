@@ -150,11 +150,11 @@ export default function Archive() {
             )
           ) : (
             <div className="space-y-2 mt-2">
-              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-16 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
             </div>
           )}
         </div>
