@@ -40,7 +40,7 @@ export default function Group() {
 
   const deletePost = async () => {
     mutate(
-      posts.filter((p) => p.id !== selection),
+      posts.map(post => post.filter((p) => p.id !== selection)),
       false
     );
     setDeleteDialog(false);
