@@ -91,73 +91,82 @@ export default function Home() {
         </div>
         <div className="space-y-2 mt-2">
           {posts ? (
-            posts.map((p) => (
-              <div className="bg-neutral-900 rounded-2xl py-1 px-4" key={p.id}>
-                <div>
-                  <div className="flex gap-4">
-                    <Link href={`/group/${p.groups.id}`}>
-                      <a className="mt-4 ml-2">
-                        <Image
-                          alt=""
-                          width={30}
-                          height={30}
-                          src={`https://avatars.dicebear.com/api/identicon/${p.groups.id}.svg`}
-                        />
-                      </a>
-                    </Link>
-                    <div>
+            posts.length === 0 ? (
+              <div className="text-center text-neutral-500 mt-10">
+                Новостей нет
+              </div>
+            ) : (
+              posts.map((p) => (
+                <div
+                  className="bg-neutral-900 rounded-2xl py-1 px-4"
+                  key={p.id}
+                >
+                  <div>
+                    <div className="flex gap-4">
                       <Link href={`/group/${p.groups.id}`}>
-                        <a className="mt-2 inline-block">{p.groups.name}</a>
+                        <a className="mt-4 ml-2">
+                          <Image
+                            alt=""
+                            width={30}
+                            height={30}
+                            src={`https://avatars.dicebear.com/api/identicon/${p.groups.id}.svg`}
+                          />
+                        </a>
                       </Link>
-                      <div className="text-neutral-500">
-                        {formatRelative(new Date(p.created_at), new Date(), {
-                          locale: russianLocale,
-                        })}
+                      <div>
+                        <Link href={`/group/${p.groups.id}`}>
+                          <a className="mt-2 inline-block">{p.groups.name}</a>
+                        </Link>
+                        <div className="text-neutral-500">
+                          {formatRelative(new Date(p.created_at), new Date(), {
+                            locale: russianLocale,
+                          })}
+                        </div>
                       </div>
                     </div>
+                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
+                      <ReactLinkify
+                        componentDecorator={(href, text, key) =>
+                          href.startsWith(_origin) ? (
+                            <Link href={href} key={key}>
+                              <a className="text-blue-500">{text}</a>
+                            </Link>
+                          ) : (
+                            <a
+                              target="_blank"
+                              rel="noreferrer"
+                              href={href}
+                              key={key}
+                              className="text-blue-500"
+                            >
+                              {text}
+                            </a>
+                          )
+                        }
+                      >
+                        {p.text}
+                      </ReactLinkify>
+                    </div>
                   </div>
-                  <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                    <ReactLinkify
-                      componentDecorator={(href, text, key) =>
-                        href.startsWith(_origin) ? (
-                          <Link href={href} key={key}>
-                            <a className="text-blue-500">{text}</a>
-                          </Link>
-                        ) : (
-                          <a
-                            target="_blank"
-                            rel="noreferrer"
-                            href={href}
-                            key={key}
-                            className="text-blue-500"
-                          >
-                            {text}
-                          </a>
-                        )
-                      }
+                  <div className="flex justify-between mb-2 mt-2">
+                    <button
+                      title="Добавить в архив"
+                      onClick={() => addToArchive(p.id)}
+                      className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                     >
-                      {p.text}
-                    </ReactLinkify>
+                      <ArchiveBoxArrowDownIcon className="w-6" />
+                    </button>
+                    <button
+                      title="Поделиться записью"
+                      onClick={() => sharePost(p.id)}
+                      className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
+                    >
+                      <LinkIcon className="w-6" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex justify-between mb-2 mt-2">
-                  <button
-                    title="Добавить в архив"
-                    onClick={() => addToArchive(p.id)}
-                    className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                  >
-                    <ArchiveBoxArrowDownIcon className="w-6" />
-                  </button>
-                  <button
-                    title="Поделиться записью"
-                    onClick={() => sharePost(p.id)}
-                    className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                  >
-                    <LinkIcon className="w-6" />
-                  </button>
-                </div>
-              </div>
-            ))
+              ))
+            )
           ) : (
             <>
               <div className="bg-neutral-900 h-36 rounded-2xl"></div>
