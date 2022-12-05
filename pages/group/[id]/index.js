@@ -327,7 +327,7 @@ export default function Group() {
                 )}
               </div>
             )}
-            {posts.length === 0 ? (
+            {posts[0].length === 0 ? (
               <div className="text-center text-neutral-500 mt-10">
                 Нет записей
               </div>
@@ -336,11 +336,9 @@ export default function Group() {
                 className="space-y-2"
                 dataLength={[...posts].length}
                 next={fetchData}
-                hasMore={posts.at(-1).length !== 0}
+                hasMore={!(posts.at(-1).length < 6)}
                 loader={
                   <div className="space-y-2">
-                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
                     <div className="bg-neutral-900 h-36 rounded-2xl"></div>
                     <div className="bg-neutral-900 h-36 rounded-2xl"></div>
                   </div>
