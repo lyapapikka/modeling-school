@@ -4,13 +4,10 @@ import Content from "../../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
-  ChevronDownIcon,
   ChevronLeftIcon,
   Cog6ToothIcon,
-  CogIcon,
   EllipsisHorizontalIcon,
   LinkIcon,
-  PlusIcon,
   TrashIcon,
   UserMinusIcon,
   UserPlusIcon,
@@ -23,7 +20,7 @@ import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import api from "../../../utils/api";
-import fetcher from "../../../utils/fetcher";
+import fetcher, { countFetcher } from "../../../utils/fetcher";
 import TextareaAutosize from "react-textarea-autosize";
 import { formatRelative } from "date-fns";
 import russianLocale from "date-fns/locale/ru";
@@ -57,10 +54,8 @@ export default function Group() {
   const changePostText = ({ target: { value } }) => setPostText(value);
 
   const join = async () => {
-    mutateMembers(
-      [...members, { id: "", user_id: session.user.id, group_id: id }],
-      false
-    );
+    mutateUserIsMember([true], false);
+    mutateMembersCount((c) => Number(c) + 1, false);
 
     await supabaseClient
       .from("members")
@@ -68,10 +63,8 @@ export default function Group() {
   };
 
   const leave = async () => {
-    mutateMembers(
-      members.filter((m) => m.user_id !== session.user.id),
-      false
-    );
+    mutateUserIsMember([], false);
+    mutateMembersCount((c) => Number(c) - 1, false);
 
     await supabaseClient
       .from("members")
@@ -140,11 +133,18 @@ export default function Group() {
     fetcher
   );
 
-  const { data: members, mutate: mutateMembers } = useSWR(
+  const { data: userIsMember, mutate: mutateUserIsMember } = useSWR(
     !isLoading && session
-      ? api(`members?group_id=eq.${id}&select=*`, session)
+      ? api(`members?group_id=eq.${id}&user_id=eq.${session.user.id}`, session)
       : null,
     fetcher
+  );
+
+  const { data: membersCount, mutate: mutateMembersCount } = useSWR(
+    !isLoading && session
+      ? api(`members?group_id=eq.${id}`, session, { count: true })
+      : null,
+    countFetcher
   );
 
   useEffect(() => {
@@ -192,7 +192,7 @@ export default function Group() {
             </div>
           </div>
         )}
-        {!data || !posts || !members ? (
+        {!data || !posts || !membersCount || !userIsMember ? (
           <>
             <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
               <Link href="/home">
@@ -242,7 +242,7 @@ export default function Group() {
                 <div>
                   <div>{data[0].name}</div>
                   <div className="text-neutral-500">
-                    Участников: {members.length}
+                    Участников: {membersCount}
                   </div>
                 </div>
               </div>
@@ -252,9 +252,7 @@ export default function Group() {
             </div>
             <div className="px-2 flex gap-2">
               {session.user.id !== data[0].owner_id &&
-                (members.find(
-                  (m) => m.user_id === session.user.id && m.group_id === id
-                ) ? (
+                (userIsMember.length !== 0 ? (
                   <button
                     onClick={leave}
                     className="w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
