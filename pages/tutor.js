@@ -4,30 +4,19 @@ import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import tutors from "../tutors";
-import {
-  ArrowTopRightOnSquareIcon,
-  DocumentIcon,
-  MagnifyingGlassIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon } from "@heroicons/react/24/outline";
+import path from "path";
+import { promises as fs } from "fs";
 
-export default function Tutor() {
+export default function Tutor({ filenames }) {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
-  const [_origin, setOrigin] = useState("");
-  const [query, setQuery] = useState("");
-
-  const changeQuery = ({ target: { value } }) => setQuery(value);
 
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
     }
   }, [isLoading, session, router]);
-
-  useEffect(() => {
-    setOrigin(origin);
-  }, []);
 
   if (isLoading || !session) {
     return null;
@@ -40,29 +29,51 @@ export default function Tutor() {
       </Head>
       <Content>
         <Header home bookPage />
-        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-4">
+        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
           Учебник
         </div>
-        <div className="relative px-2 mb-4">
-          <input
-            value={query}
-            onChange={changeQuery}
-            placeholder="Поиск..."
-            className="rounded-2xl bg-neutral-700 py-2 pr-3 w-full pl-11"
-          />
-          <MagnifyingGlassIcon className="w-6 stroke-neutral-500 absolute left-5 top-1/2 -translate-y-1/2" />
-        </div>
-        {tutors.map((t, i) => (
-          <a
-            className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
-            href={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${_origin}/tutors/${t.filename}`}
-            key={i}
+        <div className="flex bg-neutral-900 rounded-2xl p-4 mb-2">
+          <svg
+            height="50"
+            className="shrink-0 mr-4"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0"
+            y="0"
+            viewBox="0 0 60 58.5"
           >
-            <DocumentIcon className="w-6 mr-4 shrink-0" />
-            {t.title}
-          </a>
-        ))}
+            <path
+              d="M10.6 0h38.8C55.2 0 60 4.8 60 10.6v37.2c0 5.9-4.8 10.6-10.6 10.6H10.6C4.8 58.5 0 53.7 0 47.9V10.6C0 4.8 4.8 0 10.6 0z"
+              fill="#b30b00"
+            />
+            <path
+              d="M48.2 33.9C47 32.6 44.7 32 41.4 32c-1.8 0-3.7.2-5.5.5-1.2-1.1-2.2-2.4-3.2-3.7-.7-1-1.4-2-2-3.1 1-2.8 1.6-5.8 1.8-8.8 0-2.7-1.1-5.6-4.1-5.6-1 0-2 .6-2.5 1.5-1.3 2.2-.8 6.7 1.3 11.4-.7 2.1-1.5 4.2-2.4 6.5-.8 2-1.7 3.9-2.8 5.7-3.1 1.2-9.6 4.2-10.2 7.5-.2 1 .1 2 .9 2.6.7.6 1.7 1 2.7.9 3.9 0 7.8-5.4 10.5-10.1 1.5-.5 3-1 4.6-1.4 1.7-.4 3.3-.8 4.8-1.1 4.2 3.6 7.9 4.2 9.7 4.2 2.5 0 3.5-1.1 3.8-2 .4-1.1.2-2.3-.6-3.1zm-2.7 1.9c-.1.7-.9 1.2-1.9 1.2-.3 0-.6 0-.9-.1-2-.5-3.9-1.5-5.5-2.8 1.3-.2 2.7-.3 4-.3.9 0 1.8.1 2.7.2.9.2 1.9.6 1.6 1.8zM27.6 13.7c.2-.3.5-.5.9-.6 1 0 1.2 1.1 1.2 2.1-.1 2.3-.5 4.5-1.2 6.7-1.7-4.3-1.5-7.2-.9-8.2zm5.6 19.2c-1.1.2-2.2.5-3.3.8-.8.2-1.6.5-2.5.7.4-.9.8-1.8 1.2-2.6.5-1.1.9-2.2 1.3-3.3.4.6.7 1.1 1.1 1.6.7 1 1.5 1.9 2.2 2.8zm-12.1 5.8c-2.5 4-5 6.6-6.4 6.6-.2 0-.5-.1-.6-.2-.3-.2-.4-.6-.3-.9.2-1.5 3.1-3.6 7.3-5.5z"
+              fill="#fff"
+            />
+          </svg>
+          Учебник рекомендуется смотреть в бесплатной версии программы Adobe
+          Acrobat Reader DC, которая доступна на всех платформах
+        </div>
+        <div className="space-y-2">
+          {filenames.map((f, i) => (
+            <a
+              className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
+              href={`/tutors/${f}`}
+              key={i}
+            >
+              {f}
+              <ArrowDownTrayIcon className="w-6 ml-auto shrink-0" />
+            </a>
+          ))}
+        </div>
       </Content>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const postsDirectory = path.join(process.cwd(), "public/tutors");
+  const filenames = await fs.readdir(postsDirectory);
+
+  return { props: { filenames } };
 }
