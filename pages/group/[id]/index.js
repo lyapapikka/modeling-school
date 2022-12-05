@@ -153,10 +153,6 @@ export default function Group() {
     fetcher
   );
 
-  useEffect(() => {
-    console.log(posts);
-  }, [posts]);
-
   const { data: userIsMember, mutate: mutateUserIsMember } = useSWR(
     !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}&user_id=eq.${session.user.id}`, session)
