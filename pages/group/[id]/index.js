@@ -25,6 +25,8 @@ import TextareaAutosize from "react-textarea-autosize";
 import { formatRelative } from "date-fns";
 import russianLocale from "date-fns/locale/ru";
 import { toast } from "react-toastify";
+import useSWRInfinite from "swr/infinite";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Group() {
   const [_origin, setOrigin] = useState("");
@@ -122,30 +124,54 @@ export default function Group() {
   };
 
   const { data } = useSWR(
-    !isLoading && session ? api(`groups?id=eq.${id}`, session) : null,
-    fetcher
-  );
-
-  const { data: posts, mutate } = useSWR(
-    !isLoading && session
-      ? api(`posts?group_id=eq.${id}&order=created_at.desc`, session)
+    !isLoading && session && router.isReady
+      ? api(`groups?id=eq.${id}`, session)
       : null,
     fetcher
   );
 
+  const {
+    data: posts,
+    size,
+    setSize,
+    mutate,
+  } = useSWRInfinite(
+    !isLoading && session && router.isReady
+      ? (pageIndex, previousPageData) => {
+          if (previousPageData && !previousPageData.length) {
+            return null;
+          }
+
+          return api(
+            `posts?group_id=eq.${id}&order=created_at.desc&offset=${
+              pageIndex * 6
+            }&limit=6`,
+            session
+          );
+        }
+      : null,
+    fetcher
+  );
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
+
   const { data: userIsMember, mutate: mutateUserIsMember } = useSWR(
-    !isLoading && session
+    !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}&user_id=eq.${session.user.id}`, session)
       : null,
     fetcher
   );
 
   const { data: membersCount, mutate: mutateMembersCount } = useSWR(
-    !isLoading && session
+    !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}`, session, { count: true })
       : null,
     countFetcher
   );
+
+  const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -192,25 +218,7 @@ export default function Group() {
             </div>
           </div>
         )}
-        {!data || !posts || !membersCount || !userIsMember ? (
-          <>
-            <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href="/groups">
-                <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                  <ChevronLeftIcon className="w-6" />
-                </a>
-              </Link>
-            </div>
-            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20"></div>
-            <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
-            <div className="space-y-2">
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-            </div>
-          </>
-        ) : (
+        {data && posts && membersCount && userIsMember ? (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -319,14 +327,27 @@ export default function Group() {
                 )}
               </div>
             )}
-            <div className="space-y-2 mb-8">
-              {posts &&
-                (posts.length === 0 ? (
-                  <div className="text-center text-neutral-500 mt-10">
-                    Нет записей
+            {posts.length === 0 ? (
+              <div className="text-center text-neutral-500 mt-10">
+                Нет записей
+              </div>
+            ) : (
+              <InfiniteScroll
+                className="space-y-2"
+                dataLength={[...posts].length}
+                next={fetchData}
+                hasMore={posts.at(-1).length !== 0}
+                loader={
+                  <div className="space-y-2">
+                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
                   </div>
-                ) : (
-                  posts.map((p) => (
+                }
+              >
+                {posts.map((post) =>
+                  post.map((p) => (
                     <div
                       className="bg-neutral-900 rounded-2xl py-1 px-4"
                       key={p.id}
@@ -409,7 +430,26 @@ export default function Group() {
                       </div>
                     </div>
                   ))
-                ))}
+                )}
+              </InfiniteScroll>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
+              <Link href="/groups">
+                <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                  <ChevronLeftIcon className="w-6" />
+                </a>
+              </Link>
+            </div>
+            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20"></div>
+            <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
+            <div className="space-y-2">
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
             </div>
           </>
         )}
