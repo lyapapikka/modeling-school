@@ -55,7 +55,7 @@ export default function New() {
         <title>Новая группа - Школа моделирования</title>
       </Head>
       <Content>
-        <Header href="/home" />
+        <Header href="/groups" />
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-4">
           Новая группа
         </div>

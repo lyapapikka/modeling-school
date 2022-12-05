@@ -5,11 +5,13 @@ import {
   XMarkIcon,
   ArchiveBoxIcon,
   ArrowLeftOnRectangleIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
   ArchiveBoxIcon as ArchiveBoxIconSolid,
+  UserGroupIcon as UserGroupIconSolid,
 } from "@heroicons/react/24/solid";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
@@ -17,6 +19,7 @@ import { useRouter } from "next/router";
 export default function Header({
   home,
   homePage,
+  groupsPage,
   bookPage,
   archivePage,
   href,
@@ -91,6 +94,11 @@ export default function Header({
                 <HomeIcon className="w-6" />
               </a>
             </Link>
+            <Link href="/groups">
+              <a className="mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <UserGroupIcon className="w-6" />
+              </a>
+            </Link>
             <Link href="/tutor">
               <a className="mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                 <BookOpenIcon className="w-6" />
@@ -117,32 +125,45 @@ export default function Header({
         </Link>
       )}
       {home && (
-        <div className="z-[99999] backdrop-blur sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full">
+        <div className="z-[99999] bg-neutral-900 border-t border-neutral-800 sm:hidden flex fixed justify-around bottom-0 left-0 right-0 w-full">
           <Link href="/home">
-            <a className="w-full flex justify-center sm:hover:bg-neutral-70 rounded-full py-3">
+            <a className="w-full text-xs flex flex-col items-center sm:hover:bg-neutral-70 rounded-full py-1">
               {homePage ? (
                 <HomeIconSolid className="w-6" />
               ) : (
                 <HomeIcon className="w-6" />
               )}
+              Главная
+            </a>
+          </Link>
+          <Link href="/groups">
+            <a className="w-full text-xs flex flex-col items-center sm:hover:bg-neutral-700 rounded-full py-1">
+              {groupsPage ? (
+                <UserGroupIconSolid className="w-6" />
+              ) : (
+                <UserGroupIcon className="w-6" />
+              )}
+              Группы
             </a>
           </Link>
           <Link href="/tutor">
-            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+            <a className="w-full text-xs flex flex-col items-center sm:hover:bg-neutral-700 rounded-full py-1">
               {bookPage ? (
                 <BookOpenIconSolid className="w-6" />
               ) : (
                 <BookOpenIcon className="w-6" />
               )}
+              Учебник
             </a>
           </Link>
           <Link href="/archive">
-            <a className="w-full flex justify-center sm:hover:bg-neutral-700 rounded-full py-3">
+            <a className="w-full text-xs flex flex-col items-center sm:hover:bg-neutral-700 rounded-full py-1">
               {archivePage ? (
                 <ArchiveBoxIconSolid className="w-6" />
               ) : (
                 <ArchiveBoxIcon className="w-6" />
               )}
+              Архив
             </a>
           </Link>
         </div>
