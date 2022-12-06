@@ -100,7 +100,7 @@ export default function Post() {
             >
               <div>
                 <div className="flex gap-4">
-                  <Link href={`/group/${data[0].groups.id}`}>
+                  <Link href={`/group/${data[0].groups.id}?from=post/${id}`}>
                     <a className="mt-4 ml-2">
                       <Image
                         alt=""
@@ -111,7 +111,7 @@ export default function Post() {
                     </a>
                   </Link>
                   <div>
-                    <Link href={`/group/${data[0].groups.id}`}>
+                    <Link href={`/group/${data[0].groups.id}?from=post/${id}`}>
                       <a className="mt-2 inline-block">{data[0].groups.name}</a>
                     </Link>
                     <div className="text-neutral-500">
@@ -129,7 +129,7 @@ export default function Post() {
                   <ReactLinkify
                     componentDecorator={(href, text, key) =>
                       href.startsWith(_origin) ? (
-                        <Link href={href} key={key}>
+                        <Link href={`${href}?from=post/${id}`} key={key}>
                           <a className="text-blue-500">{text}</a>
                         </Link>
                       ) : (

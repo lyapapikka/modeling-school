@@ -76,7 +76,7 @@ export default function Groups() {
           >
             {groups.map((group) =>
               group.map((g) => (
-                <Link href={`/group/${g.id}`} key={g.id}>
+                <Link href={`/group/${g.id}?from=groups`} key={g.id}>
                   <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4 items-center">
                     <div className="mt-2 ml-1 shrink-0">
                       <Image

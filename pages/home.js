@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "../components/Header";
 import Content from "../components/Content";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Home() {
   const router = useRouter();
+  const [_origin, setOrigin] = useState("");
   const { isLoading, session, supabaseClient } = useSessionContext();
 
   const addToArchive = async (post_id) => {
@@ -79,6 +80,10 @@ export default function Home() {
     }
   }, [session, router, isLoading]);
 
+  useEffect(() => {
+    setOrigin(origin);
+  }, []);
+
   if (isLoading || !session) {
     return null;
   }
@@ -119,7 +124,7 @@ export default function Home() {
                   >
                     <div>
                       <div className="flex gap-4">
-                        <Link href={`/group/${p.groups.id}`}>
+                        <Link href={`/group/${p.groups.id}?from=home`}>
                           <a className="mt-4 ml-2">
                             <Image
                               alt=""
@@ -130,7 +135,7 @@ export default function Home() {
                           </a>
                         </Link>
                         <div>
-                          <Link href={`/group/${p.groups.id}`}>
+                          <Link href={`/group/${p.groups.id}?from=home`}>
                             <a className="mt-2 inline-block">{p.groups.name}</a>
                           </Link>
                           <div className="text-neutral-500">
@@ -148,7 +153,7 @@ export default function Home() {
                         <ReactLinkify
                           componentDecorator={(href, text, key) =>
                             href.startsWith(_origin) ? (
-                              <Link href={href} key={key}>
+                              <Link href={`${href}?from=home`} key={key}>
                                 <a className="text-blue-500">{text}</a>
                               </Link>
                             ) : (

@@ -78,7 +78,7 @@ export default function Archive() {
                 >
                   <div>
                     <div className="flex gap-4">
-                      <Link href={`/group/${p.posts.groups.id}`}>
+                      <Link href={`/group/${p.posts.groups.id}?from=archive`}>
                         <a className="mt-4 ml-2">
                           <Image
                             alt=""
@@ -89,7 +89,7 @@ export default function Archive() {
                         </a>
                       </Link>
                       <div>
-                        <Link href={`/group/${p.posts.groups.id}`}>
+                        <Link href={`/group/${p.posts.groups.id}?from=archive`}>
                           <a className="mt-2 inline-block">
                             {p.posts.groups.name}
                           </a>
@@ -109,7 +109,7 @@ export default function Archive() {
                       <ReactLinkify
                         componentDecorator={(href, text, key) =>
                           href.startsWith(_origin) ? (
-                            <Link href={href} key={key}>
+                            <Link href={`${href}?from=archive`} key={key}>
                               <a className="text-blue-500">{text}</a>
                             </Link>
                           ) : (

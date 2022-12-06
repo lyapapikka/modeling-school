@@ -32,7 +32,7 @@ export default function Group() {
   const [_origin, setOrigin] = useState("");
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
-  const { id } = router.query;
+  const { id, from } = router.query;
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -40,7 +40,7 @@ export default function Group() {
 
   const deletePost = async () => {
     mutate(
-      posts.map(post => post.filter((p) => p.id !== selection)),
+      posts.map((post) => post.filter((p) => p.id !== selection)),
       false
     );
     setDeleteDialog(false);
@@ -116,7 +116,7 @@ export default function Group() {
   };
 
   const shareGroup = () => {
-    navigator.share({ url: location.href });
+    navigator.share({ url: `${origin}/group/${id}` });
   };
 
   const sharePost = (id) => {
@@ -220,7 +220,7 @@ export default function Group() {
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
             <div className="flex justify-between items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href="/groups">
+              <Link href={`/${from}` || "/home"}>
                 <a className="inline-block -my-1 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
@@ -377,7 +377,12 @@ export default function Group() {
                           <ReactLinkify
                             componentDecorator={(href, text, key) =>
                               href.startsWith(_origin) ? (
-                                <Link href={href} key={key}>
+                                <Link
+                                  href={`${href}?from=group/${id}?from=${
+                                    from || "/home"
+                                  }`}
+                                  key={key}
+                                >
                                   <a className="text-blue-500">{text}</a>
                                 </Link>
                               ) : (
@@ -431,11 +436,9 @@ export default function Group() {
         ) : (
           <>
             <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href="/groups">
-                <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-                  <ChevronLeftIcon className="w-6" />
-                </a>
-              </Link>
+              <div className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <ChevronLeftIcon className="w-6" />
+              </div>
             </div>
             <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20"></div>
             <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
