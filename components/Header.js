@@ -26,6 +26,7 @@ export default function Header({
 }) {
   const supabaseClient = useSupabaseClient();
   const router = useRouter();
+  const { from } = router.query;
 
   const logout = async () => {
     await supabaseClient.auth.signOut();
@@ -118,7 +119,7 @@ export default function Header({
           </button>
         </>
       ) : (
-        <Link href={href}>
+        <Link href={`${href}${from ? "?from=" + from : ""}`}>
           <a className="sm:hover:bg-neutral-700 rounded-full p-2 -mr-2">
             <XMarkIcon className="w-6" />
           </a>
