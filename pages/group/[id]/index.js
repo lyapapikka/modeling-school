@@ -12,6 +12,8 @@ import {
   UserMinusIcon,
   UserPlusIcon,
   FolderPlusIcon,
+  ChevronUpDownIcon,
+  EyeIcon,
 } from '@heroicons/react/24/outline'
 import ReactLinkify from 'react-linkify'
 import Link from 'next/link'
@@ -35,9 +37,11 @@ export default function Group() {
   const router = useRouter()
   const { id, from } = router.query
   const [postText, setPostText] = useState('')
+  const [folderName, setFolderName] = useState('')
   const [loading, setLoading] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selection, setSelection] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
   const deletePost = async () => {
     mutate(
@@ -87,6 +91,20 @@ export default function Group() {
 
     setLoading(false)
     setPostText('')
+  }
+
+  const sizeFolder = 0
+
+  const createFolder = async () => {
+    setLoading(true)
+    await supabaseClient
+      .from('folders')
+      .insert([{ text: folderName, group_id: id }])
+
+    mutate()
+
+    setLoading(false)
+    setFolderName('mark')
   }
 
   const addToArchive = async (post_id) => {
@@ -431,6 +449,53 @@ export default function Group() {
                         >
                           <LinkIcon className="w-6" />
                         </button>
+                      </div>
+                      <div className="text-m">Папок: {sizeFolder}</div>
+                      <div className="bg-neutral-800 rounded-2xl py-1 px-4 my-2">
+                        <div className="fixed py-2 rounded-2xl mr-9">
+                          <EyeIcon className="w-6" />
+                        </div>
+                        <div className="fixed py-2 ml-9 rounded-2xl pr-6 whitespace-pre-wrap">
+                          Папок нет
+                        </div>
+
+                        <>
+                          <div className="flex justify-end">
+                            <button
+                              className="px-2 py-2 text-purple-100 bg-neutral-800 rounded-2xl"
+                              type="button"
+                              onClick={() => setShowModal(true)}
+                            >
+                              <ChevronUpDownIcon className="w-6" />
+                            </button>
+                          </div>
+                          {showModal ? (
+                            <>
+                              <div className="fixed inset-0 flex justify-center items-center  z-[999999]">
+                                <div
+                                  className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
+                                  onClick={() => setShowModal(false)}
+                                ></div>
+                                <div className="flex items-center min-h-screen px-4 py-8">
+                                  <div className="relative w-full max-w-lg px-4 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg">
+                                    <div className="mt-3 sm:flex">
+                                      <div className="mt-2 text-center">
+                                        <div className="bg-neutral-800 rounded-2xl px-3 py-2 w-full">
+                                          <button>Создать папку</button>
+                                        </div>
+                                        <div className="mt-2 text-[15px] leading-relaxed text-white">
+                                          Список папок:
+                                        </div>
+
+                                        <div className="items-center gap-2 mt-3 sm:flex"></div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          ) : null}
+                        </>
                       </div>
                     </div>
                   )),
