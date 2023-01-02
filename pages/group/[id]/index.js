@@ -1,6 +1,6 @@
-import Head from "next/head";
-import Header from "../../../components/Header";
-import Content from "../../../components/Content";
+import Head from 'next/head'
+import Header from '../../../components/Header'
+import Content from '../../../components/Content'
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
@@ -11,176 +11,172 @@ import {
   TrashIcon,
   UserMinusIcon,
   UserPlusIcon,
-} from "@heroicons/react/24/outline";
-import ReactLinkify from "react-linkify";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { useSessionContext } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-import api from "../../../utils/api";
-import fetcher, { countFetcher } from "../../../utils/fetcher";
-import TextareaAutosize from "react-textarea-autosize";
-import { formatRelative } from "date-fns";
-import russianLocale from "date-fns/locale/ru";
-import { toast } from "react-toastify";
-import useSWRInfinite from "swr/infinite";
-import InfiniteScroll from "react-infinite-scroll-component";
+  FolderPlusIcon,
+} from '@heroicons/react/24/outline'
+import ReactLinkify from 'react-linkify'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { useSessionContext } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+import api from '../../../utils/api'
+import fetcher, { countFetcher } from '../../../utils/fetcher'
+import TextareaAutosize from 'react-textarea-autosize'
+import { formatRelative } from 'date-fns'
+import russianLocale from 'date-fns/locale/ru'
+import { toast } from 'react-toastify'
+import useSWRInfinite from 'swr/infinite'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 export default function Group() {
-  const [_origin, setOrigin] = useState("");
-  const { isLoading, session, supabaseClient } = useSessionContext();
-  const router = useRouter();
-  const { id, from } = router.query;
-  const [postText, setPostText] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [selection, setSelection] = useState("");
+  const [_origin, setOrigin] = useState('')
+  const { isLoading, session, supabaseClient } = useSessionContext()
+  const router = useRouter()
+  const { id, from } = router.query
+  const [postText, setPostText] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  const [selection, setSelection] = useState('')
 
   const deletePost = async () => {
     mutate(
       posts.map((post) => post.filter((p) => p.id !== selection)),
-      false
-    );
-    setDeleteDialog(false);
+      false,
+    )
+    setDeleteDialog(false)
 
-    await supabaseClient.from("posts").delete().eq("id", selection);
-  };
+    await supabaseClient.from('posts').delete().eq('id', selection)
+  }
 
   const showDeleteDialog = (id) => {
-    setSelection(id);
-    setDeleteDialog(true);
-  };
-  const hideDeleteDialog = () => setDeleteDialog(false);
-  const changePostText = ({ target: { value } }) => setPostText(value);
+    setSelection(id)
+    setDeleteDialog(true)
+  }
+  const hideDeleteDialog = () => setDeleteDialog(false)
+  const changePostText = ({ target: { value } }) => setPostText(value)
 
   const join = async () => {
-    mutateUserIsMember([true], false);
-    mutateMembersCount((c) => Number(c) + 1, false);
+    mutateUserIsMember([true], false)
+    mutateMembersCount((c) => Number(c) + 1, false)
 
     await supabaseClient
-      .from("members")
-      .insert([{ user_id: session.user.id, group_id: id }]);
-  };
+      .from('members')
+      .insert([{ user_id: session.user.id, group_id: id }])
+  }
 
   const leave = async () => {
-    mutateUserIsMember([], false);
-    mutateMembersCount((c) => Number(c) - 1, false);
+    mutateUserIsMember([], false)
+    mutateMembersCount((c) => Number(c) - 1, false)
 
     await supabaseClient
-      .from("members")
+      .from('members')
       .delete()
-      .eq("user_id", session.user.id)
-      .eq("group_id", id);
-  };
+      .eq('user_id', session.user.id)
+      .eq('group_id', id)
+  }
 
   const createPost = async () => {
-    setLoading(true);
+    setLoading(true)
 
     await supabaseClient
-      .from("posts")
-      .insert([{ text: postText, group_id: id }]);
+      .from('posts')
+      .insert([{ text: postText, group_id: id }])
 
-    mutate();
+    mutate()
 
-    setLoading(false);
-    setPostText("");
-  };
+    setLoading(false)
+    setPostText('')
+  }
 
   const addToArchive = async (post_id) => {
     const { data } = await supabaseClient
-      .from("archive")
+      .from('archive')
       .select()
-      .eq("user_id", session.user.id)
-      .eq("post_id", post_id);
+      .eq('user_id', session.user.id)
+      .eq('post_id', post_id)
 
     if (data.length === 0) {
       await supabaseClient
-        .from("archive")
-        .insert([{ user_id: session.user.id, post_id }]);
+        .from('archive')
+        .insert([{ user_id: session.user.id, post_id }])
     }
 
-    toast.success("Запись сохранена в архиве", {
-      position: "bottom-right",
+    toast.success('Запись сохранена в архиве', {
+      position: 'bottom-right',
       autoClose: 2000,
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: 'light',
       closeButton: false,
-      className: "bottom-14 sm:bottom-auto m-2",
-    });
-  };
+      className: 'bottom-14 sm:bottom-auto m-2',
+    })
+  }
 
   const shareGroup = () => {
-    navigator.share({ url: `${origin}/group/${id}` });
-  };
+    navigator.share({ url: `${origin}/group/${id}` })
+  }
 
   const sharePost = (id) => {
-    navigator.share({ url: `${origin}/post/${id}` });
-  };
+    navigator.share({ url: `${origin}/post/${id}` })
+  }
 
   const { data } = useSWR(
     !isLoading && session && router.isReady
       ? api(`groups?id=eq.${id}`, session)
       : null,
-    fetcher
-  );
+    fetcher,
+  )
 
-  const {
-    data: posts,
-    size,
-    setSize,
-    mutate,
-  } = useSWRInfinite(
+  const { data: posts, size, setSize, mutate } = useSWRInfinite(
     !isLoading && session && router.isReady
       ? (pageIndex, previousPageData) => {
           if (previousPageData && !previousPageData.length) {
-            return null;
+            return null
           }
 
           return api(
             `posts?group_id=eq.${id}&order=created_at.desc&offset=${
               pageIndex * 6
             }&limit=6`,
-            session
-          );
+            session,
+          )
         }
       : null,
-    fetcher
-  );
+    fetcher,
+  )
 
   const { data: userIsMember, mutate: mutateUserIsMember } = useSWR(
     !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}&user_id=eq.${session.user.id}`, session)
       : null,
-    fetcher
-  );
+    fetcher,
+  )
 
   const { data: membersCount, mutate: mutateMembersCount } = useSWR(
     !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}`, session, { count: true })
       : null,
-    countFetcher
-  );
+    countFetcher,
+  )
 
-  const fetchData = () => setSize(size + 1);
+  const fetchData = () => setSize(size + 1)
 
   useEffect(() => {
     if (!isLoading && !session) {
-      router.replace("/");
+      router.replace('/')
     }
-  }, [session, router, isLoading]);
+  }, [session, router, isLoading])
 
   useEffect(() => {
-    setOrigin(origin);
-  }, []);
+    setOrigin(origin)
+  }, [])
 
   if (isLoading || !session) {
-    return null;
+    return null
   }
 
   return (
@@ -220,7 +216,7 @@ export default function Group() {
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
             <div className="flex justify-between items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href={`/${from}` || "/home"}>
+              <Link href={`/${from}` || '/home'}>
                 <a className="inline-block -my-1 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
@@ -277,20 +273,20 @@ export default function Group() {
                 onClick={shareGroup}
                 className={`flex ${
                   session.user.id !== data[0].owner_id
-                    ? "w-fit sm:w-full"
-                    : "w-full"
+                    ? 'w-fit sm:w-full'
+                    : 'w-full'
                 } justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2`}
               >
                 <LinkIcon
                   className={`w-6 ${
-                    session.user.id !== data[0].owner_id ? "sm:mr-2" : "mr-2"
+                    session.user.id !== data[0].owner_id ? 'sm:mr-2' : 'mr-2'
                   }`}
                 />
                 <div
                   className={`leading-6 ${
                     session.user.id !== data[0].owner_id
-                      ? "hidden sm:block"
-                      : ""
+                      ? 'hidden sm:block'
+                      : ''
                   }`}
                 >
                   Поделиться
@@ -368,7 +364,7 @@ export default function Group() {
                               {formatRelative(
                                 new Date(p.created_at),
                                 new Date(),
-                                { locale: russianLocale }
+                                { locale: russianLocale },
                               )}
                             </div>
                           </div>
@@ -379,7 +375,7 @@ export default function Group() {
                               href.startsWith(_origin) ? (
                                 <Link
                                   href={`${href}?from=group/${id}?from=${
-                                    from || "/home"
+                                    from || '/home'
                                   }`}
                                   key={key}
                                 >
@@ -408,8 +404,17 @@ export default function Group() {
                           onClick={() => addToArchive(p.id)}
                           className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
                         >
-                          <ArchiveBoxArrowDownIcon className="w-6" />
+                          <ArchiveBoxArrowDownIcon className="w-6 " />
                         </button>
+                        {session.user.id === data[0].owner_id && (
+                          <button
+                            title="Создать папку"
+                            onClick={() => createFolder(p.id)}
+                            className="p-2 -m-2 mr-auto ml-3 sm:hover:bg-neutral-700 rounded-full"
+                          >
+                            <FolderPlusIcon className="w-6" />
+                          </button>
+                        )}
                         {session.user.id === data[0].owner_id && (
                           <button
                             title="Удалить"
@@ -428,7 +433,7 @@ export default function Group() {
                         </button>
                       </div>
                     </div>
-                  ))
+                  )),
                 )}
               </InfiniteScroll>
             )}
@@ -452,5 +457,5 @@ export default function Group() {
         )}
       </Content>
     </>
-  );
+  )
 }
