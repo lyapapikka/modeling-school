@@ -1,79 +1,79 @@
-import Head from "next/head";
-import Content from "../../components/Content";
-import Header from "../../components/Header";
-import { useSessionContext } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import api from "../../utils/api";
-import fetcher from "../../utils/fetcher";
-import Link from "next/link";
-import { formatRelative } from "date-fns";
-import russianLocale from "date-fns/locale/ru";
-import Image from "next/image";
-import { toast } from "react-toastify";
-import ReactLinkify from "react-linkify";
+import Head from 'next/head'
+import Content from '../../components/Content'
+import Header from '../../components/Header'
+import { useSessionContext } from '@supabase/auth-helpers-react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import api from '../../utils/api'
+import fetcher from '../../utils/fetcher'
+import Link from 'next/link'
+import { formatRelative } from 'date-fns'
+import russianLocale from 'date-fns/locale/ru'
+import Image from 'next/image'
+import { toast } from 'react-toastify'
+import ReactLinkify from 'react-linkify'
 import {
   ArchiveBoxArrowDownIcon,
   LinkIcon,
   ChevronLeftIcon,
-} from "@heroicons/react/24/outline";
+} from '@heroicons/react/24/outline'
 
 export default function Post() {
-  const { isLoading, session, supabaseClient } = useSessionContext();
-  const router = useRouter();
-  const { id } = router.query;
+  const { isLoading, session, supabaseClient } = useSessionContext()
+  const router = useRouter()
+  const { id } = router.query
   const { data } = useSWR(
     !isLoading && session
       ? api(`posts?id=eq.${id}&select=*,groups(name,id)`, session)
       : null,
-    fetcher
-  );
-  const [_origin, setOrigin] = useState("");
+    fetcher,
+  )
+  const [_origin, setOrigin] = useState('')
 
   const addToArchive = async (post_id) => {
     const { data } = await supabaseClient
-      .from("archive")
+      .from('archive')
       .select()
-      .eq("user_id", session.user.id)
-      .eq("post_id", post_id);
+      .eq('user_id', session.user.id)
+      .eq('post_id', post_id)
 
     if (data.length === 0) {
       await supabaseClient
-        .from("archive")
-        .insert([{ user_id: session.user.id, post_id }]);
+        .from('archive')
+        .insert([{ user_id: session.user.id, post_id }])
     }
 
-    toast.success("Запись сохранена в архиве", {
-      position: "bottom-right",
+    toast.success('Запись сохранена в архиве', {
+      position: 'bottom-right',
       autoClose: 2000,
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: 'light',
       closeButton: false,
-      className: "bottom-14 sm:bottom-auto m-2",
-    });
-  };
+      className: 'bottom-14 sm:bottom-auto m-2',
+    })
+  }
 
   const sharePost = (id) => {
-    navigator.share({ url: `${origin}/post/${id}` });
-  };
+    navigator.share({ url: `${origin}/post/${id}` })
+  }
 
   useEffect(() => {
     if (!isLoading && !session) {
-      router.replace("/");
+      router.replace('/')
     }
-  }, [isLoading, session, router]);
+  }, [isLoading, session, router])
 
   useEffect(() => {
-    setOrigin(origin);
-  }, []);
+    setOrigin(origin)
+  }, [])
 
   if (isLoading || !session) {
-    return null;
+    return null
   }
 
   return (
@@ -120,7 +120,7 @@ export default function Post() {
                         new Date(),
                         {
                           locale: russianLocale,
-                        }
+                        },
                       )}
                     </div>
                   </div>
@@ -170,5 +170,5 @@ export default function Post() {
         )}
       </Content>
     </>
-  );
+  )
 }
