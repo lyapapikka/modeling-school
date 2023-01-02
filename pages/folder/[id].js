@@ -19,7 +19,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
-export default function Ribbon() {
+export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
 
@@ -36,7 +36,7 @@ export default function Ribbon() {
   return (
     <>
       <Head>
-        <title>Лента - Школа моделирования</title>
+        <title>Папка - Школа моделирования</title>
       </Head>
       <Content>
         <Header home groupsPage />
@@ -47,7 +47,7 @@ export default function Ribbon() {
             </a>
           </Link>
           <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl">
-            Лента
+            Папка
           </div>
         </div>
         <div className="space-y-2">
