@@ -451,30 +451,34 @@ export default function Group() {
                         </button>
                       </div>
                       <div className="text-m">Папок: {sizeFolder}</div>
-                      <div className="bg-neutral-800 rounded-2xl py-1 px-4 my-2">
-                        <div className="fixed py-2 rounded-2xl mr-9">
+                      <div
+                        className="bg-neutral-800 rounded-2xl py-1 px-4 my-2"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <div className="absolute py-2 rounded-2xl mr-9">
                           <EyeIcon className="w-6" />
                         </div>
-                        <div className="fixed py-2 ml-9 rounded-2xl pr-6 whitespace-pre-wrap">
+
+                        <div className="absolute py-2 ml-9 rounded-2xl pr-6 whitespace-pre-wrap">
                           Папок нет
                         </div>
 
                         <>
                           <div className="flex justify-end">
                             <button
-                              className="px-2 py-2 text-purple-100 bg-neutral-800 rounded-2xl"
+                              className="py-2 text-purple-100 bg-neutral-800 rounded-2xl"
                               type="button"
-                              onClick={() => setShowModal(true)}
                             >
                               <ChevronUpDownIcon className="w-6" />
                             </button>
                           </div>
+
                           {showModal ? (
                             <>
                               <div className="fixed inset-0 flex justify-center items-center  z-[999999]">
                                 <div
                                   className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
-                                  onClick={() => setShowModal(false)}
+                                  onClickCapture={() => setShowModal(false)}
                                 ></div>
                                 <div className="flex items-center min-h-screen px-4 py-8">
                                   <div className="relative w-full max-w-lg px-4 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg">
