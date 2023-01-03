@@ -14,6 +14,7 @@ import {
   FolderPlusIcon,
   ChevronUpDownIcon,
   EyeIcon,
+  XMarkIcon,
 } from '@heroicons/react/24/outline'
 import ReactLinkify from 'react-linkify'
 import Link from 'next/link'
@@ -451,8 +452,44 @@ export default function Group() {
                         </button>
                       </div>
                       <div className="text-m">Папок: {sizeFolder}</div>
+
+                      {showModal ? (
+                        <>
+                          <div className="fixed inset-0 flex justify-center items-center  z-[999999]">
+                            <div
+                              className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
+                              onClick={() => setShowModal(false)}
+                            ></div>
+                            <div className="flex items-center min-h-screen px-4 py-8">
+                              <div className="relative w-full max-w-lg px-4 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg cursor-default">
+                                <div className="mt-3 sm:flex">
+                                  <div className="mt-2 text-center">
+                                    <div className="flex">
+                                      <div className=" bg-neutral-800 rounded-2xl ml-2 px-3 py-2 w-full">
+                                        <button>Создать папку</button>
+                                      </div>
+                                      <div
+                                        className="relative self-center ml-20 cursor-pointer"
+                                        onClick={() => setShowModal(false)}
+                                      >
+                                        <XMarkIcon className="w-6" />
+                                      </div>
+                                    </div>
+                                    <div className="mt-2 ml-2 px-3 py-2 text-[15px] leading-relaxed text-white text-start">
+                                      Список папок:
+                                    </div>
+
+                                    <div className="items-center gap-2 mt-3 sm:flex"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : null}
+
                       <div
-                        className="bg-neutral-800 rounded-2xl py-1 px-4 my-2"
+                        className="bg-neutral-800 rounded-2xl py-1 px-4 my-2 cursor-pointer"
                         onClick={() => setShowModal(true)}
                       >
                         <div className="absolute py-2 rounded-2xl mr-9">
@@ -472,33 +509,6 @@ export default function Group() {
                               <ChevronUpDownIcon className="w-6" />
                             </button>
                           </div>
-
-                          {showModal ? (
-                            <>
-                              <div className="fixed inset-0 flex justify-center items-center  z-[999999]">
-                                <div
-                                  className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
-                                  onClickCapture={() => setShowModal(false)}
-                                ></div>
-                                <div className="flex items-center min-h-screen px-4 py-8">
-                                  <div className="relative w-full max-w-lg px-4 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg">
-                                    <div className="mt-3 sm:flex">
-                                      <div className="mt-2 text-center">
-                                        <div className="bg-neutral-800 rounded-2xl px-3 py-2 w-full">
-                                          <button>Создать папку</button>
-                                        </div>
-                                        <div className="mt-2 text-[15px] leading-relaxed text-white">
-                                          Список папок:
-                                        </div>
-
-                                        <div className="items-center gap-2 mt-3 sm:flex"></div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </>
-                          ) : null}
                         </>
                       </div>
                     </div>
