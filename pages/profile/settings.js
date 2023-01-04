@@ -16,14 +16,21 @@ import {
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import useSWR from "swr";
+import api from "../../utils/api";
+import fetcher from "../../utils/fetcher";
 
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const user = useUser();
   const supabase = useSupabaseClient();
+
+  const { data: user } = useSWR(
+    !isLoading && session ? api(`user`, session, { user: true }) : null,
+    fetcher
+  );
 
   const changeName = ({ target: { value } }) => setName(value);
 
