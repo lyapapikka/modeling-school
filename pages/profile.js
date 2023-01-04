@@ -12,7 +12,12 @@ import Image from "next/image";
 import { formatRelative } from "date-fns";
 import russianLocale from "date-fns/locale/ru";
 import ReactLinkify from "react-linkify";
-import { ArchiveBoxXMarkIcon, LinkIcon } from "@heroicons/react/24/outline";
+import {
+  ArchiveBoxXMarkIcon,
+  Cog6ToothIcon,
+  LinkIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
@@ -65,12 +70,28 @@ export default function Profile() {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
           Профиль
         </div>
-
+        <div className="bg-neutral-900 rounded-2xl relative">
+          <div className="flex justify-center pt-4">
+            <Image
+              src="/cat.jpg"
+              width={100}
+              height={100}
+              objectFit="cover"
+              className="rounded-full"
+            />
+          </div>
+          <div className="flex mt-2 pb-4 items-center justify-center -mr-10">
+            <div className="text-lg">Кот Матроскин</div>
+            <button className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <PencilSquareIcon className="w-6" />
+            </button>
+          </div>
+        </div>
         <div className="space-y-2 mb-8">
           {data ? (
             data.length === 0 ? (
               <div className="text-center text-neutral-500 mt-10">
-                Архив пуст
+                Нет сохраненных записей
               </div>
             ) : (
               data.map((p) => (
