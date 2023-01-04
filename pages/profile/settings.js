@@ -4,7 +4,6 @@ import Header from "../../components/Header";
 import {
   useSessionContext,
   useSupabaseClient,
-  useUser,
 } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -19,15 +18,17 @@ import Image from "next/image";
 import useSWR from "swr";
 import api from "../../utils/api";
 import fetcher from "../../utils/fetcher";
+import { nanoid } from "nanoid";
 
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const supabase = useSupabaseClient();
 
-  const { data: user } = useSWR(
+  const { data: user, mutate } = useSWR(
     !isLoading && session ? api(`user`, session, { user: true }) : null,
     fetcher
   );
@@ -43,6 +44,15 @@ export default function Settings() {
     setLoading(true);
     await supabase.auth.updateUser({ data: { name } });
     router.push("/profile");
+  };
+
+  const uploadPhoto = async ({ target: { files } }) => {
+    setImageLoading(true);
+    const picture = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
+    await supabase.storage.from("profile").upload(picture, files[0]);
+    await supabase.auth.updateUser({ data: { name, picture } });
+    mutate();
+    setImageLoading(false);
   };
 
   useEffect(() => {
@@ -75,7 +85,7 @@ export default function Settings() {
               <div className="shrink-0">
                 {user?.user_metadata?.picture ? (
                   <Image
-                    src="/cat.jpg"
+                    src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile/${user.user_metadata.picture}`}
                     width={100}
                     height={100}
                     objectFit="cover"
@@ -91,14 +101,27 @@ export default function Settings() {
                 <div className="text-lg mb-2 line-clamp-1">
                   {user?.user_metadata?.name || "Неизвестный пользователь"}
                 </div>
-                <input type="file" accept="image/*" id="upload" hidden />
-                <label
-                  htmlFor="upload"
-                  className="cursor-pointer w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2"
-                >
-                  <PhotoIcon className="w-6 mr-2" />
-                  Изменить фото
-                </label>
+                <input
+                  onChange={uploadPhoto}
+                  type="file"
+                  accept="image/*"
+                  id="upload"
+                  hidden
+                />
+                {imageLoading ? (
+                  <div className="w-full rounded-2xl bg-neutral-900 justify-center flex py-2">
+                    <EllipsisHorizontalIcon className="w-6 mr-2" />
+                    Обновляем фото
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="upload"
+                    className="cursor-pointer w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2"
+                  >
+                    <PhotoIcon className="w-6 mr-2" />
+                    Изменить фото
+                  </label>
+                )}
               </div>
             </div>
             <input

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Content from "../../components/Content";
 import Header from "../../components/Header";
-import { useSessionContext, useUser } from "@supabase/auth-helpers-react";
+import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import api from "../../utils/api";
@@ -80,7 +80,7 @@ export default function Profile() {
             {user ? (
               user?.user_metadata?.picture ? (
                 <Image
-                  src="/cat.jpg"
+                  src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile/${user.user_metadata.picture}`}
                   width={100}
                   height={100}
                   objectFit="cover"
