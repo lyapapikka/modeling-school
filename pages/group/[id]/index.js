@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import Header from '../../../components/Header'
-import Content from '../../../components/Content'
+import Head from "next/head";
+import Header from "../../../components/Header";
+import Content from "../../../components/Content";
 import {
   ArchiveBoxArrowDownIcon,
   CheckIcon,
@@ -15,187 +15,196 @@ import {
   ChevronUpDownIcon,
   EyeIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import ReactLinkify from 'react-linkify'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import { useSessionContext } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-import api from '../../../utils/api'
-import fetcher, { countFetcher } from '../../../utils/fetcher'
-import TextareaAutosize from 'react-textarea-autosize'
-import { formatRelative } from 'date-fns'
-import russianLocale from 'date-fns/locale/ru'
-import { toast } from 'react-toastify'
-import useSWRInfinite from 'swr/infinite'
-import InfiniteScroll from 'react-infinite-scroll-component'
-
+} from "@heroicons/react/24/outline";
+import ReactLinkify from "react-linkify";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useSessionContext } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import api from "../../../utils/api";
+import fetcher, { countFetcher } from "../../../utils/fetcher";
+import TextareaAutosize from "react-textarea-autosize";
+import { formatRelative } from "date-fns";
+import russianLocale from "date-fns/locale/ru";
+import { toast } from "react-toastify";
+import useSWRInfinite from "swr/infinite";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Modal from "../../../components/Modal";
 export default function Group() {
-  const [_origin, setOrigin] = useState('')
-  const { isLoading, session, supabaseClient } = useSessionContext()
-  const router = useRouter()
-  const { id, from } = router.query
-  const [postText, setPostText] = useState('')
-  const [folderName, setFolderName] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [deleteDialog, setDeleteDialog] = useState(false)
-  const [selection, setSelection] = useState('')
-  const [showModal, setShowModal] = useState(false)
+  const [_origin, setOrigin] = useState("");
+  const { isLoading, session, supabaseClient } = useSessionContext();
+  const router = useRouter();
+  const { id, from } = router.query;
+  const [postText, setPostText] = useState("");
+  const [folderName, setFolderName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [selection, setSelection] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const deletePost = async () => {
     mutate(
       posts.map((post) => post.filter((p) => p.id !== selection)),
-      false,
-    )
-    setDeleteDialog(false)
+      false
+    );
+    setDeleteDialog(false);
 
-    await supabaseClient.from('posts').delete().eq('id', selection)
-  }
+    await supabaseClient.from("posts").delete().eq("id", selection);
+  };
 
   const showDeleteDialog = (id) => {
-    setSelection(id)
-    setDeleteDialog(true)
-  }
-  const hideDeleteDialog = () => setDeleteDialog(false)
-  const changePostText = ({ target: { value } }) => setPostText(value)
+    setSelection(id);
+    setDeleteDialog(true);
+  };
+  const hideDeleteDialog = () => setDeleteDialog(false);
+
+  const hideModal = () => setShowModal(false);
+  const openModal = () => setShowModal(true);
+
+  const changePostText = ({ target: { value } }) => setPostText(value);
 
   const join = async () => {
-    mutateUserIsMember([true], false)
-    mutateMembersCount((c) => Number(c) + 1, false)
+    mutateUserIsMember([true], false);
+    mutateMembersCount((c) => Number(c) + 1, false);
 
     await supabaseClient
-      .from('members')
-      .insert([{ user_id: session.user.id, group_id: id }])
-  }
+      .from("members")
+      .insert([{ user_id: session.user.id, group_id: id }]);
+  };
 
   const leave = async () => {
-    mutateUserIsMember([], false)
-    mutateMembersCount((c) => Number(c) - 1, false)
+    mutateUserIsMember([], false);
+    mutateMembersCount((c) => Number(c) - 1, false);
 
     await supabaseClient
-      .from('members')
+      .from("members")
       .delete()
-      .eq('user_id', session.user.id)
-      .eq('group_id', id)
-  }
+      .eq("user_id", session.user.id)
+      .eq("group_id", id);
+  };
 
   const createPost = async () => {
-    setLoading(true)
+    setLoading(true);
 
     await supabaseClient
-      .from('posts')
-      .insert([{ text: postText, group_id: id }])
+      .from("posts")
+      .insert([{ text: postText, group_id: id }]);
 
-    mutate()
+    mutate();
 
-    setLoading(false)
-    setPostText('')
-  }
+    setLoading(false);
+    setPostText("");
+  };
 
-  const sizeFolder = 0
+  const sizeFolder = 0;
 
   const createFolder = async () => {
-    setLoading(true)
+    setLoading(true);
     await supabaseClient
-      .from('folders')
-      .insert([{ text: folderName, group_id: id }])
+      .from("folders")
+      .insert([{ text: folderName, group_id: id }]);
 
-    mutate()
+    mutate();
 
-    setLoading(false)
-    setFolderName('mark')
-  }
+    setLoading(false);
+    setFolderName("mark");
+  };
 
   const addToArchive = async (post_id) => {
     const { data } = await supabaseClient
-      .from('archive')
+      .from("archive")
       .select()
-      .eq('user_id', session.user.id)
-      .eq('post_id', post_id)
+      .eq("user_id", session.user.id)
+      .eq("post_id", post_id);
 
     if (data.length === 0) {
       await supabaseClient
-        .from('archive')
-        .insert([{ user_id: session.user.id, post_id }])
+        .from("archive")
+        .insert([{ user_id: session.user.id, post_id }]);
     }
 
-    toast.success('Запись сохранена в архиве', {
-      position: 'bottom-right',
+    toast.success("Запись сохранена в архиве", {
+      position: "bottom-right",
       autoClose: 2000,
       hideProgressBar: true,
       closeOnClick: false,
       pauseOnHover: false,
       draggable: true,
       progress: undefined,
-      theme: 'light',
+      theme: "light",
       closeButton: false,
-      className: 'bottom-14 sm:bottom-auto m-2',
-    })
-  }
+      className: "bottom-14 sm:bottom-auto m-2",
+    });
+  };
 
   const shareGroup = () => {
-    navigator.share({ url: `${origin}/group/${id}` })
-  }
+    navigator.share({ url: `${origin}/group/${id}` });
+  };
 
   const sharePost = (id) => {
-    navigator.share({ url: `${origin}/post/${id}` })
-  }
+    navigator.share({ url: `${origin}/post/${id}` });
+  };
 
   const { data } = useSWR(
     !isLoading && session && router.isReady
       ? api(`groups?id=eq.${id}`, session)
       : null,
-    fetcher,
-  )
+    fetcher
+  );
 
-  const { data: posts, size, setSize, mutate } = useSWRInfinite(
+  const {
+    data: posts,
+    size,
+    setSize,
+    mutate,
+  } = useSWRInfinite(
     !isLoading && session && router.isReady
       ? (pageIndex, previousPageData) => {
           if (previousPageData && !previousPageData.length) {
-            return null
+            return null;
           }
 
           return api(
             `posts?group_id=eq.${id}&order=created_at.desc&offset=${
               pageIndex * 6
             }&limit=6`,
-            session,
-          )
+            session
+          );
         }
       : null,
-    fetcher,
-  )
+    fetcher
+  );
 
   const { data: userIsMember, mutate: mutateUserIsMember } = useSWR(
     !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}&user_id=eq.${session.user.id}`, session)
       : null,
-    fetcher,
-  )
+    fetcher
+  );
 
   const { data: membersCount, mutate: mutateMembersCount } = useSWR(
     !isLoading && session && router.isReady
       ? api(`members?group_id=eq.${id}`, session, { count: true })
       : null,
-    countFetcher,
-  )
+    countFetcher
+  );
 
-  const fetchData = () => setSize(size + 1)
+  const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
     if (!isLoading && !session) {
-      router.replace('/')
+      router.replace("/");
     }
-  }, [session, router, isLoading])
+  }, [session, router, isLoading]);
 
   useEffect(() => {
-    setOrigin(origin)
-  }, [])
+    setOrigin(origin);
+  }, []);
 
   if (isLoading || !session) {
-    return null
+    return null;
   }
 
   return (
@@ -235,7 +244,7 @@ export default function Group() {
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
             <div className="flex justify-between items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href={`/${from}` || '/home'}>
+              <Link href={`/${from}` || "/home"}>
                 <a className="inline-block -my-1 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
@@ -292,20 +301,20 @@ export default function Group() {
                 onClick={shareGroup}
                 className={`flex ${
                   session.user.id !== data[0].owner_id
-                    ? 'w-fit sm:w-full'
-                    : 'w-full'
+                    ? "w-fit sm:w-full"
+                    : "w-full"
                 } justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2`}
               >
                 <LinkIcon
                   className={`w-6 ${
-                    session.user.id !== data[0].owner_id ? 'sm:mr-2' : 'mr-2'
+                    session.user.id !== data[0].owner_id ? "sm:mr-2" : "mr-2"
                   }`}
                 />
                 <div
                   className={`leading-6 ${
                     session.user.id !== data[0].owner_id
-                      ? 'hidden sm:block'
-                      : ''
+                      ? "hidden sm:block"
+                      : ""
                   }`}
                 >
                   Поделиться
@@ -383,7 +392,7 @@ export default function Group() {
                               {formatRelative(
                                 new Date(p.created_at),
                                 new Date(),
-                                { locale: russianLocale },
+                                { locale: russianLocale }
                               )}
                             </div>
                           </div>
@@ -394,7 +403,7 @@ export default function Group() {
                               href.startsWith(_origin) ? (
                                 <Link
                                   href={`${href}?from=group/${id}?from=${
-                                    from || '/home'
+                                    from || "/home"
                                   }`}
                                   key={key}
                                 >
@@ -452,45 +461,9 @@ export default function Group() {
                         </button>
                       </div>
                       <div className="text-m">Папок: {sizeFolder}</div>
-
-                      {showModal ? (
-                        <>
-                          <div className="fixed inset-0 flex justify-center items-center  z-[999999]">
-                            <div
-                              className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
-                              onClick={() => setShowModal(false)}
-                            ></div>
-                            <div className="flex items-center min-h-screen px-4 py-8">
-                              <div className="relative w-full max-w-lg px-4 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg cursor-default">
-                                <div className="mt-3 sm:flex">
-                                  <div className="mt-2 text-center">
-                                    <div className="flex">
-                                      <div className=" bg-neutral-800 rounded-2xl ml-2 px-3 py-2 w-full">
-                                        <button>Создать папку</button>
-                                      </div>
-                                      <div
-                                        className="relative self-center ml-20 cursor-pointer"
-                                        onClick={() => setShowModal(false)}
-                                      >
-                                        <XMarkIcon className="w-6" />
-                                      </div>
-                                    </div>
-                                    <div className="mt-2 ml-2 px-3 py-2 text-[15px] leading-relaxed text-white text-start">
-                                      Список папок:
-                                    </div>
-
-                                    <div className="items-center gap-2 mt-3 sm:flex"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </>
-                      ) : null}
-
                       <div
                         className="bg-neutral-800 rounded-2xl py-1 px-4 my-2 cursor-pointer"
-                        onClick={() => setShowModal(true)}
+                        onClick={openModal}
                       >
                         <div className="absolute py-2 rounded-2xl mr-9">
                           <EyeIcon className="w-6" />
@@ -511,8 +484,28 @@ export default function Group() {
                           </div>
                         </>
                       </div>
+                      {showModal && (
+                        <Modal onClose={hideModal}>
+                          <div className="mt-2 text-center">
+                            <div className="flex">
+                              <div className=" bg-neutral-800 rounded-2xl ml-2 px-3 py-2 w-full">
+                                <button>Создать папку</button>
+                              </div>
+                              <div
+                                className="relative self-center ml-20 cursor-pointer"
+                                onClick={hideModal}
+                              >
+                                <XMarkIcon className="w-6" />
+                              </div>
+                            </div>
+                            <div className="mt-2 ml-2 px-3 py-2 text-[15px] leading-relaxed text-white text-start">
+                              Список папок:
+                            </div>
+                          </div>
+                        </Modal>
+                      )}
                     </div>
-                  )),
+                  ))
                 )}
               </InfiniteScroll>
             )}
@@ -536,5 +529,5 @@ export default function Group() {
         )}
       </Content>
     </>
-  )
+  );
 }
