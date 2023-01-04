@@ -58,7 +58,9 @@ export default function Folder() {
           </div>
         </div>
         <div className="bg-neutral-900 rounded-2xl py-2 px-4 mb-2 space-y-4">
-          <div className="text-xl mr-auto line-clamp-1 mt-1 text-center">Название папки</div>
+          <div className="text-xl mr-auto line-clamp-1 mt-1 text-center">
+            Название папки
+          </div>
           {/* <input
             placeholder="Название группы"
             className="bg-neutral-700 py-2 px-3 rounded-2xl mr-4 w-full mt-2"
@@ -71,6 +73,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
             </div>
             <div className="shrink-0">
@@ -80,6 +83,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
             </div>
             <div className="shrink-0">
@@ -89,6 +93,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
             </div>
           </div>
@@ -133,6 +138,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
               <div className="ml-2 line-clamp-1">Кот Матроскин</div>
             </div>
@@ -164,6 +170,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
               <div className="ml-2 line-clamp-1">Кот Матроскин</div>
             </div>
@@ -201,11 +208,12 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
               <div className="ml-2 line-clamp-1">Кот Матроскин</div>
             </div>
             <div className="relative aspect-video mb-2">
-              <Image objectFit="contain" layout="fill" src="/cat.jpg" />
+              <Image objectFit="contain" layout="fill" src="/cat.jpg" alt="" />
             </div>
             <div className="flex">
               <button
@@ -236,6 +244,7 @@ export default function Folder() {
                 width={40}
                 objectFit="cover"
                 className="rounded-full"
+                alt=""
               />
               <div className="ml-2 line-clamp-1">Кот Матроскин</div>
             </div>

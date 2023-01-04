@@ -90,6 +90,7 @@ export default function Settings() {
                     height={100}
                     objectFit="cover"
                     className="rounded-full"
+                    alt=""
                   />
                 ) : (
                   <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
