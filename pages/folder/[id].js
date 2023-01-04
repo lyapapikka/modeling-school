@@ -18,6 +18,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import ReactTextareaAutosize from "react-textarea-autosize";
 
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
@@ -66,6 +67,16 @@ export default function Folder() {
             </button>
           </div>
           <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+            <div className="flex items-center mb-4">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+              <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+            </div>
             Мы любим животных и стараемся поддерживать тех из них, кому не
             посчастливилось иметь ласковых хозяев и тёплый кров. Один из
             проверенных способов это сделать — помочь приюту для животных
@@ -73,14 +84,39 @@ export default function Folder() {
             труду ежегодно сотни питомцев находят свой новый дом.
             <div className="flex">
               <button
-                title="Редактировать"
-                className="sm:hover:bg-neutral-700 p-2 rounded-full block ml-auto"
+                title="Переместить вверх"
+                className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
               >
-                <PencilSquareIcon className="w-6" />
+                <ChevronUpIcon className="w-6" />
               </button>
               <button
-                title="Удалить"
+                title="Переместить вниз"
                 className="sm:hover:bg-neutral-700 p-2 rounded-full"
+              >
+                <ChevronDownIcon className="w-6" />
+              </button>
+            </div>
+          </div>
+          <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+            <div className="flex items-center mb-4">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+              <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+            </div>
+            <ReactTextareaAutosize
+              minRows={3}
+              placeholder="Напишите что-нибудь..."
+              className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full mt-1 mb-2"
+            />
+            <div className="flex">
+              <button
+                title="Удалить"
+                className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
               >
                 <TrashIcon className="w-6 stroke-red-500" />
               </button>
@@ -99,19 +135,29 @@ export default function Folder() {
             </div>
           </div>
           <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+            <div className="flex items-center mb-4">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+              <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+            </div>
             <div className="relative aspect-video mb-2">
               <Image objectFit="contain" layout="fill" src="/cat.jpg" />
             </div>
             <div className="flex">
               <button
                 title="Удалить"
-                className="sm:hover:bg-neutral-700 p-2 rounded-full block ml-auto"
+                className="sm:hover:bg-neutral-700 p-2 rounded-full block"
               >
                 <TrashIcon className="w-6 stroke-red-500" />
               </button>
               <button
                 title="Переместить вверх"
-                className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
               >
                 <ChevronUpIcon className="w-6" />
               </button>
@@ -124,17 +170,27 @@ export default function Folder() {
             </div>
           </div>
           <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+            <div className="flex items-center mb-4">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+              <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+            </div>
             <div className="flex items-center">
-              <div className="rounded-full p-3 bg-neutral-700">
+              <div className="rounded-full p-2 bg-neutral-700">
                 <DocumentIcon className="w-6" />
               </div>
               <div className="ml-4 mb-1">gta_sa.exe</div>
-              <button
-                title="Скачать"
-                className="sm:hover:bg-neutral-700 p-2 rounded-full block ml-auto"
-              >
-                <ArrowDownTrayIcon className="w-6" />
+              <button className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2">
+                <ArrowDownTrayIcon className="w-6 mr-2" />
+                Скачать
               </button>
+            </div>
+            <div className="flex mt-2">
               <button
                 title="Удалить"
                 className="sm:hover:bg-neutral-700 p-2 rounded-full"
@@ -143,7 +199,7 @@ export default function Folder() {
               </button>
               <button
                 title="Переместить вверх"
-                className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
               >
                 <ChevronUpIcon className="w-6" />
               </button>
