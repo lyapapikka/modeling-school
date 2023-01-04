@@ -24,6 +24,12 @@ export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
 
+  const addText = async () => {};
+
+  const uploadImage = async ({ target: { files } }) => {};
+
+  const uploadFile = async ({ target: { files } }) => {};
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
@@ -53,18 +59,35 @@ export default function Folder() {
         </div>
         <div className="space-y-2">
           <div className="flex space-x-2 mx-2">
-            <button className="bg-neutral-800 w-full flex justify-center rounded-2xl py-4">
+            <button
+              onClick={addText}
+              className="bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+            >
               <DocumentTextIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Текст</div>
             </button>
-            <button className="bg-neutral-800 w-full flex justify-center rounded-2xl py-4">
+            <input
+              id="image-upload"
+              onChange={uploadImage}
+              type="file"
+              accept="image/*"
+              hidden
+            />
+            <label
+              htmlFor="image-upload"
+              className="cursor-pointer bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+            >
               <PhotoIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Картинка</div>
-            </button>
-            <button className="bg-neutral-800 w-full flex justify-center rounded-2xl py-4">
+            </label>
+            <input id="file-upload" onChange={uploadFile} type="file" hidden />
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+            >
               <DocumentPlusIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Файл</div>
-            </button>
+            </label>
           </div>
           <div className="bg-neutral-900 rounded-2xl py-3 px-4">
             <div className="flex items-center mb-4">
