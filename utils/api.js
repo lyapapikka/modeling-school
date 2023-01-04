@@ -1,6 +1,12 @@
-export default function api(url, session, options = { count: false }) {
+export default function api(
+  url,
+  session,
+  options = { count: false, user: false }
+) {
   return [
-    `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/${url}`,
+    options.user
+      ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/${url}`
+      : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/${url}`,
     {
       headers: {
         authorization: `Bearer ${session.access_token}`,

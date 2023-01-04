@@ -23,7 +23,11 @@ export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
-  const user = useUser();
+
+  const { data: user } = useSWR(
+    !isLoading && session ? api(`user`, session, { user: true }) : null,
+    fetcher
+  );
 
   const { data, mutate } = useSWR(
     !isLoading && session
@@ -73,23 +77,33 @@ export default function Profile() {
         </div>
         <div className="bg-neutral-900 rounded-2xl relative">
           <div className="flex justify-center pt-4">
-            {user?.user_metadata?.picture ? (
-              <Image
-                src="/cat.jpg"
-                width={100}
-                height={100}
-                objectFit="cover"
-                className="rounded-full"
-              />
+            {user ? (
+              user?.user_metadata?.picture ? (
+                <Image
+                  src="/cat.jpg"
+                  width={100}
+                  height={100}
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
+                  <QuestionMarkCircleIcon className="w-14" />
+                </div>
+              )
             ) : (
-              <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
-                <QuestionMarkCircleIcon className="w-14" />
-              </div>
+              <div className="bg-neutral-800 w-[100px] h-[100px] rounded-full"></div>
             )}
           </div>
           <div className="flex mt-2 pb-4 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center">
-              {user?.user_metadata?.name || "Неизвестный пользователь"}
+              {user ? (
+                user?.user_metadata?.name || "Неизвестный пользователь"
+              ) : (
+                <div className="bg-neutral-800 text-lg w-40 rounded-2xl">
+                  &nbsp;
+                </div>
+              )}
             </div>
           </div>
           <Link href="/profile/settings">

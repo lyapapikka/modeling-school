@@ -32,7 +32,11 @@ export default function Settings() {
     router.push("/");
   };
 
-  const saveProfile = () => {};
+  const saveProfile = async () => {
+    setLoading(true);
+    await supabase.auth.updateUser({ data: { name } });
+    router.push("/profile");
+  };
 
   useEffect(() => {
     if (!isLoading && !session) {
