@@ -1,12 +1,12 @@
 import Head from "next/head";
-import Content from "../components/Content";
-import Header from "../components/Header";
-import { useSessionContext } from "@supabase/auth-helpers-react";
+import Content from "../../components/Content";
+import Header from "../../components/Header";
+import { useSessionContext, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import api from "../utils/api";
+import api from "../../utils/api";
 import useSWR from "swr";
-import fetcher from "../utils/fetcher";
+import fetcher from "../../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
 import { formatRelative } from "date-fns";
@@ -16,13 +16,14 @@ import {
   ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
   LinkIcon,
-  PencilSquareIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 
 export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
+  const user = useUser();
 
   const { data, mutate } = useSWR(
     !isLoading && session
@@ -72,20 +73,30 @@ export default function Profile() {
         </div>
         <div className="bg-neutral-900 rounded-2xl relative">
           <div className="flex justify-center pt-4">
-            <Image
-              src="/cat.jpg"
-              width={100}
-              height={100}
-              objectFit="cover"
-              className="rounded-full"
-            />
+            {user?.user_metadata?.picture ? (
+              <Image
+                src="/cat.jpg"
+                width={100}
+                height={100}
+                objectFit="cover"
+                className="rounded-full"
+              />
+            ) : (
+              <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
+                <QuestionMarkCircleIcon className="w-14" />
+              </div>
+            )}
           </div>
-          <div className="flex mt-2 pb-4 items-center justify-center -mr-10">
-            <div className="text-lg">Кот Матроскин</div>
-            <button className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-              <PencilSquareIcon className="w-6" />
-            </button>
+          <div className="flex mt-2 pb-4 items-center justify-center">
+            <div className="text-lg line-clamp-1 text-center">
+              {user?.user_metadata?.name || "Неизвестный пользователь"}
+            </div>
           </div>
+          <Link href="/profile/settings">
+            <a className="absolute top-2 right-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+              <Cog6ToothIcon className="w-6" />
+            </a>
+          </Link>
         </div>
         <div className="space-y-2 mb-8">
           {data ? (

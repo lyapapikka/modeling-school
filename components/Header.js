@@ -3,19 +3,15 @@ import {
   BookOpenIcon,
   HomeIcon,
   XMarkIcon,
-  ArchiveBoxIcon,
-  ArrowLeftOnRectangleIcon,
   UserGroupIcon,
   FaceSmileIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
-  ArchiveBoxIcon as ArchiveBoxIconSolid,
   UserGroupIcon as UserGroupIconSolid,
   FaceSmileIcon as FaceSmileIconSolid,
 } from "@heroicons/react/24/solid";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 
 export default function Header({
@@ -26,14 +22,8 @@ export default function Header({
   archivePage,
   href,
 }) {
-  const supabaseClient = useSupabaseClient();
   const router = useRouter();
   const { from } = router.query;
-
-  const logout = async () => {
-    await supabaseClient.auth.signOut();
-    router.push("/");
-  };
 
   return (
     <div className="flex justify-between items-center py-4 px-4 bg-neutral-900">
@@ -113,12 +103,6 @@ export default function Header({
               </a>
             </Link>
           </div>
-          <button
-            onClick={logout}
-            className="ml-2 sm:hover:bg-neutral-700 p-2 rounded-full -mr-2"
-          >
-            <ArrowLeftOnRectangleIcon className="w-6" />
-          </button>
         </>
       ) : (
         <Link href={`${href}${from ? "?from=" + from : ""}`}>
