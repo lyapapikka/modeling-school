@@ -57,6 +57,42 @@ export default function Folder() {
             Папка
           </div>
         </div>
+        <div className="bg-neutral-900 rounded-2xl py-2 px-4 mb-2 space-y-4">
+          <div className="text-xl mr-auto line-clamp-1 mt-1 text-center">Название папки</div>
+          {/* <input
+            placeholder="Название группы"
+            className="bg-neutral-700 py-2 px-3 rounded-2xl mr-4 w-full mt-2"
+          /> */}
+          <div className="space-x-2 flex mb-2 justify-center">
+            <div className="shrink-0">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+            <div className="shrink-0">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+            <div className="shrink-0">
+              <Image
+                src="/cat.jpg"
+                height={40}
+                width={40}
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+          </div>
+        </div>
         <div className="space-y-2">
           <div className="flex space-x-2 mx-2">
             <button
