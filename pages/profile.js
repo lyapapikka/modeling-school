@@ -14,7 +14,7 @@ import russianLocale from "date-fns/locale/ru";
 import ReactLinkify from "react-linkify";
 import { ArchiveBoxXMarkIcon, LinkIcon } from "@heroicons/react/24/outline";
 
-export default function Archive() {
+export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
@@ -58,12 +58,14 @@ export default function Archive() {
   return (
     <>
       <Head>
-        <title>Архив - Школа моделирования</title>
+        <title>Профиль - Школа моделирования</title>
       </Head>
       <Content>
         <Header home archivePage />
-        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">Архив</div>
-        
+        <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
+          Профиль
+        </div>
+
         <div className="space-y-2 mb-8">
           {data ? (
             data.length === 0 ? (

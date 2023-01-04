@@ -6,12 +6,14 @@ import {
   ArchiveBoxIcon,
   ArrowLeftOnRectangleIcon,
   UserGroupIcon,
+  FaceSmileIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   BookOpenIcon as BookOpenIconSolid,
   ArchiveBoxIcon as ArchiveBoxIconSolid,
   UserGroupIcon as UserGroupIconSolid,
+  FaceSmileIcon as FaceSmileIconSolid,
 } from "@heroicons/react/24/solid";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
@@ -105,9 +107,9 @@ export default function Header({
                 <BookOpenIcon className="w-6" />
               </a>
             </Link>
-            <Link href="/archive">
+            <Link href="/profile">
               <a className="sm:hover:bg-neutral-700 p-2 rounded-full">
-                <ArchiveBoxIcon className="w-6" />
+                <FaceSmileIcon className="w-6" />
               </a>
             </Link>
           </div>
@@ -157,14 +159,14 @@ export default function Header({
               Учебник
             </a>
           </Link>
-          <Link href="/archive">
+          <Link href="/profile">
             <a className="w-full text-xs flex flex-col items-center sm:hover:bg-neutral-700 rounded-full py-1">
               {archivePage ? (
-                <ArchiveBoxIconSolid className="w-6" />
+                <FaceSmileIconSolid className="w-6" />
               ) : (
-                <ArchiveBoxIcon className="w-6" />
+                <FaceSmileIcon className="w-6" />
               )}
-              Архив
+              Профиль
             </a>
           </Link>
         </div>
