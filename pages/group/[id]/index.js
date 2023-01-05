@@ -303,7 +303,15 @@ export default function Group() {
                 Группа
               </div>
             </div>
-            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-[200px]"></div>
+            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-[200px] pt-4">
+              <div className="bg-neutral-800 w-[100px] h-[100px] rounded-full mx-auto"></div>
+              <div className="bg-neutral-800 text-lg w-40 rounded-2xl mx-auto mt-2">
+                &nbsp;
+              </div>
+              <div className="bg-neutral-800 text-lg w-40 rounded-2xl mx-auto mt-2">
+                &nbsp;
+              </div>
+            </div>
             <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
             <div className="space-y-2">
               <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
