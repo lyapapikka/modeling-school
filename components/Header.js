@@ -98,7 +98,7 @@ export default function Header({
               </a>
             </Link>
             <Link href="/profile">
-              <a className="sm:hover:bg-neutral-700 p-2 rounded-full">
+              <a className="sm:hover:bg-neutral-700 p-2 rounded-full -mr-2">
                 <FaceSmileIcon className="w-6" />
               </a>
             </Link>

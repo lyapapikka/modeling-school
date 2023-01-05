@@ -117,7 +117,7 @@ export default function Settings() {
                 ) : (
                   <label
                     htmlFor="upload"
-                    className="cursor-pointer w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2"
+                    className="cursor-pointer w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2"
                   >
                     <PhotoIcon className="w-6 mr-2" />
                     Изменить фото
