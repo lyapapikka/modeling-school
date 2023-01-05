@@ -26,6 +26,7 @@ export default function Post({
   from,
   archive,
   mutateArchive,
+  paginated,
 }) {
   const [modal, setModal] = useState(false);
   const [_origin, setOrigin] = useState("");
@@ -52,7 +53,9 @@ export default function Post({
 
   const deleteFromArchive = async (post_id) => {
     mutateArchive(
-      archive.filter((p) => p.post_id !== post_id),
+      paginated
+        ? archive.map((posts) => posts.filter((p) => p.post_id !== post_id))
+        : archive.filter((p) => p.post_id !== post_id),
       false
     );
     await supabase.from("archive").delete().eq("post_id", post_id);
@@ -161,7 +164,28 @@ export default function Post({
             >
               <FolderPlusIcon className="w-6" />
             </button>
-            {archive.map((p) => p.post_id).includes(postData.id) ? (
+            {paginated ? (
+              archive
+                .reduce((r, c) => r.concat(c))
+                .map((p) => p.post_id)
+                .includes(postData.id) ? (
+                <button
+                  title="Убрать из сохраненного"
+                  onClick={() => deleteFromArchive(postData.id)}
+                  className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
+                >
+                  <BookmarkIconSolid className="w-6 " />
+                </button>
+              ) : (
+                <button
+                  title="Сохранить"
+                  onClick={() => addToArchive(postData)}
+                  className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
+                >
+                  <BookmarkIcon className="w-6 " />
+                </button>
+              )
+            ) : archive.map((p) => p.post_id).includes(postData.id) ? (
               <button
                 title="Убрать из сохраненного"
                 onClick={() => deleteFromArchive(postData.id)}

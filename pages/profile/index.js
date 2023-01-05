@@ -116,7 +116,7 @@ export default function Profile() {
         </div>
         <div className="space-y-2 mb-8">
           {archive ? (
-            archive.length === 0 ? (
+            archive[0].length === 0 ? (
               <div className="text-center text-neutral-500 mt-8">
                 Нет сохраненных записей
               </div>
@@ -144,6 +144,7 @@ export default function Profile() {
                       archive={archive}
                       from={"profile"}
                       mutateArchive={mutateArchive}
+                      paginated
                     />
                   ))
                 )}

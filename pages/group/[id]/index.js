@@ -31,6 +31,7 @@ export default function Group() {
   const { id, from } = router.query;
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [cachedArchive, setCachedArchive] = useState([]);
 
   const changePostText = ({ target: { value } }) => setPostText(value);
 
@@ -128,6 +129,10 @@ export default function Group() {
     fetcher
   );
 
+  useEffect(() => {
+    setCachedArchive((cache) => archive || cache);
+  }, [archive]);
+
   const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
@@ -148,7 +153,7 @@ export default function Group() {
     <>
       <Content>
         <Header home groupsPage />
-        {data && posts && archive && membersCount && userIsMember ? (
+        {data && posts && cachedArchive && membersCount && userIsMember ? (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -284,7 +289,7 @@ export default function Group() {
                       postData={p}
                       key={p.id}
                       session={session}
-                      archive={archive}
+                      archive={cachedArchive}
                       from={from}
                       mutateArchive={mutateArchive}
                     />

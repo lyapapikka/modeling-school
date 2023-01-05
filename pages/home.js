@@ -14,7 +14,8 @@ import useSWR from "swr";
 export default function Home() {
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
-  const { isLoading, session, supabaseClient } = useSessionContext();
+  const { isLoading, session } = useSessionContext();
+  const [cachedArchive, setCachedArchive] = useState(false);
 
   const {
     data: posts,
@@ -51,6 +52,10 @@ export default function Home() {
   const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
+    setCachedArchive((cache) => archive || cache);
+  }, [archive]);
+
+  useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
     }
@@ -74,7 +79,7 @@ export default function Home() {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
           Главная
         </div>
-        {posts && archive ? (
+        {posts && cachedArchive ? (
           posts[0].length === 0 ? (
             <div className="text-center text-neutral-500 mt-10">
               Новостей нет
@@ -102,7 +107,7 @@ export default function Home() {
                     groupData={[p.groups]}
                     postData={p}
                     mutateArchive={mutateArchive}
-                    archive={archive}
+                    archive={cachedArchive}
                   />
                 ))
               )}
