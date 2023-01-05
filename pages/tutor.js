@@ -1,25 +1,25 @@
-import Head from 'next/head'
-import Content from '../components/Content'
-import Header from '../components/Header'
-import { useSessionContext } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline'
-import path from 'path'
-import { promises as fs } from 'fs'
+import Head from "next/head";
+import Content from "../components/Content";
+import Header from "../components/Header";
+import { useSessionContext } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { ArrowDownTrayIcon, DocumentIcon } from "@heroicons/react/24/outline";
+import path from "path";
+import { promises as fs } from "fs";
 
 export default function Tutor({ filenames }) {
-  const { isLoading, session } = useSessionContext()
-  const router = useRouter()
+  const { isLoading, session } = useSessionContext();
+  const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && !session) {
-      router.replace('/')
+      router.replace("/");
     }
-  }, [isLoading, session, router])
+  }, [isLoading, session, router]);
 
   if (isLoading || !session) {
-    return null
+    return null;
   }
 
   return (
@@ -56,24 +56,34 @@ export default function Tutor({ filenames }) {
         </div>
         <div className="space-y-2">
           {filenames.map((f, i) => (
-            <a
-              className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full"
-              href={`/tutors/${f}`}
+            <div
+              className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full items-center"
               key={i}
             >
-              {f}
-              <ArrowDownTrayIcon className="w-6 ml-auto shrink-0" />
-            </a>
+              <div className="rounded-full p-2 bg-neutral-700">
+                <DocumentIcon className="w-6" />
+              </div>
+              <div className="ml-4">{f}</div>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`/tutors/${f}`}
+                className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
+              >
+                <ArrowDownTrayIcon className="w-6 sm:mr-2" />
+                <div className="hidden sm:block">Скачать</div>
+              </a>
+            </div>
           ))}
         </div>
       </Content>
     </>
-  )
+  );
 }
 
 export async function getStaticProps() {
-  const postsDirectory = path.join(process.cwd(), 'public/tutors')
-  const filenames = await fs.readdir(postsDirectory)
+  const postsDirectory = path.join(process.cwd(), "public/tutors");
+  const filenames = await fs.readdir(postsDirectory);
 
-  return { props: { filenames } }
+  return { props: { filenames } };
 }

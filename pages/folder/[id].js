@@ -11,9 +11,7 @@ import {
   ChevronLeftIcon,
   ChevronUpIcon,
   DocumentIcon,
-  DocumentPlusIcon,
   DocumentTextIcon,
-  PencilSquareIcon,
   PhotoIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
@@ -126,7 +124,7 @@ export default function Folder() {
               htmlFor="file-upload"
               className="cursor-pointer bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
             >
-              <DocumentPlusIcon className="w-6 sm:mr-2" />
+              <DocumentIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Файл</div>
             </label>
           </div>
@@ -252,10 +250,10 @@ export default function Folder() {
               <div className="rounded-full p-2 bg-neutral-700">
                 <DocumentIcon className="w-6" />
               </div>
-              <div className="ml-4 mb-1">gta_sa.exe</div>
+              <div className="ml-4">gta_sa.exe</div>
               <button className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2">
-                <ArrowDownTrayIcon className="w-6 mr-2" />
-                Скачать
+                <ArrowDownTrayIcon className="w-6 sm:mr-2" />
+                <div className="hidden sm:block">Скачать</div>
               </button>
             </div>
             <div className="flex mt-2">
