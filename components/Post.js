@@ -81,18 +81,20 @@ export default function Post({ groupId, groupData, postData, session, from }) {
         <div>
           <div className="flex gap-4">
             <Link href={`/group/${groupId}`}>
-              <a className="mt-4 ml-2">
+              <a className="mt-4 shrink-0">
                 <Image
                   alt=""
-                  width={30}
-                  height={30}
+                  width={40}
+                  height={40}
                   src={`https://avatars.dicebear.com/api/identicon/${groupId}.svg`}
+                  className="rounded-full"
+                  objectFit="cover"
                 />
               </a>
             </Link>
             <div>
               <Link href={`/group/${groupId}`}>
-                <a className="mt-2 inline-block">{groupData[0].name}</a>
+                <a className="mt-2 inline-block line-clamp-1">{groupData[0].name}</a>
               </Link>
               <div className="text-neutral-500">
                 {formatRelative(new Date(postData.created_at), new Date(), {

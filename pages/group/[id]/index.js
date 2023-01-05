@@ -141,39 +141,41 @@ export default function Group() {
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
-            <div className="flex justify-between items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
-              <Link href={`/${from}` || "/home"}>
-                <a className="inline-block -my-1 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+            <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
+              <Link href={`/${from || "home"}`}>
+                <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
               </Link>
+              <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl">
+                Папка
+              </div>
+            </div>
+            <div className="bg-neutral-900 rounded-2xl relative my-2">
+              <div className="flex justify-center pt-4">
+                <Image
+                  src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}
+                  width={100}
+                  height={100}
+                  objectFit="cover"
+                  className="rounded-full"
+                  alt=""
+                />
+              </div>
+              <div className="flex mt-2 mb-2 items-center justify-center">
+                <div className="text-lg line-clamp-1 text-center">
+                  {data[0].name}
+                </div>
+              </div>
+              <div className="text-neutral-500 text-center pb-4">
+                Участников: {membersCount}
+              </div>
               {session.user.id === data[0].owner_id && (
                 <Link href={`/group/${id}/settings`}>
-                  <a className="inline-block -my-1 mr-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                  <a className="absolute top-2 right-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                     <Cog6ToothIcon className="w-6" />
                   </a>
                 </Link>
-              )}
-            </div>
-            <div className="pr-2 mt-2 bg-neutral-900 rounded-2xl">
-              <div className="flex items-center py-4">
-                <div className="px-4 shrink-0">
-                  <Image
-                    alt=""
-                    width={40}
-                    height={40}
-                    src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}
-                  />
-                </div>
-                <div>
-                  <div>{data[0].name}</div>
-                  <div className="text-neutral-500">
-                    Участников: {membersCount}
-                  </div>
-                </div>
-              </div>
-              {data[0].description && (
-                <div className="mx-4 pb-4">{data[0].description}</div>
               )}
             </div>
             <div className="px-2 flex gap-2">
@@ -201,7 +203,7 @@ export default function Group() {
                   session.user.id !== data[0].owner_id
                     ? "w-fit sm:w-full"
                     : "w-full"
-                } justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2`}
+                } justify-center bg-neutral-800 rounded-2xl px-3 py-2 mb-2`}
               >
                 <LinkIcon
                   className={`w-6 ${
