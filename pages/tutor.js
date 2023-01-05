@@ -66,6 +66,7 @@ export default function Tutor({ filenames }) {
               <div className="ml-4">{f}</div>
               <a
                 target="_blank"
+                rel="noreferrer"
                 href={`/tutors/${f}`}
                 className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
               >
