@@ -7,7 +7,7 @@ import {
   LinkIcon,
   ChevronUpDownIcon,
   BookmarkIcon,
-  FolderArrowDownIcon,
+  FolderPlusIcon,
   XMarkIcon,
   FolderIcon,
 } from "@heroicons/react/24/outline";
@@ -159,7 +159,7 @@ export default function Post({
               onClick={showCreateFolderDialog}
               className="p-2 -m-2 ml-3 sm:hover:bg-neutral-700 rounded-full mr-3"
             >
-              <FolderArrowDownIcon className="w-6" />
+              <FolderPlusIcon className="w-6" />
             </button>
             {archive.map((p) => p.post_id).includes(postData.id) ? (
               <button
