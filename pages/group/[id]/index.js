@@ -212,31 +212,25 @@ export default function Group() {
       <Content>
         <Header home groupsPage />
         {deleteDialog && (
-          <div className="fixed inset-0 flex justify-center sm:mt-52 z-[999999]">
-            <div
-              onClick={hideDeleteDialog}
-              className="fixed inset-0 bg-black opacity-70 cursor-pointer"
-            ></div>
-            <div className="fixed bg-neutral-900 rounded-2xl px-4 py-4 mx-2 bottom-2 sm:bottom-auto max-w-sm text-center">
-              <div className="text-lg mb-4">
-                Запись нельзя будет восстановить после удаления. Вы уверены?
-              </div>
-              <div className="flex gap-2 mt-2">
-                <button
-                  onClick={deletePost}
-                  className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
-                >
-                  Да
-                </button>
-                <button
-                  onClick={hideDeleteDialog}
-                  className="bg-white text-black rounded-2xl px-3 py-2 w-full"
-                >
-                  Нет
-                </button>
-              </div>
+          <Modal onClose={hideDeleteDialog}>
+            <div className="text-lg mb-4">
+              Запись нельзя будет восстановить после удаления. Вы уверены?
             </div>
-          </div>
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={deletePost}
+                className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
+              >
+                Да
+              </button>
+              <button
+                onClick={hideDeleteDialog}
+                className="bg-white text-black rounded-2xl px-3 py-2 w-full"
+              >
+                Нет
+              </button>
+            </div>
+          </Modal>
         )}
         {data && posts && membersCount && userIsMember ? (
           <>

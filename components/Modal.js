@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 export default function Modal({ children, onClose }) {
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-[999999]">
+    <div className="fixed inset-0 flex justify-center items-center z-[999999] text-center">
       <div
         className="fixed inset-0 w-full h-full bg-black opacity-40 cursor-pointer"
         onClick={onClose}
