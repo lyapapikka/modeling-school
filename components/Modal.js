@@ -2,7 +2,7 @@ export default function Modal({ children, onClose }) {
   return (
     <div className="fixed inset-0 flex justify-center items-center z-[999999] text-center">
       <div
-        className="fixed inset-0 w-full h-full bg-black opacity-30 cursor-pointer"
+        className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
         onClick={onClose}
       ></div>
       <div className="flex w-full items-center min-h-screen px-4 py-8">

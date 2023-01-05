@@ -51,7 +51,7 @@ export default function Folder() {
               <ChevronLeftIcon className="w-6" />
             </a>
           </Link>
-          <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl">
+          <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl mb-1">
             Папка
           </div>
         </div>

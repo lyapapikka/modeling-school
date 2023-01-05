@@ -159,8 +159,8 @@ export default function Group() {
                   <ChevronLeftIcon className="w-6" />
                 </a>
               </Link>
-              <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl">
-                Папка
+              <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl mb-1">
+                Группа
               </div>
             </div>
             <div className="bg-neutral-900 rounded-2xl relative my-2">
@@ -299,8 +299,11 @@ export default function Group() {
               <div className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                 <ChevronLeftIcon className="w-6" />
               </div>
+              <div className="text-xl font-bold bg-neutral-900 rounded-b-2xl mb-1">
+                Группа
+              </div>
             </div>
-            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-20"></div>
+            <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-[200px]"></div>
             <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
             <div className="space-y-2">
               <div className="bg-neutral-900 h-36 rounded-2xl"></div>
