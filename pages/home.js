@@ -95,6 +95,7 @@ export default function Home() {
               {posts.map((post) =>
                 post.map((p) => (
                   <Post
+                    key={p.id}
                     session={session}
                     from={"home"}
                     groupId={p.groups.id}
