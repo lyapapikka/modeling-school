@@ -116,6 +116,18 @@ export default function Group() {
     countFetcher
   );
 
+  const { data: archive, mutate: mutateArchive } = useSWR(
+    !isLoading && session && posts
+      ? api(
+          `archive?post_id=in.(${posts
+            .map((p) => p.map(({ id }) => id))
+            .join()}),posts(text,created_at,id,groups(name,id))`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
   const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
@@ -136,7 +148,7 @@ export default function Group() {
     <>
       <Content>
         <Header home groupsPage />
-        {data && posts && membersCount && userIsMember ? (
+        {data && posts && archive && membersCount && userIsMember ? (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -272,7 +284,9 @@ export default function Group() {
                       postData={p}
                       key={p.id}
                       session={session}
+                      archive={archive}
                       from={from}
+                      mutateArchive={mutateArchive}
                     />
                   ))
                 )}

@@ -25,7 +25,7 @@ export default function Profile() {
     fetcher
   );
 
-  const { data, mutate } = useSWR(
+  const { data: archive, mutate: mutateArchive } = useSWR(
     !isLoading && session
       ? api(
           `archive?select=*,posts(text,created_at,id,groups(name,id))`,
@@ -34,14 +34,6 @@ export default function Profile() {
       : null,
     fetcher
   );
-
-  const removeFromArchive = async (id) => {
-    mutate(
-      data.filter((p) => p.id !== id),
-      false
-    );
-    await supabaseClient.from("archive").delete().eq("id", id);
-  };
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -106,20 +98,22 @@ export default function Profile() {
           </Link>
         </div>
         <div className="space-y-2 mb-8">
-          {data ? (
-            data.length === 0 ? (
+          {archive ? (
+            archive.length === 0 ? (
               <div className="text-center text-neutral-500 mt-8">
                 Нет сохраненных записей
               </div>
             ) : (
-              data.map((p) => (
+              archive.map((p) => (
                 <Post
                   key={p.id}
                   groupId={p.posts.groups.id}
                   groupData={[p.posts.groups]}
                   postData={p.posts}
                   session={session}
+                  archive={archive}
                   from={"profile"}
+                  mutateArchive={mutateArchive}
                 />
               ))
             )

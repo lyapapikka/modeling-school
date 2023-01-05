@@ -3,23 +3,30 @@ import formatRelative from "date-fns/formatRelative";
 import russianLocale from "date-fns/locale/ru";
 import ReactLinkify from "react-linkify";
 import {
-  FolderPlusIcon,
   TrashIcon,
   LinkIcon,
-  EyeIcon,
   ChevronUpDownIcon,
   BookmarkIcon,
   FolderArrowDownIcon,
   XMarkIcon,
   FolderIcon,
 } from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "../utils/toast";
 
-export default function Post({ groupId, groupData, postData, session, from }) {
+export default function Post({
+  groupId,
+  groupData,
+  postData,
+  session,
+  from,
+  archive,
+  mutateArchive,
+}) {
   const [modal, setModal] = useState(false);
   const [_origin, setOrigin] = useState("");
   const [selection, setSelection] = useState("");
@@ -33,20 +40,22 @@ export default function Post({ groupId, groupData, postData, session, from }) {
   const showCreateFolderDialog = () => setCreateFolderDialog(true);
   const hideCreateFolderDialog = () => setCreateFolderDialog(false);
 
-  const addToArchive = async (post_id) => {
-    const { data } = await supabase
+  const addToArchive = async (post) => {
+    mutateArchive(
+      [...archive, { id: "", post_id: post.id, user_id: session.user.id }],
+      false
+    );
+    await supabase
       .from("archive")
-      .select()
-      .eq("user_id", session.user.id)
-      .eq("post_id", post_id);
+      .insert([{ user_id: session.user.id, post_id: post.id }]);
+  };
 
-    if (data.length === 0) {
-      await supabase
-        .from("archive")
-        .insert([{ user_id: session.user.id, post_id }]);
-    }
-
-    toast("Запись сохранена в архиве");
+  const deleteFromArchive = async (post_id) => {
+    mutateArchive(
+      archive.filter((p) => p.post_id !== post_id),
+      false
+    );
+    await supabase.from("archive").delete().eq("post_id", post_id);
   };
 
   const showDeleteDialog = (id) => {
@@ -94,7 +103,9 @@ export default function Post({ groupId, groupData, postData, session, from }) {
             </Link>
             <div>
               <Link href={`/group/${groupId}`}>
-                <a className="mt-2 inline-block line-clamp-1">{groupData[0].name}</a>
+                <a className="mt-2 inline-block line-clamp-1">
+                  {groupData[0].name}
+                </a>
               </Link>
               <div className="text-neutral-500">
                 {formatRelative(new Date(postData.created_at), new Date(), {
@@ -150,13 +161,23 @@ export default function Post({ groupId, groupData, postData, session, from }) {
             >
               <FolderArrowDownIcon className="w-6" />
             </button>
-            <button
-              title="Сохранить"
-              onClick={() => addToArchive(postData.id)}
-              className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
-            >
-              <BookmarkIcon className="w-6 " />
-            </button>
+            {archive.map((p) => p.post_id).includes(postData.id) ? (
+              <button
+                title="Убрать из сохраненного"
+                onClick={() => deleteFromArchive(postData.id)}
+                className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
+              >
+                <BookmarkIconSolid className="w-6 " />
+              </button>
+            ) : (
+              <button
+                title="Сохранить"
+                onClick={() => addToArchive(postData)}
+                className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
+              >
+                <BookmarkIcon className="w-6 " />
+              </button>
+            )}
             <button
               title="Скопировать ссылку"
               onClick={() => copyLink(postData.id)}
