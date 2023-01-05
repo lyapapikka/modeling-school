@@ -9,15 +9,11 @@ import useSWR from "swr";
 import fetcher from "../../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
-import { formatRelative } from "date-fns";
-import russianLocale from "date-fns/locale/ru";
-import ReactLinkify from "react-linkify";
 import {
-  ArchiveBoxXMarkIcon,
   Cog6ToothIcon,
-  LinkIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+import Post from "../../components/Post";
 
 export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
@@ -47,10 +43,6 @@ export default function Profile() {
     await supabaseClient.from("archive").delete().eq("id", id);
   };
 
-  const sharePost = (id) => {
-    navigator.share({ url: `${origin}/post/${id}` });
-  };
-
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
@@ -75,7 +67,7 @@ export default function Profile() {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
           Профиль
         </div>
-        <div className="bg-neutral-900 rounded-2xl relative">
+        <div className="bg-neutral-900 rounded-2xl relative mb-2">
           <div className="flex justify-center pt-4">
             {user ? (
               user?.user_metadata?.picture ? (
@@ -116,85 +108,19 @@ export default function Profile() {
         <div className="space-y-2 mb-8">
           {data ? (
             data.length === 0 ? (
-              <div className="text-center text-neutral-500 mt-10">
+              <div className="text-center text-neutral-500 mt-8">
                 Нет сохраненных записей
               </div>
             ) : (
               data.map((p) => (
-                <div
-                  className="bg-neutral-900 rounded-2xl py-1 px-4"
+                <Post
                   key={p.id}
-                >
-                  <div>
-                    <div className="flex gap-4">
-                      <Link href={`/group/${p.posts.groups.id}?from=archive`}>
-                        <a className="mt-4 ml-2">
-                          <Image
-                            alt=""
-                            width={30}
-                            height={30}
-                            src={`https://avatars.dicebear.com/api/identicon/${p.posts.groups.id}.svg`}
-                          />
-                        </a>
-                      </Link>
-                      <div>
-                        <Link href={`/group/${p.posts.groups.id}?from=archive`}>
-                          <a className="mt-2 inline-block">
-                            {p.posts.groups.name}
-                          </a>
-                        </Link>
-                        <div className="text-neutral-500">
-                          {formatRelative(
-                            new Date(p.posts.created_at),
-                            new Date(),
-                            {
-                              locale: russianLocale,
-                            }
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                      <ReactLinkify
-                        componentDecorator={(href, text, key) =>
-                          href.startsWith(_origin) ? (
-                            <Link href={`${href}?from=archive`} key={key}>
-                              <a className="text-blue-500">{text}</a>
-                            </Link>
-                          ) : (
-                            <a
-                              target="_blank"
-                              rel="noreferrer"
-                              href={href}
-                              key={key}
-                              className="text-blue-500"
-                            >
-                              {text}
-                            </a>
-                          )
-                        }
-                      >
-                        {p.posts.text}
-                      </ReactLinkify>
-                    </div>
-                  </div>
-                  <div className="flex justify-between mb-2 mt-2">
-                    <button
-                      title="Удалить из архива"
-                      onClick={() => removeFromArchive(p.id)}
-                      className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                    >
-                      <ArchiveBoxXMarkIcon className="w-6" />
-                    </button>
-                    <button
-                      title="Поделиться записью"
-                      onClick={() => sharePost(p.post_id)}
-                      className="p-2 -m-2 ml-2 sm:hover:bg-neutral-700 rounded-full"
-                    >
-                      <LinkIcon className="w-6" />
-                    </button>
-                  </div>
-                </div>
+                  groupId={p.posts.groups.id}
+                  groupData={[p.posts.groups]}
+                  postData={p.posts}
+                  session={session}
+                  from={"profile"}
+                />
               ))
             )
           ) : (
