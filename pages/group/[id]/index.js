@@ -2,21 +2,14 @@ import Head from "next/head";
 import Header from "../../../components/Header";
 import Content from "../../../components/Content";
 import {
-  ArchiveBoxArrowDownIcon,
   CheckIcon,
   ChevronLeftIcon,
   Cog6ToothIcon,
   EllipsisHorizontalIcon,
   LinkIcon,
-  TrashIcon,
   UserMinusIcon,
   UserPlusIcon,
-  FolderPlusIcon,
-  ChevronUpDownIcon,
-  EyeIcon,
-  XMarkIcon,
 } from "@heroicons/react/24/outline";
-import ReactLinkify from "react-linkify";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -26,42 +19,18 @@ import useSWR from "swr";
 import api from "../../../utils/api";
 import fetcher, { countFetcher } from "../../../utils/fetcher";
 import TextareaAutosize from "react-textarea-autosize";
-import { formatRelative } from "date-fns";
-import russianLocale from "date-fns/locale/ru";
-import { toast } from "react-toastify";
 import useSWRInfinite from "swr/infinite";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Modal from "../../../components/Modal";
+import Post from "../../../components/Post";
+import toast from "../../../utils/toast";
+
 export default function Group() {
   const [_origin, setOrigin] = useState("");
   const { isLoading, session, supabaseClient } = useSessionContext();
   const router = useRouter();
   const { id, from } = router.query;
   const [postText, setPostText] = useState("");
-  const [folderName, setFolderName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false);
-  const [selection, setSelection] = useState("");
-  const [showModal, setShowModal] = useState(false);
-
-  const deletePost = async () => {
-    mutate(
-      posts.map((post) => post.filter((p) => p.id !== selection)),
-      false
-    );
-    setDeleteDialog(false);
-
-    await supabaseClient.from("posts").delete().eq("id", selection);
-  };
-
-  const showDeleteDialog = (id) => {
-    setSelection(id);
-    setDeleteDialog(true);
-  };
-  const hideDeleteDialog = () => setDeleteDialog(false);
-
-  const hideModal = () => setShowModal(false);
-  const openModal = () => setShowModal(true);
 
   const changePostText = ({ target: { value } }) => setPostText(value);
 
@@ -98,53 +67,9 @@ export default function Group() {
     setPostText("");
   };
 
-  const sizeFolder = 0;
-
-  const createFolder = async () => {
-    setLoading(true);
-    await supabaseClient
-      .from("folders")
-      .insert([{ text: folderName, group_id: id }]);
-
-    mutate();
-
-    setLoading(false);
-    setFolderName("mark");
-  };
-
-  const addToArchive = async (post_id) => {
-    const { data } = await supabaseClient
-      .from("archive")
-      .select()
-      .eq("user_id", session.user.id)
-      .eq("post_id", post_id);
-
-    if (data.length === 0) {
-      await supabaseClient
-        .from("archive")
-        .insert([{ user_id: session.user.id, post_id }]);
-    }
-
-    toast.success("Запись сохранена в архиве", {
-      position: "bottom-right",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: false,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      closeButton: false,
-      className: "bottom-14 sm:bottom-auto m-2",
-    });
-  };
-
-  const shareGroup = () => {
-    navigator.share({ url: `${origin}/group/${id}` });
-  };
-
-  const sharePost = (id) => {
-    navigator.share({ url: `${origin}/post/${id}` });
+  const copyLink = () => {
+    navigator.clipboard.writeText(`${origin}/group/${id}`);
+    toast("Ссылка скопирована");
   };
 
   const { data } = useSWR(
@@ -211,27 +136,6 @@ export default function Group() {
     <>
       <Content>
         <Header home groupsPage />
-        {deleteDialog && (
-          <Modal onClose={hideDeleteDialog}>
-            <div className="text-lg mb-4">
-              Запись нельзя будет восстановить после удаления. Вы уверены?
-            </div>
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={deletePost}
-                className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
-              >
-                Да
-              </button>
-              <button
-                onClick={hideDeleteDialog}
-                className="bg-white text-black rounded-2xl px-3 py-2 w-full"
-              >
-                Нет
-              </button>
-            </div>
-          </Modal>
-        )}
         {data && posts && membersCount && userIsMember ? (
           <>
             <Head>
@@ -292,7 +196,7 @@ export default function Group() {
                   </button>
                 ))}
               <button
-                onClick={shareGroup}
+                onClick={copyLink}
                 className={`flex ${
                   session.user.id !== data[0].owner_id
                     ? "w-fit sm:w-full"
@@ -311,7 +215,7 @@ export default function Group() {
                       : ""
                   }`}
                 >
-                  Поделиться
+                  Скопировать ссылку
                 </div>
               </button>
             </div>
@@ -360,145 +264,14 @@ export default function Group() {
               >
                 {posts.map((post) =>
                   post.map((p) => (
-                    <div
-                      className="bg-neutral-900 rounded-2xl py-1 px-4"
+                    <Post
+                      groupId={id}
+                      groupData={data}
+                      postData={p}
                       key={p.id}
-                    >
-                      <div>
-                        <div className="flex gap-4">
-                          <Link href={`/group/${id}`}>
-                            <a className="mt-4 ml-2">
-                              <Image
-                                alt=""
-                                width={30}
-                                height={30}
-                                src={`https://avatars.dicebear.com/api/identicon/${id}.svg`}
-                              />
-                            </a>
-                          </Link>
-                          <div>
-                            <Link href={`/group/${id}`}>
-                              <a className="mt-2 inline-block">
-                                {data[0].name}
-                              </a>
-                            </Link>
-                            <div className="text-neutral-500">
-                              {formatRelative(
-                                new Date(p.created_at),
-                                new Date(),
-                                { locale: russianLocale }
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="py-2 rounded-2xl pr-6 whitespace-pre-wrap">
-                          <ReactLinkify
-                            componentDecorator={(href, text, key) =>
-                              href.startsWith(_origin) ? (
-                                <Link
-                                  href={`${href}?from=group/${id}?from=${
-                                    from || "/home"
-                                  }`}
-                                  key={key}
-                                >
-                                  <a className="text-blue-500">{text}</a>
-                                </Link>
-                              ) : (
-                                <a
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  href={href}
-                                  key={key}
-                                  className="text-blue-500"
-                                >
-                                  {text}
-                                </a>
-                              )
-                            }
-                          >
-                            {p.text}
-                          </ReactLinkify>
-                        </div>
-                      </div>
-                      <div className="flex justify-between mb-2 mt-2">
-                        <button
-                          title="Добавить в архив"
-                          onClick={() => addToArchive(p.id)}
-                          className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                        >
-                          <ArchiveBoxArrowDownIcon className="w-6 " />
-                        </button>
-                        {session.user.id === data[0].owner_id && (
-                          <button
-                            title="Создать папку"
-                            onClick={() => createFolder(p.id)}
-                            className="p-2 -m-2 mr-auto ml-3 sm:hover:bg-neutral-700 rounded-full"
-                          >
-                            <FolderPlusIcon className="w-6" />
-                          </button>
-                        )}
-                        {session.user.id === data[0].owner_id && (
-                          <button
-                            title="Удалить"
-                            onClick={() => showDeleteDialog(p.id)}
-                            className="p-2 -m-2 ml-auto mr-3 sm:hover:bg-neutral-700 rounded-full"
-                          >
-                            <TrashIcon className="w-6 stroke-red-500" />
-                          </button>
-                        )}
-                        <button
-                          title="Поделиться записью"
-                          onClick={() => sharePost(p.id)}
-                          className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
-                        >
-                          <LinkIcon className="w-6" />
-                        </button>
-                      </div>
-                      <div className="text-m">Папок: {sizeFolder}</div>
-                      <div
-                        className="bg-neutral-800 rounded-2xl py-1 px-4 my-2 cursor-pointer"
-                        onClick={openModal}
-                      >
-                        <div className="absolute py-2 rounded-2xl mr-9">
-                          <EyeIcon className="w-6" />
-                        </div>
-
-                        <div className="absolute py-2 ml-9 rounded-2xl pr-6 whitespace-pre-wrap">
-                          Папок нет
-                        </div>
-
-                        <>
-                          <div className="flex justify-end">
-                            <button
-                              className="py-2 text-purple-100 bg-neutral-800 rounded-2xl"
-                              type="button"
-                            >
-                              <ChevronUpDownIcon className="w-6" />
-                            </button>
-                          </div>
-                        </>
-                      </div>
-                      {showModal && (
-                        <Modal onClose={hideModal}>
-                          <div className="mt-2 text-center">
-                            <div className="flex">
-                              <div className=" bg-neutral-800 rounded-2xl ml-2 px-3 py-2 w-full">
-                                <button>Создать папку</button>
-                              </div>
-                              <div
-                                className="relative self-center ml-20 cursor-pointer"
-                                onClick={hideModal}
-                              >
-                                <XMarkIcon className="w-6" />
-                              </div>
-                            </div>
-                            <div className="mt-2 ml-2 px-3 py-2 text-[15px] leading-relaxed text-white text-start">
-                              Список папок:
-                            </div>
-                          </div>
-                        </Modal>
-                      )}
-                    </div>
+                      session={session}
+                      from={from}
+                    />
                   ))
                 )}
               </InfiniteScroll>
