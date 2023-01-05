@@ -195,7 +195,7 @@ export default function Group() {
                 (userIsMember.length !== 0 ? (
                   <button
                     onClick={leave}
-                    className="w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 mb-2"
                   >
                     <UserMinusIcon className="w-6 mr-2" />
                     <div className="leading-6">Покинуть</div>
@@ -203,7 +203,7 @@ export default function Group() {
                 ) : (
                   <button
                     onClick={join}
-                    className="w-full flex justify-center bg-white text-black rounded-2xl px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-white text-black rounded-2xl px-3 py-2 mb-2"
                   >
                     <UserPlusIcon className="w-6 mr-2" />
                     <div className="leading-6">Присоединиться</div>
@@ -306,10 +306,10 @@ export default function Group() {
             <div className="w-full bg-neutral-900 rounded-2xl mt-2 h-[200px]"></div>
             <div className="px-2 h-10 w-full flex justify-center bg-neutral-900 font-medium rounded-2xl text-sm py-2 my-2"></div>
             <div className="space-y-2">
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
             </div>
           </>
         )}
