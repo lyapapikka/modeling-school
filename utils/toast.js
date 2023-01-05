@@ -11,6 +11,5 @@ export default function toast(text) {
     progress: undefined,
     theme: "light",
     closeButton: false,
-    className: "bottom-14 sm:bottom-auto m-2",
   });
 }

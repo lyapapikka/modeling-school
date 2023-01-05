@@ -9,3 +9,7 @@
 .Toastify__toast {
   @apply rounded-2xl !important;
 }
+
+.Toastify__toast-container {
+  @apply z-[99999] px-2 bottom-14 !important;
+}
