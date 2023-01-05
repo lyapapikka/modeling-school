@@ -271,8 +271,8 @@ export default function Group() {
                 hasMore={!(posts.at(-1).length < 6)}
                 loader={
                   <div className="space-y-2">
-                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-                    <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
                   </div>
                 }
               >

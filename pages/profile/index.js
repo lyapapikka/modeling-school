@@ -14,6 +14,8 @@ import {
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import Post from "../../components/Post";
+import InfiniteScroll from "react-infinite-scroll-component";
+import useSWRInfinite from "swr/infinite";
 
 export default function Profile() {
   const { isLoading, session, supabaseClient } = useSessionContext();
@@ -25,15 +27,30 @@ export default function Profile() {
     fetcher
   );
 
-  const { data: archive, mutate: mutateArchive } = useSWR(
+  const {
+    data: archive,
+    size,
+    setSize,
+    mutate: mutateArchive,
+  } = useSWRInfinite(
     !isLoading && session
-      ? api(
-          `archive?select=*,posts(text,created_at,id,groups(name,id))`,
-          session
-        )
+      ? (pageIndex, previousPageData) => {
+          if (previousPageData && !previousPageData.length) {
+            return null;
+          }
+
+          return api(
+            `archive?select=*,posts(text,created_at,id,groups(name,id))&offset=${
+              pageIndex * 6
+            }&limit=6`,
+            session
+          );
+        }
       : null,
     fetcher
   );
+
+  const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -104,26 +121,41 @@ export default function Profile() {
                 Нет сохраненных записей
               </div>
             ) : (
-              archive.map((p) => (
-                <Post
-                  key={p.id}
-                  groupId={p.posts.groups.id}
-                  groupData={[p.posts.groups]}
-                  postData={p.posts}
-                  session={session}
-                  archive={archive}
-                  from={"profile"}
-                  mutateArchive={mutateArchive}
-                />
-              ))
+              <InfiniteScroll
+                className="space-y-2"
+                dataLength={[...archive].length}
+                next={fetchData}
+                hasMore={!(archive.at(-1).length < 6)}
+                loader={
+                  <div className="space-y-2">
+                    <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+                    <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+                  </div>
+                }
+              >
+                {archive.map((post) =>
+                  post.map((p) => (
+                    <Post
+                      key={p.id}
+                      groupId={p.posts.groups.id}
+                      groupData={[p.posts.groups]}
+                      postData={p.posts}
+                      session={session}
+                      archive={archive}
+                      from={"profile"}
+                      mutateArchive={mutateArchive}
+                    />
+                  ))
+                )}
+              </InfiniteScroll>
             )
           ) : (
             <div className="space-y-2 mt-2">
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
-              <div className="bg-neutral-900 h-36 rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
+              <div className="bg-neutral-900 h-[265px] rounded-2xl"></div>
             </div>
           )}
         </div>
