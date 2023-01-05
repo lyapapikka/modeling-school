@@ -106,7 +106,7 @@ export default function Header({
         </>
       ) : (
         <Link href={`${href}${from ? "?from=" + from : ""}`}>
-          <a className="sm:hover:bg-neutral-700 rounded-full p-2 -mr-2">
+          <a className="sm:hover:bg-neutral-700 rounded-full p-2 -mr-2 -my-2">
             <XMarkIcon className="w-6" />
           </a>
         </Link>
