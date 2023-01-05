@@ -154,7 +154,7 @@ export default function Group() {
               <title>{data[0].name} - Школа моделирования</title>
             </Head>
             <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
-              <Link href={`/${from || "home"}`}>
+              <Link href={`/${from || "groups"}`}>
                 <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
                   <ChevronLeftIcon className="w-6" />
                 </a>
