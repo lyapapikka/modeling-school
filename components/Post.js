@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "../utils/toast";
+import { useRouter } from "next/router";
 
 export default function Post({
   groupId,
@@ -34,11 +35,28 @@ export default function Post({
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [createFolderDialog, setCreateFolderDialog] = useState(false);
   const supabase = useSupabaseClient();
+  const [folderName, setFolderName] = useState("");
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const changeFolderName = ({ target: { value } }) => setFolderName(value);
+
+  const createFolder = async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from("folders")
+      .insert([{ name: folderName, post_id: selection }])
+      .select();
+    router.push(`/folder/${data[0].id}?from=/group/${groupId}`);
+  };
 
   const showModal = () => setModal(true);
   const hideModal = () => setModal(false);
 
-  const showCreateFolderDialog = () => setCreateFolderDialog(true);
+  const showCreateFolderDialog = (id) => {
+    setSelection(id);
+    setCreateFolderDialog(true);
+  };
   const hideCreateFolderDialog = () => setCreateFolderDialog(false);
 
   const addToArchive = async (post) => {
@@ -159,7 +177,7 @@ export default function Post({
           <div className="flex ml-auto">
             <button
               title="Создать папку"
-              onClick={showCreateFolderDialog}
+              onClick={() => showCreateFolderDialog(postData.id)}
               className="p-2 -m-2 ml-3 sm:hover:bg-neutral-700 rounded-full mr-3"
             >
               <FolderPlusIcon className="w-6" />
@@ -270,13 +288,27 @@ export default function Post({
       {createFolderDialog && (
         <Modal onClose={hideCreateFolderDialog}>
           <input
+            value={folderName}
+            onChange={changeFolderName}
             placeholder="Название папки"
             className="bg-neutral-700 py-2 px-3 rounded-2xl block w-full"
           />
           <div className="flex gap-2 mt-4">
-            <button className="bg-white text-black rounded-2xl px-3 py-2 w-full">
-              Создать
-            </button>
+            {loading ? (
+              <div className="bg-neutral-800 rounded-2xl px-3 py-2 w-full">
+                Создаем
+              </div>
+            ) : (
+              <button
+                disabled={!folderName.trim()}
+                onClick={createFolder}
+                className={`${
+                  !folderName.trim() ? "bg-neutral-800" : "bg-white text-black"
+                } rounded-2xl px-3 py-2 w-full`}
+              >
+                Создать
+              </button>
+            )}
             <button
               onClick={hideCreateFolderDialog}
               className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"

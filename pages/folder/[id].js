@@ -21,6 +21,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
+  const { from } = router.query;
 
   const addText = async () => {};
 
@@ -46,7 +47,7 @@ export default function Folder() {
       <Content>
         <Header home groupsPage />
         <div className="flex items-center text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
-          <Link href="/home">
+          <Link href={from || "/home"}>
             <a className="inline-block -my-1 mr-2 -ml-2 sm:hover:bg-neutral-700 p-2 rounded-full">
               <ChevronLeftIcon className="w-6" />
             </a>
