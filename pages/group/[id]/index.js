@@ -117,6 +117,18 @@ export default function Group() {
     countFetcher
   );
 
+  const { data: folders, mutate: mutateFolders } = useSWR(
+    !isLoading && session && posts
+      ? api(
+          `folders?post_id=in.(${posts
+            .map((p) => p.map(({ id }) => id))
+            .join()})`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
   const { data: archive, mutate: mutateArchive } = useSWR(
     !isLoading && session && posts
       ? api(
