@@ -236,15 +236,15 @@ export default function Post({
           className="bg-neutral-800 rounded-2xl py-1 px-4 mt-2 mb-3 w-full"
           onClick={showModal}
         >
-          <div className="flex my-2 items-center justify-between">
+          <div className="flex items-center justify-between mt-2">
+            Папки: 0
+            <ChevronUpDownIcon className="w-6 -mr-2" />
+          </div>
+          <div className="flex my-2 items-center">
             <div className="bg-neutral-700 rounded-full p-2">
               <FolderIcon className="w-6" />
             </div>
-            <div className="items-center self-center items-end">
-              {/* Папки: 0  */}
-              <ChevronUpDownIcon className="w-6" />
-            </div>
-            {/* <div className="ml-4">Папок нет</div> */}
+            <div className="ml-4">Папок нет</div>
           </div>
         </button>
       </div>
