@@ -165,7 +165,12 @@ export default function Group() {
     <>
       <Content>
         <Header home groupsPage />
-        {data && posts && cachedArchive && membersCount && userIsMember ? (
+        {data &&
+        posts &&
+        cachedArchive &&
+        membersCount &&
+        userIsMember &&
+        folders ? (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -304,6 +309,8 @@ export default function Group() {
                       archive={cachedArchive}
                       from={from}
                       mutateArchive={mutateArchive}
+                      folders={folders}
+                      mutateFolders={mutateFolders}
                     />
                   ))
                 )}

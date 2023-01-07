@@ -18,6 +18,7 @@ import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "../utils/toast";
 import { useRouter } from "next/router";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Post({
   groupId,
@@ -28,6 +29,8 @@ export default function Post({
   archive,
   mutateArchive,
   paginated,
+  folders,
+  mutateFolders,
 }) {
   const [modal, setModal] = useState(false);
   const [_origin, setOrigin] = useState("");
@@ -229,7 +232,7 @@ export default function Post({
             </button>
           </div>
         </div>
-        {/* <button
+        <button
           className="bg-neutral-800 rounded-2xl py-1 px-4 mt-2 mb-3 w-full"
           onClick={showModal}
         >
@@ -238,12 +241,12 @@ export default function Post({
               <FolderIcon className="w-6" />
             </div>
             <div className="items-center self-center items-end">
-              Папки: 0
+              {/* Папки: 0  */}
               <ChevronUpDownIcon className="w-6" />
             </div>
-            <div className="ml-4">Папок нет</div>
+            {/* <div className="ml-4">Папок нет</div> */}
           </div>
-        </button> */}
+        </button>
       </div>
       {modal && (
         <Modal onClose={hideModal}>
@@ -256,10 +259,58 @@ export default function Post({
               <XMarkIcon className="w-6" />
             </button>
           </div>
-          <div className="flex mt-2 mb-1 items-center">
-            <div className="bg-neutral-700 rounded-full p-2">
+          <div className="flex mt-5 mb-1 items-center ">
+            <div className="bg-neutral-700 self-start rounded-full p-2 mr-5">
               <FolderIcon className="w-6" />
             </div>
+            {/* <div className="">{folders.map((p) => p.folderName)}</div> */}
+            <div className="grid grid-cols-4 w-full">
+              <div className="auto-cols-auto m-2 mt-0">Папка мельникова</div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка АИС-20-1 консультация
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Математическое моделирование
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с алгеброй и теорией чисел
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+              <div className="auto-cols-auto m-2 mt-0">
+                Папка с интересным содержимым
+              </div>
+            </div>
+            <div className="ml-2"></div>
           </div>
         </Modal>
       )}

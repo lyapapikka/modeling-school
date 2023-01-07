@@ -6,7 +6,7 @@ export default function Modal({ children, onClose }) {
         onClick={onClose}
       ></div>
       <div className="flex w-full items-center min-h-screen px-4 py-8">
-        <div className="relative w-full max-w-lg px-5 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg cursor-default">
+        <div className="relative max-w-xxl px-5 py-4 mx-auto bg-neutral-900 rounded-2xl shadow-lg cursor-default">
           {children}
         </div>
       </div>
