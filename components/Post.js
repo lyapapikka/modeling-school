@@ -259,58 +259,79 @@ export default function Post({
               <XMarkIcon className="w-6" />
             </button>
           </div>
-          <div className="flex mt-5 mb-1 items-center ">
-            <div className="bg-neutral-700 self-start rounded-full p-2 mr-5">
-              <FolderIcon className="w-6" />
+          <div className="space-y-4 overflow-y-scroll max-h-[400px]">
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
             </div>
-            {/* <div className="">{folders.map((p) => p.folderName)}</div> */}
-            <div className="grid grid-cols-4 w-full">
-              <div className="auto-cols-auto m-2 mt-0">Папка мельникова</div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка АИС-20-1 консультация
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
               </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Математическое моделирование
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с алгеброй и теорией чисел
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
-              <div className="auto-cols-auto m-2 mt-0">
-                Папка с интересным содержимым
-              </div>
+              <div className="ml-4">Папок нет</div>
             </div>
-            <div className="ml-2"></div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
+            <div className="flex mt-2 mb-1 items-center">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4">Папок нет</div>
+            </div>
           </div>
         </Modal>
       )}
