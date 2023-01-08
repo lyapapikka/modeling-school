@@ -44,6 +44,8 @@ export default function Post({
 
   const changeFolderName = ({ target: { value } }) => setFolderName(value);
 
+  const fetchData = () => setSize(size + 1);
+
   const createFolder = async () => {
     setLoading(true);
     const { data } = await supabase
@@ -261,80 +263,27 @@ export default function Post({
           </div>
           <div className="space-y-4 overflow-y-scroll max-h-[400px]">
             <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
+              <div>
+                {folders[0].lenght === 0 ? (
+                  <div className="ml-4">Папок нет </div>
+                ) : (
+                  <div>
+                    {folders.map((p) => (
+                      <div className="flex mb-4">
+                        <div className="bg-neutral-700 rounded-full p-2 mr-4">
+                          <FolderIcon className="w-6" />
+                        </div>
+                        <div className="self-center">{p.name}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
-            </div>
-            <div className="flex mt-2 mb-1 items-center">
-              <div className="bg-neutral-700 rounded-full p-2">
-                <FolderIcon className="w-6" />
-              </div>
-              <div className="ml-4">Папок нет</div>
             </div>
           </div>
         </Modal>
       )}
+
       {deleteDialog && (
         <Modal onClose={hideDeleteDialog}>
           <div className="text-lg mb-4">
