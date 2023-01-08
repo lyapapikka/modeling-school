@@ -261,15 +261,15 @@ export default function Post({
               <XMarkIcon className="w-6" />
             </button>
           </div>
-          <div className="space-y-4 overflow-y-scroll max-h-[400px]">
+          <div className="space-y-4 overflow-y-auto max-h-[400px]">
             <div className="flex mt-2 mb-1 items-center">
               <div>
                 {folders[0].lenght === 0 ? (
                   <div className="ml-4">Папок нет </div>
                 ) : (
                   <div>
-                    {folders.map((p) => (
-                      <div className="flex mb-4">
+                    {folders.map((p, i) => (
+                      <div key={i} className="flex mb-4">
                         <div className="bg-neutral-700 rounded-full p-2 mr-4">
                           <FolderIcon className="w-6" />
                         </div>
