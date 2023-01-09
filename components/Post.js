@@ -264,11 +264,10 @@ export default function Post({
           <div className="space-y-4 overflow-y-auto max-h-[400px]">
             <div className="flex mt-2 mb-1 items-center">
               <div>
-                {folders[0].lenght === 0 ? (
-                  <div className="ml-4">Папок нет </div>
-                ) : (
-                  <div>
-                    {folders.map((p, i) => (
+                <div>
+                  {folders
+                    .filter((post_id) => post_id !== postData)
+                    .map((p, i) => (
                       <div key={i} className="flex mb-4">
                         <div className="bg-neutral-700 rounded-full p-2 mr-4">
                           <FolderIcon className="w-6" />
@@ -276,8 +275,7 @@ export default function Post({
                         <div className="self-center">{p.name}</div>
                       </div>
                     ))}
-                  </div>
-                )}
+                </div>
               </div>
             </div>
           </div>
