@@ -266,7 +266,7 @@ export default function Post({
               <div>
                 <div>
                   {folders
-                    .filter((post_id) => post_id !== postData)
+                    .filter((p) => p.post_id !== postData.id)
                     .map((p, i) => (
                       <div key={i} className="flex mb-4">
                         <div className="bg-neutral-700 rounded-full p-2 mr-4">
