@@ -234,21 +234,26 @@ export default function Post({
             </button>
           </div>
         </div>
-        <button
-          className="bg-neutral-800 rounded-2xl py-1 px-4 mt-2 mb-3 w-full"
-          onClick={showModal}
-        >
-          <div className="flex items-center justify-between mt-2">
-            Папки: 0
-            <ChevronUpDownIcon className="w-6 -mr-2" />
-          </div>
-          <div className="flex my-2 items-center">
-            <div className="bg-neutral-700 rounded-full p-2">
-              <FolderIcon className="w-6" />
+        {folders.filter((p) => p.post_id === postData.id)[0] ? (
+          <button
+            className="bg-neutral-800 rounded-2xl py-1 px-4 mt-4 mb-3 w-full flex justify-between"
+            onClick={showModal}
+          >
+            <div className="flex my-2">
+              <div className="bg-neutral-700 rounded-full p-2">
+                <FolderIcon className="w-6" />
+              </div>
+              <div className="ml-4 self-center">
+                {console.log(
+                  folders.filter((p) => p.post_id === postData.id)[0]
+                )}
+              </div>
             </div>
-            <div className="ml-4">Папок нет</div>
-          </div>
-        </button>
+            <div className="mr-2 self-center">
+              <ChevronUpDownIcon className="w-6 -mr-2" />
+            </div>
+          </button>
+        ) : null}
       </div>
       {modal && (
         <Modal onClose={hideModal}>
