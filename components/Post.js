@@ -18,7 +18,6 @@ import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "../utils/toast";
 import { useRouter } from "next/router";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Post({
   groupId,
@@ -98,7 +97,7 @@ export default function Post({
     );
     setDeleteDialog(false);
 
-    await supabaseClient.from("posts").delete().eq("id", selection);
+    await supabase.from("posts").delete().eq("id", selection);
   };
 
   const copyLink = (id) => {
@@ -244,9 +243,7 @@ export default function Post({
                 <FolderIcon className="w-6" />
               </div>
               <div className="ml-4 self-center">
-                {console.log(
-                  folders.filter((p) => p.post_id === postData.id)[0]
-                )}
+                {folders.filter((p) => p.post_id === postData.id)[0].name}
               </div>
             </div>
             <div className="mr-2 self-center">
