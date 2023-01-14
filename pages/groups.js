@@ -56,7 +56,7 @@ export default function Groups() {
           Группы
         </div>
         <Link href="/new">
-          <a className="w-full bg-neutral-900 rounded-2xl py-5 px-4 flex my-2">
+          <a className="w-full bg-neutral-900 rounded-2xl py-5 px-4 flex my-2 hover:bg-neutral-800">
             <PlusIcon className="w-6 ml-2 mr-4" />
             Новая группа
           </a>
@@ -68,7 +68,7 @@ export default function Groups() {
             next={fetchData}
             hasMore={!(groups.at(-1).length < 8)}
             loader={
-              <div className="space-y-2">
+              <div className="space-y-2 ">
                 <div className="bg-neutral-900 h-16 rounded-2xl"></div>
                 <div className="bg-neutral-900 h-16 rounded-2xl"></div>
               </div>
@@ -77,7 +77,7 @@ export default function Groups() {
             {groups.map((group) =>
               group.map((g) => (
                 <Link href={`/group/${g.id}?from=groups`} key={g.id}>
-                  <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4 items-center">
+                  <a className="bg-neutral-900 rounded-2xl py-3 px-4 flex gap-4 items-center hover:bg-neutral-800">
                     <div className="mt-2 ml-1 shrink-0">
                       <Image
                         alt=""

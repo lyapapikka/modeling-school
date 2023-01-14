@@ -79,7 +79,9 @@ export default function New() {
             disabled={loading}
             onClick={setPublic}
             className={`flex items-center ${
-              visibility !== "public" ? "bg-neutral-900" : "bg-white text-black"
+              visibility !== "public"
+                ? "bg-neutral-900"
+                : "bg-neutral-200 text-black"
             } rounded-2xl py-3 pr-3 w-full`}
           >
             <GlobeAltIcon className="w-6 shrink-0 mx-4" />
@@ -96,7 +98,7 @@ export default function New() {
             className={`flex items-center ${
               visibility !== "private"
                 ? "bg-neutral-900"
-                : "bg-white text-black"
+                : "bg-neutral-200 text-black"
             } rounded-2xl py-3 pr-3 w-full`}
           >
             <LockClosedIcon className="w-6 shrink-0 mx-4" />
