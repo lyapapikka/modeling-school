@@ -56,7 +56,7 @@ export default function Groups() {
           Группы
         </div>
         <Link href="/new">
-          <a className="w-full bg-neutral-900 rounded-2xl py-5 px-4 flex my-2 hover:bg-neutral-800 sm:hover:bg-neutral-800">
+          <a className="w-full bg-neutral-900 rounded-2xl py-5 px-4 flex my-2 sm:hover:bg-neutral-800">
             <PlusIcon className="w-6 ml-2 mr-4" />
             Новая группа
           </a>
