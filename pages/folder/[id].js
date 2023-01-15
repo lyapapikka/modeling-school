@@ -24,6 +24,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import useSWR from "swr";
 import fetcher from "../../utils/fetcher";
 import api from "../../utils/api";
+import { nanoid } from "nanoid";
 
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
@@ -64,9 +65,28 @@ export default function Folder() {
     setLoading(false);
   };
 
-  const uploadImage = async ({ target: { files } }) => {};
+  const uploadImage = async ({ target: { files } }) => {
+    const picture = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
+    await supabase.storage.from("folder").upload(picture, files[0]);
+    await supabase.from("files").insert([
+      {
+        user_id: session.user.id,
+        type: "image",
+        value: picture,
+        folder_id: id,
+      },
+    ]);
+  };
 
-  const uploadFile = async ({ target: { files } }) => {};
+  const uploadFile = async ({ target: { files } }) => {
+    const file = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
+    await supabase.storage.from("folder").upload(file, files[0]);
+    await supabase
+      .from("files")
+      .insert([
+        { user_id: session.user.id, type: "file", value: file, folder_id: id },
+      ]);
+  };
 
   useEffect(() => {
     if (!isLoading && !session) {
