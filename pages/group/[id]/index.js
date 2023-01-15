@@ -32,6 +32,7 @@ export default function Group() {
   const [postText, setPostText] = useState("");
   const [loading, setLoading] = useState(false);
   const [cachedArchive, setCachedArchive] = useState([]);
+  const [cachedFolders, setCachedFolders] = useState([]);
 
   const changePostText = ({ target: { value } }) => setPostText(value);
 
@@ -145,6 +146,10 @@ export default function Group() {
     setCachedArchive((cache) => archive || cache);
   }, [archive]);
 
+  useEffect(() => {
+    setCachedFolders((cache) => folders || cache);
+  }, [folders]);
+
   const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
@@ -170,7 +175,7 @@ export default function Group() {
         cachedArchive &&
         membersCount &&
         userIsMember &&
-        folders ? (
+        cachedFolders ? (
           <>
             <Head>
               <title>{data[0].name} - Школа моделирования</title>
@@ -309,7 +314,7 @@ export default function Group() {
                       archive={cachedArchive}
                       from={from}
                       mutateArchive={mutateArchive}
-                      folders={folders}
+                      folders={cachedFolders}
                       mutateFolders={mutateFolders}
                     />
                   ))
