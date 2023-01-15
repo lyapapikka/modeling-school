@@ -25,6 +25,7 @@ import useSWR from "swr";
 import fetcher from "../../utils/fetcher";
 import api from "../../utils/api";
 import { nanoid } from "nanoid";
+import Modal from "../../components/Modal";
 
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
@@ -37,6 +38,17 @@ export default function Folder() {
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [selection, setSelection] = useState("");
+
+  const showDeleteDialog = (id) => {
+    setSelection(id);
+    setDeleteDialog(true);
+  };
+
+  const hideDeleteDialog = () => setDeleteDialog(false);
+
+  const deleteFile = async () => {};
 
   const { data: folder } = useSWR(
     !isLoading && session && router.isReady
@@ -339,8 +351,14 @@ export default function Folder() {
                         </div>
                         {files.find((file) => file.id === f).value}
                         <div className="flex mt-2 -mx-2">
-                          {session.user.id === f.user_id && (
+                          {session.user.id ===
+                            files.find((file) => file.id === f).user_id && (
                             <button
+                              onClick={() =>
+                                showDeleteDialog(
+                                  files.find((file) => file.id === f).id
+                                )
+                              }
                               title="Удалить"
                               className="sm:hover:bg-neutral-700 p-2 rounded-full block"
                             >
@@ -378,13 +396,23 @@ export default function Folder() {
                           <Image
                             objectFit="contain"
                             layout="fill"
-                            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${files.find((file) => file.id === f).value}`}
+                            src={`${
+                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                            }/folder/${
+                              files.find((file) => file.id === f).value
+                            }`}
                             alt=""
                           />
                         </div>
                         <div className="flex -mx-2">
-                          {session.user.id === f.user_id && (
+                          {session.user.id ===
+                            files.find((file) => file.id === f).user_id && (
                             <button
+                              onClick={() =>
+                                showDeleteDialog(
+                                  files.find((file) => file.id === f).id
+                                )
+                              }
                               title="Удалить"
                               className="sm:hover:bg-neutral-700 p-2 rounded-full block"
                             >
@@ -422,9 +450,15 @@ export default function Folder() {
                           <div className="rounded-full p-2 bg-neutral-700">
                             <DocumentIcon className="w-6" />
                           </div>
-                          <div className="ml-4 line-clamp-1">{files.find((file) => file.id === f).value}</div>
+                          <div className="ml-4 line-clamp-1">
+                            {files.find((file) => file.id === f).value}
+                          </div>
                           <a
-                            href={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${files.find((file) => file.id === f).value}`}
+                            href={`${
+                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                            }/folder/${
+                              files.find((file) => file.id === f).value
+                            }`}
                             target="_blank"
                             rel="noreferrer"
                             className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
@@ -434,8 +468,14 @@ export default function Folder() {
                           </a>
                         </div>
                         <div className="flex mt-2 -mx-2">
-                          {session.user.id === f.user_id && (
+                          {session.user.id ===
+                            files.find((file) => file.id === f).user_id && (
                             <button
+                              onClick={() =>
+                                showDeleteDialog(
+                                  files.find((file) => file.id === f).id
+                                )
+                              }
                               title="Удалить"
                               className="sm:hover:bg-neutral-700 p-2 rounded-full"
                             >
@@ -463,6 +503,27 @@ export default function Folder() {
           </>
         )}
       </Content>
+      {deleteDialog && (
+        <Modal onClose={hideDeleteDialog}>
+          <div className="text-lg mb-4">
+            Файл нельзя будет восстановить после удаления. Вы уверены?
+          </div>
+          <div className="flex gap-2 mt-2">
+            <button
+              onClick={deleteFile}
+              className="bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 w-full"
+            >
+              Да
+            </button>
+            <button
+              onClick={hideDeleteDialog}
+              className="bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 w-full"
+            >
+              Нет
+            </button>
+          </div>
+        </Modal>
+      )}
     </>
   );
 }

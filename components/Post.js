@@ -283,7 +283,6 @@ export default function Post({
           </div>
         </Modal>
       )}
-
       {deleteDialog && (
         <Modal onClose={hideDeleteDialog}>
           <div className="text-lg mb-4">
@@ -292,13 +291,13 @@ export default function Post({
           <div className="flex gap-2 mt-2">
             <button
               onClick={deletePost}
-              className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
+              className="bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 w-full"
             >
               Да
             </button>
             <button
               onClick={hideDeleteDialog}
-              className="bg-white text-black rounded-2xl px-3 py-2 w-full"
+              className="bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 w-full"
             >
               Нет
             </button>
