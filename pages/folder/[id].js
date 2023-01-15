@@ -14,7 +14,8 @@ import {
   ChevronLeftIcon,
   ChevronUpIcon,
   DocumentIcon,
-  DocumentTextIcon,
+  CheckIcon,
+  EllipsisHorizontalIcon,
   PhotoIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
@@ -31,6 +32,10 @@ export default function Folder() {
   const supabase = useSupabaseClient();
   const [files, setFiles] = useState([]);
   const [order, setOrder] = useState([]);
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [folderChannel, setFolderChannel] = useState("");
+  const [filesChannel, setFilesChannel] = useState("");
 
   const { data: folder } = useSWR(
     !isLoading && session && router.isReady
@@ -39,7 +44,25 @@ export default function Folder() {
     fetcher
   );
 
-  const addText = async () => {};
+  const changeText = ({ target: { value } }) => setText(value);
+
+  const addText = async () => {
+    setLoading(true);
+
+    filesChannel.subscribe(async (status) => {
+      if (status === "SUBSCRIBED") {
+        await supabase.from("files").insert({
+          user_id: session.user.id,
+          type: "text",
+          value: text,
+          folder_id: id,
+        });
+      }
+    });
+
+    setText("");
+    setLoading(false);
+  };
 
   const uploadImage = async ({ target: { files } }) => {};
 
@@ -52,10 +75,7 @@ export default function Folder() {
   }, [isLoading, session, router]);
 
   useEffect(() => {
-    if (router.isReady) {
-      const folderChannel = supabase.channel(router.query.id);
-      const filesChannel = supabase.channel(`files-${router.query.id}`);
-
+    if (folderChannel && filesChannel && router.isReady) {
       folderChannel.on(
         "postgres_changes",
         {
@@ -75,8 +95,18 @@ export default function Folder() {
           table: "files",
           filter: `folder_id=eq.${router.query.id}`,
         },
-        (payload) => setFiles(payload)
+        (payload) => {
+          console.log(payload);
+          setFiles(payload);
+        }
       );
+    }
+  }, [folderChannel, filesChannel, router]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      setFolderChannel(supabase.channel(router.query.id));
+      setFilesChannel(supabase.channel(`files-${router.query.id}`));
     }
   }, [router, supabase]);
 
@@ -172,9 +202,27 @@ export default function Folder() {
               </div>
               <div className="px-2">
                 <ReactTextareaAutosize
+                  disabled={loading}
+                  value={text}
+                  onChange={changeText}
                   placeholder="Напишите что-нибудь..."
                   className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full mt-1 mb-2"
                 />
+                {text.trim() && !loading && (
+                  <button
+                    onClick={addText}
+                    className="w-full flex justify-center bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 my-2"
+                  >
+                    <CheckIcon className="w-6 mr-2" />
+                    <div className="leading-6">Добавить</div>
+                  </button>
+                )}
+                {loading && (
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
+                    <EllipsisHorizontalIcon className="w-6 mr-2" />
+                    <div className="leading-6">Добавляем</div>
+                  </div>
+                )}
               </div>
               {order &&
                 (files.length === 0 ? (
