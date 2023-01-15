@@ -34,6 +34,13 @@ export default function PostPage() {
     fetcher
   );
 
+  const { data: folders, mutate: mutateFolders } = useSWR(
+    !isLoading && session && data
+      ? api(`folders?select=*,post_id=${data[0].id}`, session)
+      : null,
+    fetcher
+  );
+
   useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
@@ -62,7 +69,7 @@ export default function PostPage() {
             Запись
           </div>
         </div>
-        {data && archive ? (
+        {data && archive && folders ? (
           <>
             <Head>
               <title>{data[0].groups.name} - Школа моделирования</title>
@@ -75,6 +82,8 @@ export default function PostPage() {
               from="home"
               archive={archive}
               mutateArchive={mutateArchive}
+              mutateFolders={mutateFolders}
+              folders={folders}
             />
           </>
         ) : (
