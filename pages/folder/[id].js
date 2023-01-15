@@ -35,6 +35,8 @@ export default function Folder() {
   const [order, setOrder] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [fileLoading, setFileLoading] = useState(false);
 
   const { data: folder } = useSWR(
     !isLoading && session && router.isReady
@@ -62,6 +64,7 @@ export default function Folder() {
   };
 
   const uploadImage = async ({ target: { files } }) => {
+    setImageLoading(true);
     const picture = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
     await supabase.storage.from("folder").upload(picture, files[0]);
     await supabase.from("files").insert([
@@ -72,9 +75,11 @@ export default function Folder() {
         folder_id: id,
       },
     ]);
+    setImageLoading(false);
   };
 
   const uploadFile = async ({ target: { files } }) => {
+    setFileLoading(true);
     await supabase.storage.from("folder").upload(files[0].name, files[0]);
     await supabase.from("files").insert([
       {
@@ -84,6 +89,7 @@ export default function Folder() {
         folder_id: id,
       },
     ]);
+    setFileLoading(false);
   };
 
   useEffect(() => {
@@ -200,32 +206,48 @@ export default function Folder() {
             <div className="space-y-2">
               <div className="flex space-x-2 mx-2">
                 <input
+                  disabled={imageLoading}
                   id="image-upload"
                   onChange={uploadImage}
                   type="file"
                   accept="image/*"
                   hidden
                 />
-                <label
-                  htmlFor="image-upload"
-                  className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
-                >
-                  <PhotoIcon className="w-6 sm:mr-2" />
-                  <div className="sm:block hidden">Картинка</div>
-                </label>
+                {imageLoading ? (
+                  <div className="bg-neutral-900 w-full flex justify-center rounded-2xl py-4">
+                    <EllipsisHorizontalIcon className="w-6 sm:mr-2" />
+                    <div className="sm:block hidden">Загружаем</div>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="image-upload"
+                    className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
+                  >
+                    <PhotoIcon className="w-6 sm:mr-2" />
+                    <div className="sm:block hidden">Картинка</div>
+                  </label>
+                )}
                 <input
+                  disabled={fileLoading}
                   id="file-upload"
                   onChange={uploadFile}
                   type="file"
                   hidden
                 />
-                <label
-                  htmlFor="file-upload"
-                  className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
-                >
-                  <DocumentIcon className="w-6 sm:mr-2" />
-                  <div className="sm:block hidden">Файл</div>
-                </label>
+                {fileLoading ? (
+                  <div className="bg-neutral-900 w-full flex justify-center rounded-2xl py-4">
+                    <EllipsisHorizontalIcon className="w-6 sm:mr-2" />
+                    <div className="sm:block hidden">Добавляем</div>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="file-upload"
+                    className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
+                  >
+                    <DocumentIcon className="w-6 sm:mr-2" />
+                    <div className="sm:block hidden">Файл</div>
+                  </label>
+                )}
               </div>
               <div className="px-2">
                 <ReactTextareaAutosize
@@ -300,7 +322,7 @@ export default function Folder() {
                           />
                           <div className="ml-2 line-clamp-1">Кот Матроскин</div>
                         </div>
-                        <div className="relative aspect-video mb-2">
+                        <div className="relative aspect-square mb-2">
                           <Image
                             objectFit="contain"
                             layout="fill"
