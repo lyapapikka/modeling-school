@@ -233,7 +233,7 @@ export default function Post({
             </button>
           </div>
         </div>
-        {folders.filter((p) => p.post_id === postData.id)[0] ? (
+        {folders.filter((f) => f.post_id === postData.id)[0] ? (
           <button
             className="bg-neutral-800 rounded-2xl py-1 px-4 mt-4 mb-3 w-full flex justify-between"
             onClick={showModal}
@@ -243,7 +243,13 @@ export default function Post({
                 <FolderIcon className="w-6" />
               </div>
               <div className="ml-4 self-center">
-                {folders.filter((p) => p.post_id === postData.id)[0].name}
+                {
+                  folders
+                    .filter((f) => f.post_id === postData.id)
+                    .sort(
+                      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+                    )[0].name
+                }
               </div>
             </div>
             <div className="mr-2 self-center">
@@ -255,31 +261,28 @@ export default function Post({
       {modal && (
         <Modal onClose={hideModal}>
           <div className="flex justify-between items-center">
-            <div className="text-lg">Папки</div>
+            <div className="text-lg ml-3">Папки</div>
             <button
-              className="p-2 -mr-3 -mt-2 sm:hover:bg-neutral-700 rounded-full"
+              className="p-2 sm:hover:bg-neutral-700 rounded-full"
               onClick={hideModal}
             >
               <XMarkIcon className="w-6" />
             </button>
           </div>
-          <div className="space-y-4 overflow-y-auto max-h-[400px]">
-            <div className="flex mt-2 mb-1 items-center">
-              <div>
-                <div>
-                  {folders
-                    .filter((p) => p.post_id === postData.id)
-                    .map((p, i) => (
-                      <div key={i} className="flex mb-4">
-                        <div className="bg-neutral-700 rounded-full p-2 mr-4">
-                          <FolderIcon className="w-6" />
-                        </div>
-                        <div className="self-center">{p.name}</div>
-                      </div>
-                    ))}
-                </div>
-              </div>
-            </div>
+          <div className="overflow-y-auto max-h-[400px] mb-2">
+            {folders
+              .filter((f) => f.post_id === postData.id)
+              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+              .map((f, i) => (
+                <Link href={`/folder/${f.id}?from=/group/${groupId}`} key={i}>
+                  <a className="flex items-center w-full sm:hover:bg-neutral-800 rounded-2xl py-2 px-3">
+                    <div className="bg-neutral-700 rounded-full p-2 mr-4">
+                      <FolderIcon className="w-6" />
+                    </div>
+                    {f.name}
+                  </a>
+                </Link>
+              ))}
           </div>
         </Modal>
       )}
