@@ -35,8 +35,6 @@ export default function Folder() {
   const [order, setOrder] = useState([]);
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
-  const [folderChannel, setFolderChannel] = useState("");
-  const [filesChannel, setFilesChannel] = useState("");
 
   const { data: folder } = useSWR(
     !isLoading && session && router.isReady
@@ -50,16 +48,14 @@ export default function Folder() {
   const addText = async () => {
     setLoading(true);
 
-    filesChannel.subscribe(async (status) => {
-      if (status === "SUBSCRIBED") {
-        await supabase.from("files").insert({
-          user_id: session.user.id,
-          type: "text",
-          value: text,
-          folder_id: id,
-        });
-      }
-    });
+    await supabase.from("files").insert([
+      {
+        user_id: session.user.id,
+        type: "text",
+        value: text,
+        folder_id: id,
+      },
+    ]);
 
     setText("");
     setLoading(false);
@@ -79,13 +75,15 @@ export default function Folder() {
   };
 
   const uploadFile = async ({ target: { files } }) => {
-    const file = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
-    await supabase.storage.from("folder").upload(file, files[0]);
-    await supabase
-      .from("files")
-      .insert([
-        { user_id: session.user.id, type: "file", value: file, folder_id: id },
-      ]);
+    await supabase.storage.from("folder").upload(files[0].name, files[0]);
+    await supabase.from("files").insert([
+      {
+        user_id: session.user.id,
+        type: "file",
+        value: files[0].name,
+        folder_id: id,
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -95,38 +93,47 @@ export default function Folder() {
   }, [isLoading, session, router]);
 
   useEffect(() => {
-    if (folderChannel && filesChannel && router.isReady) {
-      folderChannel.on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "folders",
-          filter: `id=eq.${router.query.id}`,
-        },
-        (payload) => setOrder(payload)
-      );
-
-      filesChannel.on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "files",
-          filter: `folder_id=eq.${router.query.id}`,
-        },
-        (payload) => {
-          console.log(payload);
-          setFiles(payload);
-        }
-      );
-    }
-  }, [folderChannel, filesChannel, router]);
-
-  useEffect(() => {
     if (router.isReady) {
-      setFolderChannel(supabase.channel(router.query.id));
-      setFilesChannel(supabase.channel(`files-${router.query.id}`));
+      const func = async () => {
+        const { data: initialFiles } = await supabase
+          .from("files")
+          .select()
+          .eq("folder_id", router.query.id);
+
+        setFiles(initialFiles);
+
+        supabase
+          .channel(router.query.id)
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "folders",
+              filter: `id=eq.${router.query.id}`,
+            },
+            (payload) => setOrder(payload.new)
+          )
+          .subscribe();
+
+        supabase
+          .channel(`files-${router.query.id}`)
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "files",
+              filter: `folder_id=eq.${router.query.id}`,
+            },
+            (payload) => {
+              setFiles((files) => [payload.new, ...files]);
+            }
+          )
+          .subscribe();
+      };
+
+      func();
     }
   }, [router, supabase]);
 
@@ -264,12 +271,7 @@ export default function Folder() {
                           />
                           <div className="ml-2 line-clamp-1">Кот Матроскин</div>
                         </div>
-                        Мы любим животных и стараемся поддерживать тех из них,
-                        кому не посчастливилось иметь ласковых хозяев и тёплый
-                        кров. Один из проверенных способов это сделать — помочь
-                        приюту для животных Домашний. У этих ребят живёт более
-                        1500 четвероногих, и благодаря их труду ежегодно сотни
-                        питомцев находят свой новый дом.
+                        {f.value}
                         <div className="flex">
                           <button
                             title="Переместить вверх"
@@ -302,7 +304,7 @@ export default function Folder() {
                           <Image
                             objectFit="contain"
                             layout="fill"
-                            src="/cat.jpg"
+                            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${f.value}`}
                             alt=""
                           />
                         </div>
@@ -344,11 +346,15 @@ export default function Folder() {
                           <div className="rounded-full p-2 bg-neutral-700">
                             <DocumentIcon className="w-6" />
                           </div>
-                          <div className="ml-4">gta_sa.exe</div>
-                          <button className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2">
+                          <div className="ml-4 line-clamp-1">{f.value}</div>
+                          <a
+                            href={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${f.value}`}
+                            target="_blank"
+                            className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
+                          >
                             <ArrowDownTrayIcon className="w-6 sm:mr-2" />
                             <div className="hidden sm:block">Скачать</div>
-                          </button>
+                          </a>
                         </div>
                         <div className="flex mt-2">
                           <button
