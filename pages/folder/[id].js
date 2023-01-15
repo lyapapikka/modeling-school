@@ -350,6 +350,7 @@ export default function Folder() {
                           <a
                             href={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${f.value}`}
                             target="_blank"
+                            rel="noreferrer"
                             className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
                           >
                             <ArrowDownTrayIcon className="w-6 sm:mr-2" />
