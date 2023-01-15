@@ -235,11 +235,11 @@ export default function Post({
         </div>
         {folders.filter((f) => f.post_id === postData.id)[0] ? (
           <button
-            className="bg-neutral-800 rounded-2xl py-1 px-4 mt-4 mb-3 w-full flex justify-between"
+            className="bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl py-1 px-4 mt-4 mb-3 w-full flex justify-between"
             onClick={showModal}
           >
             <div className="flex my-2">
-              <div className="bg-neutral-700 rounded-full p-2">
+              <div className="bg-neutral-600 rounded-full p-2">
                 <FolderIcon className="w-6" />
               </div>
               <div className="ml-4 self-center">
