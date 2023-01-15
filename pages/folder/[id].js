@@ -294,7 +294,15 @@ export default function Folder() {
                           <div className="ml-2 line-clamp-1">Кот Матроскин</div>
                         </div>
                         {f.value}
-                        <div className="flex">
+                        <div className="flex mt-2 -mx-2">
+                          {session.user.id === f.user_id && (
+                            <button
+                              title="Удалить"
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full block"
+                            >
+                              <TrashIcon className="w-6 stroke-red-500" />
+                            </button>
+                          )}
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
@@ -330,13 +338,15 @@ export default function Folder() {
                             alt=""
                           />
                         </div>
-                        <div className="flex">
-                          <button
-                            title="Удалить"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full block"
-                          >
-                            <TrashIcon className="w-6 stroke-red-500" />
-                          </button>
+                        <div className="flex -mx-2">
+                          {session.user.id === f.user_id && (
+                            <button
+                              title="Удалить"
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full block"
+                            >
+                              <TrashIcon className="w-6 stroke-red-500" />
+                            </button>
+                          )}
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
@@ -379,13 +389,15 @@ export default function Folder() {
                             <div className="hidden sm:block">Скачать</div>
                           </a>
                         </div>
-                        <div className="flex mt-2">
-                          <button
-                            title="Удалить"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                          >
-                            <TrashIcon className="w-6 stroke-red-500" />
-                          </button>
+                        <div className="flex mt-2 -mx-2">
+                          {session.user.id === f.user_id && (
+                            <button
+                              title="Удалить"
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                            >
+                              <TrashIcon className="w-6 stroke-red-500" />
+                            </button>
+                          )}
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
