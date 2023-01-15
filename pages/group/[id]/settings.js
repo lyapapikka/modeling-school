@@ -93,7 +93,7 @@ export default function Settings() {
               name.trim() && (
                 <button
                   onClick={saveGroup}
-                  className="w-full rounded-2xl bg-white text-black justify-center flex py-2"
+                  className="w-full rounded-2xl bg-white sm:hover:bg-neutral-200 text-black justify-center flex py-2"
                 >
                   <CheckIcon className="w-6 mr-2" />
                   Сохранить

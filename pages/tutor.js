@@ -68,7 +68,7 @@ export default function Tutor({ filenames }) {
                 target="_blank"
                 rel="noreferrer"
                 href={`/tutors/${f}`}
-                className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2"
+                className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
               >
                 <ArrowDownTrayIcon className="w-6 sm:mr-2" />
                 <div className="hidden sm:block">Скачать</div>

@@ -117,7 +117,7 @@ export default function Settings() {
                 ) : (
                   <label
                     htmlFor="upload"
-                    className="cursor-pointer w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2"
+                    className="cursor-pointer w-full flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2"
                   >
                     <PhotoIcon className="w-6 mr-2" />
                     Изменить фото
@@ -141,7 +141,7 @@ export default function Settings() {
               name.trim() && (
                 <button
                   onClick={saveProfile}
-                  className="w-full rounded-2xl bg-white text-black justify-center flex py-2"
+                  className="w-full rounded-2xl bg-white sm:hover:bg-neutral-200 text-black justify-center flex py-2"
                 >
                   <CheckIcon className="w-6 mr-2" />
                   Сохранить
@@ -150,7 +150,7 @@ export default function Settings() {
             )}
             <button
               onClick={logout}
-              className="w-full flex justify-center bg-neutral-800 rounded-2xl px-3 py-2"
+              className="w-full flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2"
             >
               <PowerIcon className="w-6 mr-2" />
               Выйти
