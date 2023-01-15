@@ -242,7 +242,7 @@ export default function Group() {
                   session.user.id !== data[0].owner_id
                     ? "w-fit sm:w-full"
                     : "w-full"
-                } justify-center bg-neutral-800 rounded-2xl px-3 py-2 mb-2`}
+                } justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 mb-2`}
               >
                 <LinkIcon
                   className={`w-6 ${
@@ -272,7 +272,7 @@ export default function Group() {
                 {postText.trim() && !loading && (
                   <button
                     onClick={createPost}
-                    className="w-full flex justify-center bg-white text-black rounded-2xl px-3 py-2 my-2"
+                    className="w-full flex justify-center bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 my-2"
                   >
                     <CheckIcon className="w-6 mr-2" />
                     <div className="leading-6">Опубликовать</div>
