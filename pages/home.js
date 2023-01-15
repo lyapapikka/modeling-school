@@ -15,7 +15,8 @@ export default function Home() {
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
   const { isLoading, session } = useSessionContext();
-  const [cachedArchive, setCachedArchive] = useState(false);
+  const [cachedArchive, setCachedArchive] = useState([]);
+  const [cachedFolders, setCachedFolders] = useState([]);
 
   const {
     data: posts,
@@ -37,6 +38,18 @@ export default function Home() {
     fetcher
   );
 
+  const { data: folders, mutate: mutateFolders } = useSWR(
+    !isLoading && session && posts
+      ? api(
+          `folders?post_id=in.(${posts
+            .map((p) => p.map(({ id }) => id))
+            .join()})`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
   const { data: archive, mutate: mutateArchive } = useSWR(
     !isLoading && session && posts
       ? api(
@@ -54,6 +67,10 @@ export default function Home() {
   useEffect(() => {
     setCachedArchive((cache) => archive || cache);
   }, [archive]);
+
+  useEffect(() => {
+    setCachedFolders((cache) => folders || cache);
+  }, [folders]);
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -108,6 +125,8 @@ export default function Home() {
                     postData={p}
                     mutateArchive={mutateArchive}
                     archive={cachedArchive}
+                    mutateFolders={mutateFolders}
+                    folders={cachedFolders}
                   />
                 ))
               )}

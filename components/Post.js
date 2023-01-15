@@ -274,7 +274,7 @@ export default function Post({
               .filter((f) => f.post_id === postData.id)
               .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
               .map((f, i) => (
-                <Link href={`/folder/${f.id}?from=/group/${groupId}`} key={i}>
+                <Link href={`/folder/${f.id}?from=/${from}`} key={i}>
                   <a className="flex items-center w-full sm:hover:bg-neutral-800 rounded-2xl py-2 px-3">
                     <div className="bg-neutral-700 rounded-full p-2 mr-4">
                       <FolderIcon className="w-6" />
@@ -326,7 +326,7 @@ export default function Post({
                 disabled={!folderName.trim()}
                 onClick={createFolder}
                 className={`${
-                  !folderName.trim() ? "bg-neutral-800" : "bg-white text-black"
+                  !folderName.trim() ? "bg-neutral-800" : "bg-white text-black sm:hover:bg-neutral-200"
                 } rounded-2xl px-3 py-2 w-full`}
               >
                 Создать
@@ -334,7 +334,7 @@ export default function Post({
             )}
             <button
               onClick={hideCreateFolderDialog}
-              className="bg-neutral-800 rounded-2xl px-3 py-2 w-full"
+              className="bg-neutral-700 sm:hover:bg-neutral-600 rounded-2xl px-3 py-2 w-full"
             >
               Отмена
             </button>
