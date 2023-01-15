@@ -101,7 +101,7 @@ export default function Folder() {
           <div className="flex space-x-2 mx-2">
             <button
               onClick={addText}
-              className="bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+              className="bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
             >
               <DocumentTextIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Текст</div>
@@ -115,7 +115,7 @@ export default function Folder() {
             />
             <label
               htmlFor="image-upload"
-              className="cursor-pointer bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+              className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
             >
               <PhotoIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Картинка</div>
@@ -123,7 +123,7 @@ export default function Folder() {
             <input id="file-upload" onChange={uploadFile} type="file" hidden />
             <label
               htmlFor="file-upload"
-              className="cursor-pointer bg-neutral-800 w-full flex justify-center rounded-2xl py-4"
+              className="cursor-pointer bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
             >
               <DocumentIcon className="w-6 sm:mr-2" />
               <div className="sm:block hidden">Файл</div>
@@ -252,7 +252,7 @@ export default function Folder() {
                 <DocumentIcon className="w-6" />
               </div>
               <div className="ml-4">gta_sa.exe</div>
-              <button className="ml-auto flex justify-center bg-neutral-800 rounded-2xl px-3 py-2 my-2">
+              <button className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2">
                 <ArrowDownTrayIcon className="w-6 sm:mr-2" />
                 <div className="hidden sm:block">Скачать</div>
               </button>
