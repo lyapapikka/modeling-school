@@ -142,13 +142,6 @@ export default function Folder() {
             </div>
             <div className="space-y-2">
               <div className="flex space-x-2 mx-2">
-                <button
-                  onClick={addText}
-                  className="bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
-                >
-                  <DocumentTextIcon className="w-6 sm:mr-2" />
-                  <div className="sm:block hidden">Текст</div>
-                </button>
                 <input
                   id="image-upload"
                   onChange={uploadImage}
@@ -177,179 +170,140 @@ export default function Folder() {
                   <div className="sm:block hidden">Файл</div>
                 </label>
               </div>
+              <div className="px-2">
+                <ReactTextareaAutosize
+                  placeholder="Напишите что-нибудь..."
+                  className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full mt-1 mb-2"
+                />
+              </div>
               {order &&
                 (files.length === 0 ? (
                   <div className="text-center text-neutral-500 pt-8">
                     Папка пуста
                   </div>
                 ) : (
-                  files.map(
-                    (f) =>
-                      f.type === "text" ? (
-                        <div className="bg-neutral-900 rounded-2xl py-3 px-4">
-                          <div className="flex items-center mb-4">
-                            <Image
-                              src="/cat.jpg"
-                              height={40}
-                              width={40}
-                              objectFit="cover"
-                              className="rounded-full"
-                              alt=""
-                            />
-                            <div className="ml-2 line-clamp-1">
-                              Кот Матроскин
-                            </div>
-                          </div>
-                          Мы любим животных и стараемся поддерживать тех из них,
-                          кому не посчастливилось иметь ласковых хозяев и тёплый
-                          кров. Один из проверенных способов это сделать —
-                          помочь приюту для животных Домашний. У этих ребят
-                          живёт более 1500 четвероногих, и благодаря их труду
-                          ежегодно сотни питомцев находят свой новый дом.
-                          <div className="flex">
-                            <button
-                              title="Переместить вверх"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                            >
-                              <ChevronUpIcon className="w-6" />
-                            </button>
-                            <button
-                              title="Переместить вниз"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                            >
-                              <ChevronDownIcon className="w-6" />
-                            </button>
-                          </div>
-                        </div>
-                      ) : f.type === "image" ? (
-                        <div className="bg-neutral-900 rounded-2xl py-3 px-4">
-                          <div className="flex items-center mb-4">
-                            <Image
-                              src="/cat.jpg"
-                              height={40}
-                              width={40}
-                              objectFit="cover"
-                              className="rounded-full"
-                              alt=""
-                            />
-                            <div className="ml-2 line-clamp-1">
-                              Кот Матроскин
-                            </div>
-                          </div>
-                          <ReactTextareaAutosize
-                            minRows={3}
-                            placeholder="Напишите что-нибудь..."
-                            className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full mt-1 mb-2"
+                  files.map((f) =>
+                    f.type === "text" ? (
+                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                        <div className="flex items-center mb-4">
+                          <Image
+                            src="/cat.jpg"
+                            height={40}
+                            width={40}
+                            objectFit="cover"
+                            className="rounded-full"
+                            alt=""
                           />
-                          <div className="flex">
-                            <button
-                              title="Удалить"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
-                            >
-                              <TrashIcon className="w-6 stroke-red-500" />
-                            </button>
-                            <button
-                              title="Переместить вверх"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                            >
-                              <ChevronUpIcon className="w-6" />
-                            </button>
-                            <button
-                              title="Переместить вниз"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                            >
-                              <ChevronDownIcon className="w-6" />
-                            </button>
-                          </div>
+                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
                         </div>
-                      ) : (
-                        <div className="bg-neutral-900 rounded-2xl py-3 px-4">
-                          <div className="flex items-center mb-4">
-                            <Image
-                              src="/cat.jpg"
-                              height={40}
-                              width={40}
-                              objectFit="cover"
-                              className="rounded-full"
-                              alt=""
-                            />
-                            <div className="ml-2 line-clamp-1">
-                              Кот Матроскин
-                            </div>
-                          </div>
-                          <div className="relative aspect-video mb-2">
-                            <Image
-                              objectFit="contain"
-                              layout="fill"
-                              src="/cat.jpg"
-                              alt=""
-                            />
-                          </div>
-                          <div className="flex">
-                            <button
-                              title="Удалить"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full block"
-                            >
-                              <TrashIcon className="w-6 stroke-red-500" />
-                            </button>
-                            <button
-                              title="Переместить вверх"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                            >
-                              <ChevronUpIcon className="w-6" />
-                            </button>
-                            <button
-                              title="Переместить вниз"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                            >
-                              <ChevronDownIcon className="w-6" />
-                            </button>
-                          </div>
+                        Мы любим животных и стараемся поддерживать тех из них,
+                        кому не посчастливилось иметь ласковых хозяев и тёплый
+                        кров. Один из проверенных способов это сделать — помочь
+                        приюту для животных Домашний. У этих ребят живёт более
+                        1500 четвероногих, и благодаря их труду ежегодно сотни
+                        питомцев находят свой новый дом.
+                        <div className="flex">
+                          <button
+                            title="Переместить вверх"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                          >
+                            <ChevronUpIcon className="w-6" />
+                          </button>
+                          <button
+                            title="Переместить вниз"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                          >
+                            <ChevronDownIcon className="w-6" />
+                          </button>
                         </div>
-                      )
-                    // <div className="bg-neutral-900 rounded-2xl py-3 px-4">
-                    //   <div className="flex items-center mb-4">
-                    //     <Image
-                    //       src="/cat.jpg"
-                    //       height={40}
-                    //       width={40}
-                    //       objectFit="cover"
-                    //       className="rounded-full"
-                    //       alt=""
-                    //     />
-                    //     <div className="ml-2 line-clamp-1">Кот Матроскин</div>
-                    //   </div>
-                    //   <div className="flex items-center">
-                    //     <div className="rounded-full p-2 bg-neutral-700">
-                    //       <DocumentIcon className="w-6" />
-                    //     </div>
-                    //     <div className="ml-4">gta_sa.exe</div>
-                    //     <button className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2">
-                    //       <ArrowDownTrayIcon className="w-6 sm:mr-2" />
-                    //       <div className="hidden sm:block">Скачать</div>
-                    //     </button>
-                    //   </div>
-                    //   <div className="flex mt-2">
-                    //     <button
-                    //       title="Удалить"
-                    //       className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                    //     >
-                    //       <TrashIcon className="w-6 stroke-red-500" />
-                    //     </button>
-                    //     <button
-                    //       title="Переместить вверх"
-                    //       className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                    //     >
-                    //       <ChevronUpIcon className="w-6" />
-                    //     </button>
-                    //     <button
-                    //       title="Переместить вниз"
-                    //       className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                    //     >
-                    //       <ChevronDownIcon className="w-6" />
-                    //     </button>
-                    //   </div>
-                    // </div>
+                      </div>
+                    ) : f.type === "image" ? (
+                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                        <div className="flex items-center mb-4">
+                          <Image
+                            src="/cat.jpg"
+                            height={40}
+                            width={40}
+                            objectFit="cover"
+                            className="rounded-full"
+                            alt=""
+                          />
+                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+                        </div>
+                        <div className="relative aspect-video mb-2">
+                          <Image
+                            objectFit="contain"
+                            layout="fill"
+                            src="/cat.jpg"
+                            alt=""
+                          />
+                        </div>
+                        <div className="flex">
+                          <button
+                            title="Удалить"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full block"
+                          >
+                            <TrashIcon className="w-6 stroke-red-500" />
+                          </button>
+                          <button
+                            title="Переместить вверх"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                          >
+                            <ChevronUpIcon className="w-6" />
+                          </button>
+                          <button
+                            title="Переместить вниз"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                          >
+                            <ChevronDownIcon className="w-6" />
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                        <div className="flex items-center mb-4">
+                          <Image
+                            src="/cat.jpg"
+                            height={40}
+                            width={40}
+                            objectFit="cover"
+                            className="rounded-full"
+                            alt=""
+                          />
+                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="rounded-full p-2 bg-neutral-700">
+                            <DocumentIcon className="w-6" />
+                          </div>
+                          <div className="ml-4">gta_sa.exe</div>
+                          <button className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2">
+                            <ArrowDownTrayIcon className="w-6 sm:mr-2" />
+                            <div className="hidden sm:block">Скачать</div>
+                          </button>
+                        </div>
+                        <div className="flex mt-2">
+                          <button
+                            title="Удалить"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                          >
+                            <TrashIcon className="w-6 stroke-red-500" />
+                          </button>
+                          <button
+                            title="Переместить вверх"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                          >
+                            <ChevronUpIcon className="w-6" />
+                          </button>
+                          <button
+                            title="Переместить вниз"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                          >
+                            <ChevronDownIcon className="w-6" />
+                          </button>
+                        </div>
+                      </div>
+                    )
                   )
                 ))}
             </div>
