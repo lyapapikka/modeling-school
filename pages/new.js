@@ -80,8 +80,8 @@ export default function New() {
             onClick={setPublic}
             className={`flex items-center ${
               visibility !== "public"
-                ? "bg-neutral-900"
-                : "bg-neutral-200 text-black"
+                ? "bg-neutral-900 sm:hover:bg-neutral-800"
+                : "bg-white text-black sm:hover:bg-neutral-200"
             } rounded-2xl py-3 pr-3 w-full`}
           >
             <GlobeAltIcon className="w-6 shrink-0 mx-4" />
@@ -97,8 +97,8 @@ export default function New() {
             onClick={setPrivate}
             className={`flex items-center ${
               visibility !== "private"
-                ? "bg-neutral-900"
-                : "bg-neutral-200 text-black"
+                ? "bg-neutral-900 sm:hover:bg-neutral-800"
+                : "bg-white text-black sm:hover:bg-neutral-200"
             } rounded-2xl py-3 pr-3 w-full`}
           >
             <LockClosedIcon className="w-6 shrink-0 mx-4" />
