@@ -50,45 +50,96 @@ export default function Folder() {
   const addText = async () => {
     setLoading(true);
 
-    await supabase.from("files").insert([
-      {
-        user_id: session.user.id,
-        type: "text",
-        value: text,
-        folder_id: id,
-      },
-    ]);
+    const { data } = await supabase
+      .from("files")
+      .insert([
+        {
+          user_id: session.user.id,
+          type: "text",
+          value: text,
+        },
+      ])
+      .select();
 
+    await supabase
+      .from("folders")
+      .upsert([
+        { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
+      ]);
+
+    const { data: f } = await supabase
+      .from("files")
+      .select()
+      .in("id", [data[0].id, ...order]);
+
+    setFiles(f);
     setText("");
+    setOrder([data[0].id, ...order]);
     setLoading(false);
   };
 
   const uploadImage = async ({ target: { files } }) => {
     setImageLoading(true);
+
     const picture = `${nanoid(11)}.${files[0].name.split(".").pop()}`;
     await supabase.storage.from("folder").upload(picture, files[0]);
-    await supabase.from("files").insert([
-      {
-        user_id: session.user.id,
-        type: "image",
-        value: picture,
-        folder_id: id,
-      },
-    ]);
+
+    const { data } = await supabase
+      .from("files")
+      .insert([
+        {
+          user_id: session.user.id,
+          type: "image",
+          value: picture,
+        },
+      ])
+      .select();
+
+    await supabase
+      .from("folders")
+      .upsert([
+        { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
+      ]);
+
+    const { data: f } = await supabase
+      .from("files")
+      .select()
+      .in("id", [data[0].id, ...order]);
+
+    setFiles(f);
+    setOrder([data[0].id, ...order]);
     setImageLoading(false);
   };
 
   const uploadFile = async ({ target: { files } }) => {
     setFileLoading(true);
+
     await supabase.storage.from("folder").upload(files[0].name, files[0]);
-    await supabase.from("files").insert([
-      {
-        user_id: session.user.id,
-        type: "file",
-        value: files[0].name,
-        folder_id: id,
-      },
-    ]);
+
+    const { data } = await supabase
+      .from("files")
+      .insert([
+        {
+          user_id: session.user.id,
+          type: "file",
+          value: files[0].name,
+        },
+      ])
+      .select();
+
+    await supabase
+      .from("folders")
+      .upsert([
+        { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
+      ]);
+
+    const { data: f } = await supabase
+      .from("files")
+      .select()
+      .in("id", [data[0].id, ...order]);
+
+    setFiles(f);
+    setOrder([data[0].id, ...order]);
     setFileLoading(false);
   };
 
@@ -101,10 +152,17 @@ export default function Folder() {
   useEffect(() => {
     if (router.isReady) {
       const func = async () => {
+        const { data: initialOrder } = await supabase
+          .from("folders")
+          .select()
+          .eq("id", router.query.id);
+
+        setOrder(JSON.parse(initialOrder[0].files));
+
         const { data: initialFiles } = await supabase
           .from("files")
           .select()
-          .eq("folder_id", router.query.id);
+          .in("id", JSON.parse(initialOrder[0].files));
 
         setFiles(initialFiles);
 
@@ -113,27 +171,13 @@ export default function Folder() {
           .on(
             "postgres_changes",
             {
-              event: "INSERT",
+              event: "UPDATE",
               schema: "public",
               table: "folders",
               filter: `id=eq.${router.query.id}`,
             },
-            (payload) => setOrder(payload.new)
-          )
-          .subscribe();
-
-        supabase
-          .channel(`files-${router.query.id}`)
-          .on(
-            "postgres_changes",
-            {
-              event: "INSERT",
-              schema: "public",
-              table: "files",
-              filter: `folder_id=eq.${router.query.id}`,
-            },
             (payload) => {
-              setFiles((files) => [payload.new, ...files]);
+              setOrder(JSON.parse(payload.new.files));
             }
           )
           .subscribe();
@@ -273,14 +317,14 @@ export default function Folder() {
                   </div>
                 )}
               </div>
-              {order &&
-                (files.length === 0 ? (
+              {order.length === files.length &&
+                (order.length === 0 ? (
                   <div className="text-center text-neutral-500 pt-8">
                     Папка пуста
                   </div>
                 ) : (
-                  files.map((f) =>
-                    f.type === "text" ? (
+                  order.map((f) =>
+                    files.find((file) => file.id === f).type === "text" ? (
                       <div className="bg-neutral-900 rounded-2xl py-3 px-4">
                         <div className="flex items-center mb-4">
                           <Image
@@ -293,7 +337,7 @@ export default function Folder() {
                           />
                           <div className="ml-2 line-clamp-1">Кот Матроскин</div>
                         </div>
-                        {f.value}
+                        {files.find((file) => file.id === f).value}
                         <div className="flex mt-2 -mx-2">
                           {session.user.id === f.user_id && (
                             <button
@@ -317,7 +361,7 @@ export default function Folder() {
                           </button>
                         </div>
                       </div>
-                    ) : f.type === "image" ? (
+                    ) : files.find((file) => file.id === f).type === "image" ? (
                       <div className="bg-neutral-900 rounded-2xl py-3 px-4">
                         <div className="flex items-center mb-4">
                           <Image
@@ -334,7 +378,7 @@ export default function Folder() {
                           <Image
                             objectFit="contain"
                             layout="fill"
-                            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${f.value}`}
+                            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${files.find((file) => file.id === f).value}`}
                             alt=""
                           />
                         </div>
@@ -378,9 +422,9 @@ export default function Folder() {
                           <div className="rounded-full p-2 bg-neutral-700">
                             <DocumentIcon className="w-6" />
                           </div>
-                          <div className="ml-4 line-clamp-1">{f.value}</div>
+                          <div className="ml-4 line-clamp-1">{files.find((file) => file.id === f).value}</div>
                           <a
-                            href={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${f.value}`}
+                            href={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/folder/${files.find((file) => file.id === f).value}`}
                             target="_blank"
                             rel="noreferrer"
                             className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
