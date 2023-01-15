@@ -51,7 +51,7 @@ export default function Profile() {
     fetcher
   );
 
-  const { data: folders, mutate: mutateFolders } = useSWR(
+  const { data: folders } = useSWR(
     !isLoading && session && archive
       ? api(
           `folders?post_id=in.(${archive
@@ -163,7 +163,6 @@ export default function Profile() {
                       from={"profile"}
                       mutateArchive={mutateArchive}
                       paginated
-                      mutateFolders={mutateFolders}
                       folders={cachedFolders}
                     />
                   ))

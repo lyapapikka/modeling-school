@@ -38,7 +38,7 @@ export default function Home() {
     fetcher
   );
 
-  const { data: folders, mutate: mutateFolders } = useSWR(
+  const { data: folders } = useSWR(
     !isLoading && session && posts
       ? api(
           `folders?post_id=in.(${posts
@@ -125,7 +125,6 @@ export default function Home() {
                     postData={p}
                     mutateArchive={mutateArchive}
                     archive={cachedArchive}
-                    mutateFolders={mutateFolders}
                     folders={cachedFolders}
                   />
                 ))

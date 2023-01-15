@@ -34,7 +34,7 @@ export default function PostPage() {
     fetcher
   );
 
-  const { data: folders, mutate: mutateFolders } = useSWR(
+  const { data: folders } = useSWR(
     !isLoading && session && data
       ? api(`folders?select=*,post_id=${data[0].id}`, session)
       : null,
@@ -82,7 +82,6 @@ export default function PostPage() {
               from="home"
               archive={archive}
               mutateArchive={mutateArchive}
-              mutateFolders={mutateFolders}
               folders={folders}
             />
           </>

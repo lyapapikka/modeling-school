@@ -29,7 +29,6 @@ export default function Post({
   mutateArchive,
   paginated,
   folders,
-  mutateFolders,
 }) {
   const [modal, setModal] = useState(false);
   const [_origin, setOrigin] = useState("");
@@ -245,7 +244,7 @@ export default function Post({
                   folders
                     .filter((f) => f.post_id === postData.id)
                     .sort(
-                      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+                      (a, b) => new Date(b.created_at) - new Date(a.created_at)
                     )[0].name
                 }
               </div>
@@ -270,7 +269,7 @@ export default function Post({
           <div className="overflow-y-auto max-h-[400px] mb-2">
             {folders
               .filter((f) => f.post_id === postData.id)
-              .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+              .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
               .map((f, i) => (
                 <Link href={`/folder/${f.id}?from=/${from}`} key={i}>
                   <a className="flex items-center w-full sm:hover:bg-neutral-800 rounded-2xl py-2 px-3">
@@ -324,7 +323,9 @@ export default function Post({
                 disabled={!folderName.trim()}
                 onClick={createFolder}
                 className={`${
-                  !folderName.trim() ? "bg-neutral-800" : "bg-white text-black sm:hover:bg-neutral-200"
+                  !folderName.trim()
+                    ? "bg-neutral-800"
+                    : "bg-white text-black sm:hover:bg-neutral-200"
                 } rounded-2xl px-3 py-2 w-full`}
               >
                 Создать
