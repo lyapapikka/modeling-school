@@ -96,7 +96,7 @@ export default function Home() {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl">
           Главная
         </div>
-        {posts && cachedArchive ? (
+        {posts && cachedArchive && cachedFolders ? (
           posts[0].length === 0 ? (
             <div className="text-center text-neutral-500 mt-10">
               Новостей нет

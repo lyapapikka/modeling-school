@@ -18,9 +18,10 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import useSWRInfinite from "swr/infinite";
 
 export default function Profile() {
-  const { isLoading, session, supabaseClient } = useSessionContext();
+  const { isLoading, session } = useSessionContext();
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
+  const [cachedFolders, setCachedFolders] = useState([]);
 
   const { data: user } = useSWR(
     !isLoading && session ? api(`user`, session, { user: true }) : null,
@@ -49,6 +50,23 @@ export default function Profile() {
       : null,
     fetcher
   );
+
+  const { data: folders, mutate: mutateFolders } = useSWR(
+    !isLoading && session && archive
+      ? api(
+          `folders?post_id=in.(${archive
+            .reduce((r, c) => r.concat(c))
+            .map((p) => p.post_id)
+            .join()})`,
+          session
+        )
+      : null,
+    fetcher
+  );
+
+  useEffect(() => {
+    setCachedFolders((cache) => folders || cache);
+  }, [folders]);
 
   const fetchData = () => setSize(size + 1);
 
@@ -115,7 +133,7 @@ export default function Profile() {
           </Link>
         </div>
         <div className="space-y-2 mb-8">
-          {archive ? (
+          {archive && cachedFolders ? (
             archive[0].length === 0 ? (
               <div className="text-center text-neutral-500 mt-8">
                 Нет сохраненных записей
@@ -145,6 +163,8 @@ export default function Profile() {
                       from={"profile"}
                       mutateArchive={mutateArchive}
                       paginated
+                      mutateFolders={mutateFolders}
+                      folders={cachedFolders}
                     />
                   ))
                 )}

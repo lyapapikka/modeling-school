@@ -43,8 +43,6 @@ export default function Post({
 
   const changeFolderName = ({ target: { value } }) => setFolderName(value);
 
-  const fetchData = () => setSize(size + 1);
-
   const createFolder = async () => {
     setLoading(true);
     const { data } = await supabase
