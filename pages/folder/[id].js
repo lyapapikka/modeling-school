@@ -49,7 +49,17 @@ export default function Folder() {
 
   const hideDeleteDialog = () => setDeleteDialog(false);
 
-  const deleteFile = async () => {};
+  const deleteFile = async () => {
+    setDeleteDialog(false);
+    setOrder(order.filter((f) => f !== selection));
+
+    await supabase.from("files").delete().eq("id", selection);
+    await supabase
+      .from("folders")
+      .upsert([
+        { id, files: JSON.stringify(order.filter((f) => f !== selection)) },
+      ]);
+  };
 
   const { data: folder } = useSWR(
     !isLoading && session && router.isReady
