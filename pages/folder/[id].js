@@ -40,6 +40,7 @@ export default function Folder() {
   const [fileLoading, setFileLoading] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [selection, setSelection] = useState("");
+  const [cachedOrder, setCachedOrder] = useState([]);
 
   const showDeleteDialog = (id) => {
     setSelection(id);
@@ -79,12 +80,6 @@ export default function Folder() {
         { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
       ]);
 
-    const { data: f } = await supabase
-      .from("files")
-      .select()
-      .in("id", [data[0].id, ...order]);
-
-    setFiles(f);
     setText("");
     setOrder([data[0].id, ...order]);
     setLoading(false);
@@ -113,12 +108,6 @@ export default function Folder() {
         { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
       ]);
 
-    const { data: f } = await supabase
-      .from("files")
-      .select()
-      .in("id", [data[0].id, ...order]);
-
-    setFiles(f);
     setOrder([data[0].id, ...order]);
     setImageLoading(false);
   };
@@ -145,12 +134,6 @@ export default function Folder() {
         { id: router.query.id, files: JSON.stringify([data[0].id, ...order]) },
       ]);
 
-    const { data: f } = await supabase
-      .from("files")
-      .select()
-      .in("id", [data[0].id, ...order]);
-
-    setFiles(f);
     setOrder([data[0].id, ...order]);
     setFileLoading(false);
   };
@@ -170,6 +153,7 @@ export default function Folder() {
           .eq("id", router.query.id);
 
         setOrder(JSON.parse(initialOrder[0].files));
+        setCachedOrder(JSON.parse(initialOrder[0].files));
 
         const { data: initialFiles } = await supabase
           .from("files")
@@ -198,6 +182,16 @@ export default function Folder() {
       func();
     }
   }, [router, supabase]);
+
+  useEffect(() => {
+    const func = async () => {
+      const { data: f } = await supabase.from("files").select().in("id", order);
+      setFiles(f);
+      setCachedOrder(order);
+    };
+
+    func();
+  }, [order, supabase]);
 
   if (isLoading || !session) {
     return null;
@@ -329,15 +323,18 @@ export default function Folder() {
                   </div>
                 )}
               </div>
-              {order.length === files.length &&
-                (order.length === 0 ? (
+              {cachedOrder.length === files.length &&
+                (cachedOrder.length === 0 ? (
                   <div className="text-center text-neutral-500 pt-8">
                     Папка пуста
                   </div>
                 ) : (
-                  order.map((f) =>
+                  cachedOrder.map((f, i) =>
                     files.find((file) => file.id === f).type === "text" ? (
-                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                      <div
+                        className="bg-neutral-900 rounded-2xl py-3 px-4"
+                        key={i}
+                      >
                         <div className="flex items-center mb-4">
                           <Image
                             src="/cat.jpg"
@@ -380,7 +377,10 @@ export default function Folder() {
                         </div>
                       </div>
                     ) : files.find((file) => file.id === f).type === "image" ? (
-                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                      <div
+                        className="bg-neutral-900 rounded-2xl py-3 px-4"
+                        key={i}
+                      >
                         <div className="flex items-center mb-4">
                           <Image
                             src="/cat.jpg"
@@ -434,7 +434,10 @@ export default function Folder() {
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-neutral-900 rounded-2xl py-3 px-4">
+                      <div
+                        className="bg-neutral-900 rounded-2xl py-3 px-4"
+                        key={i}
+                      >
                         <div className="flex items-center mb-4">
                           <Image
                             src="/cat.jpg"
