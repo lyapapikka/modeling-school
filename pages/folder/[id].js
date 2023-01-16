@@ -18,6 +18,7 @@ import {
   EllipsisHorizontalIcon,
   PhotoIcon,
   TrashIcon,
+  LinkIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ReactTextareaAutosize from "react-textarea-autosize";
@@ -26,6 +27,7 @@ import fetcher from "../../utils/fetcher";
 import api from "../../utils/api";
 import { nanoid } from "nanoid";
 import Modal from "../../components/Modal";
+import toast from "../../utils/toast";
 
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
@@ -41,6 +43,11 @@ export default function Folder() {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(`${origin}/folder/${id}`);
+    toast("Ссылка скопирована");
+  };
 
   const showDeleteDialog = (id) => {
     setSelection(id);
@@ -280,6 +287,13 @@ export default function Folder() {
                     <div className="sm:block hidden">Файл</div>
                   </label>
                 )}
+                <button
+                  onClick={copyLink}
+                  className="bg-neutral-800 sm:hover:bg-neutral-700 w-full flex justify-center rounded-2xl py-4"
+                >
+                  <LinkIcon className="w-6 sm:mr-2" />
+                  <div className="sm:block hidden">Поделиться</div>
+                </button>
               </div>
               <div className="px-2">
                 <ReactTextareaAutosize

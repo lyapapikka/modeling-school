@@ -3,7 +3,6 @@ import formatRelative from "date-fns/formatRelative";
 import russianLocale from "date-fns/locale/ru";
 import ReactLinkify from "react-linkify";
 import {
-  TrashIcon,
   LinkIcon,
   ChevronUpDownIcon,
   BookmarkIcon,
@@ -78,11 +77,6 @@ export default function Post({
       false
     );
     await supabase.from("archive").delete().eq("post_id", post_id);
-  };
-
-  const showDeleteDialog = (id) => {
-    setSelection(id);
-    setDeleteDialog(true);
   };
 
   const hideDeleteDialog = () => setDeleteDialog(false);
