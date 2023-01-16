@@ -87,16 +87,6 @@ export default function Post({
 
   const hideDeleteDialog = () => setDeleteDialog(false);
 
-  const deletePost = async () => {
-    mutate(
-      posts.map((post) => post.filter((p) => p.id !== selection)),
-      false
-    );
-    setDeleteDialog(false);
-
-    await supabase.from("posts").delete().eq("id", selection);
-  };
-
   const copyLink = (id) => {
     navigator.clipboard.writeText(`${origin}/post/${id}`);
     toast("Ссылка скопирована");
@@ -166,20 +156,11 @@ export default function Post({
           </div>
         </div>
         <div className="flex mb-2 mt-2 items-center">
-          {session.user.id === groupData[0].owner_id && (
-            <button
-              title="Удалить"
-              onClick={() => showDeleteDialog(postData.id)}
-              className="p-2 -m-2 mr-3 sm:hover:bg-neutral-700 rounded-full"
-            >
-              <TrashIcon className="w-6 stroke-red-500" />
-            </button>
-          )}
-          <div className="flex ml-auto">
+          <div className="flex mr-auto">
             <button
               title="Создать папку"
               onClick={() => showCreateFolderDialog(postData.id)}
-              className="p-2 -m-2 ml-3 sm:hover:bg-neutral-700 rounded-full mr-3"
+              className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
             >
               <FolderPlusIcon className="w-6" />
             </button>
@@ -235,11 +216,11 @@ export default function Post({
             className="bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl py-1 px-4 mt-4 mb-3 w-full flex justify-between"
             onClick={showModal}
           >
-            <div className="flex my-2">
+            <div className="flex my-2 items-center">
               <div className="bg-neutral-600 rounded-full p-2">
                 <FolderIcon className="w-6" />
               </div>
-              <div className="ml-4 self-center">
+              <div className="ml-4">
                 {
                   folders
                     .filter((f) => f.post_id === postData.id)
@@ -249,8 +230,8 @@ export default function Post({
                 }
               </div>
             </div>
-            <div className="mr-2 self-center">
-              <ChevronUpDownIcon className="w-6 -mr-2" />
+            <div className="-mr-3 mt-1">
+              <ChevronUpDownIcon className="w-6" />
             </div>
           </button>
         ) : null}

@@ -312,7 +312,7 @@ export default function Group() {
                       key={p.id}
                       session={session}
                       archive={cachedArchive}
-                      from={from}
+                      from={`group/${id}`}
                       mutateArchive={mutateArchive}
                       folders={cachedFolders}
                     />
