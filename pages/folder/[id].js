@@ -229,42 +229,11 @@ export default function Folder() {
         </div>
         {folder && (
           <>
-            <div className="bg-neutral-900 rounded-2xl py-2 px-4 mb-2 space-y-4">
-              <div className="text-xl mr-auto line-clamp-1 mt-1 text-center">
+            <div className="bg-neutral-900 rounded-2xl py-2 px-4 mb-2 space-y-2 text-center">
+              <div className="text-xl mr-auto line-clamp-1 mt-1">
                 {folder[0].name}
               </div>
-              <div className="space-x-2 flex mb-2 justify-center">
-                <div className="shrink-0">
-                  <Image
-                    src="/cat.jpg"
-                    height={40}
-                    width={40}
-                    objectFit="cover"
-                    className="rounded-full"
-                    alt=""
-                  />
-                </div>
-                <div className="shrink-0">
-                  <Image
-                    src="/cat.jpg"
-                    height={40}
-                    width={40}
-                    objectFit="cover"
-                    className="rounded-full"
-                    alt=""
-                  />
-                </div>
-                <div className="shrink-0">
-                  <Image
-                    src="/cat.jpg"
-                    height={40}
-                    width={40}
-                    objectFit="cover"
-                    className="rounded-full"
-                    alt=""
-                  />
-                </div>
-              </div>
+              <div className="text-neutral-500 pb-2">Кто-то печатает...</div>
             </div>
             <div className="space-y-2">
               <div className="flex space-x-2 mx-2">
