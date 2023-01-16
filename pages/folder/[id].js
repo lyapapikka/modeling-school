@@ -167,7 +167,7 @@ export default function Folder() {
 
         const { data: initialFiles } = await supabase
           .from("files")
-          .select()
+          .select("*,public_users(*)")
           .in("id", JSON.parse(initialOrder[0].files));
 
         setFiles(initialFiles);
@@ -195,7 +195,10 @@ export default function Folder() {
 
   useEffect(() => {
     const func = async () => {
-      const { data: f } = await supabase.from("files").select().in("id", order);
+      const { data: f } = await supabase
+        .from("files")
+        .select("*,public_users(*)")
+        .in("id", order);
       setFiles(f);
       setCachedOrder(order);
     };
@@ -347,14 +350,24 @@ export default function Folder() {
                       >
                         <div className="flex items-center mb-4">
                           <Image
-                            src="/cat.jpg"
+                            src={`${
+                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                            }/profile/${
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.picture
+                            }`}
                             height={40}
                             width={40}
                             objectFit="cover"
                             className="rounded-full"
                             alt=""
                           />
-                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+                          <div className="ml-2 line-clamp-1">
+                            {
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.name
+                            }
+                          </div>
                         </div>
                         {files.find((file) => file.id === f).value}
                         <div className="flex mt-2 -mx-2">
@@ -393,14 +406,24 @@ export default function Folder() {
                       >
                         <div className="flex items-center mb-4">
                           <Image
-                            src="/cat.jpg"
+                            src={`${
+                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                            }/profile/${
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.picture
+                            }`}
                             height={40}
                             width={40}
                             objectFit="cover"
                             className="rounded-full"
                             alt=""
                           />
-                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+                          <div className="ml-2 line-clamp-1">
+                            {
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.name
+                            }
+                          </div>
                         </div>
                         <div className="relative aspect-square mb-2">
                           <Image
@@ -450,14 +473,24 @@ export default function Folder() {
                       >
                         <div className="flex items-center mb-4">
                           <Image
-                            src="/cat.jpg"
+                            src={`${
+                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                            }/profile/${
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.picture
+                            }`}
                             height={40}
                             width={40}
                             objectFit="cover"
                             className="rounded-full"
                             alt=""
                           />
-                          <div className="ml-2 line-clamp-1">Кот Матроскин</div>
+                          <div className="ml-2 line-clamp-1">
+                            {
+                              files.find((file) => file.id === f).public_users
+                                .raw_user_meta_data.name
+                            }
+                          </div>
                         </div>
                         <div className="flex items-center">
                           <div className="rounded-full p-2 bg-neutral-700">
