@@ -224,7 +224,7 @@ export default function Post({
                 }
               </div>
             </div>
-            <div className="-mr-3 mt-1">
+            <div className="-mr-2 mt-1 self-center">
               <ChevronUpDownIcon className="w-6" />
             </div>
           </button>
