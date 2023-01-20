@@ -19,6 +19,8 @@ import {
   PhotoIcon,
   TrashIcon,
   LinkIcon,
+  PencilSquareIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ReactTextareaAutosize from "react-textarea-autosize";
@@ -332,25 +334,43 @@ export default function Folder() {
                         key={i}
                       >
                         <div className="flex items-center mb-4">
-                          <Image
-                            src={`${
-                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
-                            }/profile/${
-                              files.find((file) => file.id === f).public_users
-                                .raw_user_meta_data.picture
-                            }`}
-                            height={40}
-                            width={40}
-                            objectFit="cover"
-                            className="rounded-full"
-                            alt=""
-                          />
-                          <div className="ml-2 line-clamp-1">
-                            {
-                              files.find((file) => file.id === f).public_users
-                                .raw_user_meta_data.name
-                            }
-                          </div>
+                          {files.find((file) => file.id === f).public_users
+                            ?.raw_user_meta_data?.name ? (
+                            ((
+                              <Image
+                                src={`${
+                                  process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                                }/profile/${
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.picture
+                                }`}
+                                height={40}
+                                width={40}
+                                objectFit="cover"
+                                className="rounded-full"
+                                alt=""
+                              />
+                            ),
+                            (
+                              <div className="ml-2 line-clamp-1">
+                                {
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.name
+                                }
+                              </div>
+                            ))
+                          ) : (
+                            <div>
+                              <div className="w-[70px] h-[70px] bg-neutral-800 rounded-full flex justify-center">
+                                <div>
+                                  <QuestionMarkCircleIcon className="w-14" />
+                                </div>
+                              </div>
+                              <div className="mt-2 line-clamp-1 text-xs ">
+                                Неизвестный пользователь
+                              </div>
+                            </div>
+                          )}
                         </div>
                         {files.find((file) => file.id === f).value}
                         <div className="flex mt-2 -mx-2">
@@ -388,19 +408,44 @@ export default function Folder() {
                         key={i}
                       >
                         <div className="flex items-center mb-4">
-                          <Image
-                            src={`${
-                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
-                            }/profile/${
-                              files.find((file) => file.id === f).public_users
-                                .raw_user_meta_data.picture
-                            }`}
-                            height={40}
-                            width={40}
-                            objectFit="cover"
-                            className="rounded-full"
-                            alt=""
-                          />
+                          {files.find((file) => file.id === f).public_users
+                            ?.raw_user_meta_data?.name ? (
+                            ((
+                              <Image
+                                src={`${
+                                  process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                                }/profile/${
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.picture
+                                }`}
+                                height={40}
+                                width={40}
+                                objectFit="cover"
+                                className="rounded-full"
+                                alt=""
+                              />
+                            ),
+                            (
+                              <div className="ml-2 line-clamp-1">
+                                {
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.name
+                                }
+                              </div>
+                            ))
+                          ) : (
+                            <div>
+                              <div className="w-[70px] h-[70px] bg-neutral-800 rounded-full flex justify-center">
+                                <div>
+                                  <QuestionMarkCircleIcon className="w-14" />
+                                </div>
+                              </div>
+                              <div className="mt-2 line-clamp-1 text-xs ">
+                                Неизвестный пользователь
+                              </div>
+                            </div>
+                          )}
+
                           <div className="ml-2 line-clamp-1">
                             {
                               files.find((file) => file.id === f).public_users
@@ -511,6 +556,12 @@ export default function Folder() {
                               <TrashIcon className="w-6 stroke-red-500" />
                             </button>
                           )}
+                          <button
+                            title="Редактировать текст"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
+                          >
+                            <PencilSquareIcon className="w-6" />
+                          </button>
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
