@@ -4,7 +4,11 @@ import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { DocumentIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  DocumentIcon,
+} from "@heroicons/react/24/outline";
 import path from "path";
 import { promises as fs } from "fs";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -88,24 +92,29 @@ export default function Tutor({ filenames }) {
               file={`/tutors/${filename}`}
               onLoadSuccess={onDocumentLoadSuccess}
             >
-              <Page pageNumber={pageNumber} />
+              <Page
+                height={window.screen.height - 300}
+                pageNumber={pageNumber}
+              />
             </Document>
-            <div className="mt-2 z-[999999] flex justify-between w-full max-w-screen-sm">
-              {pageNumber > 1 && (
+            <div className="mt-4 z-[999999] flex justify-between items-center">
+              {pageNumber > 1 ? (
                 <button
-                  className="px-3 py-2 rounded-2xl bg-neutral-600 sm:hover:bg-neutral-700"
+                  className="p-2 rounded-full sm:hover:bg-neutral-700 mr-2"
                   onClick={prev}
                 >
-                  Назад
+                  <ChevronLeftIcon className="w-6" />
                 </button>
+              ) : (
+                <div className="mr-2 w-[40px] h-[40px]"></div>
               )}
               {pageNumber} из {numPages}
               {pageNumber !== numPages && (
                 <button
-                  className="px-3 py-2 rounded-2xl bg-neutral-600 sm:hover:bg-neutral-700"
+                  className="p-2 rounded-full sm:hover:bg-neutral-700 ml-2"
                   onClick={next}
                 >
-                  Вперед
+                  <ChevronRightIcon className="w-6" />
                 </button>
               )}
             </div>
