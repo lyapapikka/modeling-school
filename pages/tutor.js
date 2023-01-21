@@ -24,6 +24,11 @@ export default function Tutor({ filenames }) {
   const [showDocument, setShowDocument] = useState(false);
   const [filename, setFilename] = useState("");
   const [numPages, setNumPages] = useState();
+  const [showHandling, setShowHandling] = useState(false);
+
+  const toggleHandling = () => {
+    setShowHandling(!showHandling);
+  };
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -44,6 +49,7 @@ export default function Tutor({ filenames }) {
 
   const closeDocument = () => {
     setShowDocument(false);
+    setShowHandling(false);
   };
 
   useEffect(() => {
@@ -87,37 +93,52 @@ export default function Tutor({ filenames }) {
             className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
             onClick={closeDocument}
           ></div>
-          <div className="flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
+          <div className="rotate-90 sm:rotate-[auto] flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
             <Document
               file={`/tutors/${filename}`}
               onLoadSuccess={onDocumentLoadSuccess}
+              loading="Загрузка..."
             >
               <Page
-                height={window.screen.height - 300}
+                loading="Загрузка..."
+                onClick={toggleHandling}
+                width={
+                  window.screen.width < 600
+                    ? window.screen.width + 100
+                    : window.screen.width - 600
+                }
                 pageNumber={pageNumber}
               />
             </Document>
-            <div className="mt-4 z-[999999] flex justify-between items-center">
-              {pageNumber > 1 ? (
-                <button
-                  className="p-2 rounded-full sm:hover:bg-neutral-700 mr-2"
-                  onClick={prev}
-                >
-                  <ChevronLeftIcon className="w-6" />
-                </button>
-              ) : (
-                <div className="mr-2 w-[40px] h-[40px]"></div>
-              )}
-              {pageNumber} из {numPages}
-              {pageNumber !== numPages && (
-                <button
-                  className="p-2 rounded-full sm:hover:bg-neutral-700 ml-2"
-                  onClick={next}
-                >
-                  <ChevronRightIcon className="w-6" />
-                </button>
-              )}
-            </div>
+            {showHandling && (
+              <div className="flex absolute z-[999999] items-center space-x-10">
+                {pageNumber > 1 ? (
+                  <div>
+                    <button
+                      className="p-4 rounded-full bg-neutral-600 sm:hover:bg-neutral-500"
+                      onClick={prev}
+                    >
+                      <ChevronLeftIcon className="w-6" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="w-[56px] h-[56px]"></div>
+                )}
+                <div className="bg-neutral-600 rounded-full px-4 aspect-square items-center flex">
+                  {pageNumber} из {numPages}
+                </div>
+                {pageNumber !== numPages && (
+                  <div>
+                    <button
+                      className="p-4 rounded-full bg-neutral-600 sm:hover:bg-neutral-500"
+                      onClick={next}
+                    >
+                      <ChevronRightIcon className="w-6" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
