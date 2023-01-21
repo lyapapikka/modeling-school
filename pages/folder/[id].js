@@ -360,13 +360,11 @@ export default function Folder() {
                               </div>
                             ))
                           ) : (
-                            <div>
-                              <div className="w-[70px] h-[70px] bg-neutral-800 rounded-full flex justify-center">
-                                <div>
-                                  <QuestionMarkCircleIcon className="w-14" />
-                                </div>
+                            <div className="flex justify-center space-x-3">
+                              <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
+                                <QuestionMarkCircleIcon className="w-6" />
                               </div>
-                              <div className="mt-2 line-clamp-1 text-xs ">
+                              <div className="mt-2 line-clamp-1">
                                 Неизвестный пользователь
                               </div>
                             </div>
@@ -434,18 +432,15 @@ export default function Folder() {
                               </div>
                             ))
                           ) : (
-                            <div>
-                              <div className="w-[70px] h-[70px] bg-neutral-800 rounded-full flex justify-center">
-                                <div>
-                                  <QuestionMarkCircleIcon className="w-14" />
-                                </div>
+                            <div className="flex justify-center space-x-3">
+                              <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
+                                <QuestionMarkCircleIcon className="w-6" />
                               </div>
-                              <div className="mt-2 line-clamp-1 text-xs ">
+                              <div className="mt-2 line-clamp-1">
                                 Неизвестный пользователь
                               </div>
                             </div>
                           )}
-
                           <div className="ml-2 line-clamp-1">
                             {
                               files.find((file) => file.id === f).public_users
@@ -500,25 +495,41 @@ export default function Folder() {
                         key={i}
                       >
                         <div className="flex items-center mb-4">
-                          <Image
-                            src={`${
-                              process.env.NEXT_PUBLIC_SUPABASE_BUCKET
-                            }/profile/${
-                              files.find((file) => file.id === f).public_users
-                                .raw_user_meta_data.picture
-                            }`}
-                            height={40}
-                            width={40}
-                            objectFit="cover"
-                            className="rounded-full"
-                            alt=""
-                          />
-                          <div className="ml-2 line-clamp-1">
-                            {
-                              files.find((file) => file.id === f).public_users
-                                .raw_user_meta_data.name
-                            }
-                          </div>
+                          {files.find((file) => file.id === f).public_users
+                            ?.raw_user_meta_data?.name ? (
+                            ((
+                              <Image
+                                src={`${
+                                  process.env.NEXT_PUBLIC_SUPABASE_BUCKET
+                                }/profile/${
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.picture
+                                }`}
+                                height={40}
+                                width={40}
+                                objectFit="cover"
+                                className="rounded-full"
+                                alt=""
+                              />
+                            ),
+                            (
+                              <div className="ml-2 line-clamp-1">
+                                {
+                                  files.find((file) => file.id === f)
+                                    .public_users.raw_user_meta_data.name
+                                }
+                              </div>
+                            ))
+                          ) : (
+                            <div className="flex justify-center space-x-3">
+                              <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
+                                <QuestionMarkCircleIcon className="w-6" />
+                              </div>
+                              <div className="mt-2 line-clamp-1">
+                                Неизвестный пользователь
+                              </div>
+                            </div>
+                          )}
                         </div>
                         <div className="flex items-center">
                           <div className="rounded-full p-2 bg-neutral-700">
