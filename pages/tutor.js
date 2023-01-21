@@ -3,14 +3,44 @@ import Content from "../components/Content";
 import Header from "../components/Header";
 import { useSessionContext } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { ArrowDownTrayIcon, DocumentIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
+import { DocumentIcon } from "@heroicons/react/24/outline";
 import path from "path";
 import { promises as fs } from "fs";
+import { Document, Page, pdfjs } from "react-pdf";
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 export default function Tutor({ filenames }) {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [showDocument, setShowDocument] = useState(false);
+  const [filename, setFilename] = useState("");
+  const [numPages, setNumPages] = useState();
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  const prev = () => {
+    setPageNumber(pageNumber - 1);
+  };
+
+  const next = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
+  const openDocument = (f) => {
+    setShowDocument(true);
+    setFilename(f);
+  };
+
+  const closeDocument = () => {
+    setShowDocument(false);
+  };
 
   useEffect(() => {
     if (!isLoading && !session) {
@@ -32,51 +62,56 @@ export default function Tutor({ filenames }) {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
           Учебник
         </div>
-        <div className="flex bg-neutral-900 rounded-2xl p-4 mb-2">
-          <svg
-            height="50"
-            className="shrink-0 mr-4"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            x="0"
-            y="0"
-            viewBox="0 0 60 58.5"
-          >
-            <path
-              d="M10.6 0h38.8C55.2 0 60 4.8 60 10.6v37.2c0 5.9-4.8 10.6-10.6 10.6H10.6C4.8 58.5 0 53.7 0 47.9V10.6C0 4.8 4.8 0 10.6 0z"
-              fill="#b30b00"
-            />
-            <path
-              d="M48.2 33.9C47 32.6 44.7 32 41.4 32c-1.8 0-3.7.2-5.5.5-1.2-1.1-2.2-2.4-3.2-3.7-.7-1-1.4-2-2-3.1 1-2.8 1.6-5.8 1.8-8.8 0-2.7-1.1-5.6-4.1-5.6-1 0-2 .6-2.5 1.5-1.3 2.2-.8 6.7 1.3 11.4-.7 2.1-1.5 4.2-2.4 6.5-.8 2-1.7 3.9-2.8 5.7-3.1 1.2-9.6 4.2-10.2 7.5-.2 1 .1 2 .9 2.6.7.6 1.7 1 2.7.9 3.9 0 7.8-5.4 10.5-10.1 1.5-.5 3-1 4.6-1.4 1.7-.4 3.3-.8 4.8-1.1 4.2 3.6 7.9 4.2 9.7 4.2 2.5 0 3.5-1.1 3.8-2 .4-1.1.2-2.3-.6-3.1zm-2.7 1.9c-.1.7-.9 1.2-1.9 1.2-.3 0-.6 0-.9-.1-2-.5-3.9-1.5-5.5-2.8 1.3-.2 2.7-.3 4-.3.9 0 1.8.1 2.7.2.9.2 1.9.6 1.6 1.8zM27.6 13.7c.2-.3.5-.5.9-.6 1 0 1.2 1.1 1.2 2.1-.1 2.3-.5 4.5-1.2 6.7-1.7-4.3-1.5-7.2-.9-8.2zm5.6 19.2c-1.1.2-2.2.5-3.3.8-.8.2-1.6.5-2.5.7.4-.9.8-1.8 1.2-2.6.5-1.1.9-2.2 1.3-3.3.4.6.7 1.1 1.1 1.6.7 1 1.5 1.9 2.2 2.8zm-12.1 5.8c-2.5 4-5 6.6-6.4 6.6-.2 0-.5-.1-.6-.2-.3-.2-.4-.6-.3-.9.2-1.5 3.1-3.6 7.3-5.5z"
-              fill="#fff"
-            />
-          </svg>
-          Учебник рекомендуется смотреть в бесплатной версии программы Adobe
-          Acrobat Reader DC, которая доступна на всех платформах
-        </div>
         <div className="space-y-2">
           {filenames.map((f, i) => (
-            <div
-              className="flex ml-auto block bg-neutral-900 px-4 py-2 rounded-2xl w-full items-center"
+            <button
+              onClick={() => openDocument(f)}
+              className="flex ml-auto block bg-neutral-900 sm:hover:bg-neutral-800 px-4 py-2 rounded-2xl w-full items-center"
               key={i}
             >
               <div className="rounded-full p-2 bg-neutral-700">
                 <DocumentIcon className="w-6" />
               </div>
               <div className="ml-4">{f}</div>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`/tutors/${f}`}
-                className="ml-auto flex justify-center bg-neutral-800 sm:hover:bg-neutral-700 rounded-2xl px-3 py-2 my-2"
-              >
-                <ArrowDownTrayIcon className="w-6 sm:mr-2" />
-                <div className="hidden sm:block">Скачать</div>
-              </a>
-            </div>
+            </button>
           ))}
         </div>
       </Content>
+      {showDocument && (
+        <div className="fixed inset-0 flex justify-center items-center z-[999999] text-center">
+          <div
+            className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
+            onClick={closeDocument}
+          ></div>
+          <div className="flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
+            <Document
+              file={`/tutors/${filename}`}
+              onDocumentLoadSuccess={onDocumentLoadSuccess}
+            >
+              <Page pageNumber={pageNumber} />
+            </Document>
+            <div className="mt-2 z-[999999] flex justify-between w-full max-w-screen-sm">
+              {pageNumber > 1 && (
+                <button
+                  className="px-3 py-2 rounded-2xl bg-neutral-600 sm:hover:bg-neutral-700"
+                  onClick={prev}
+                >
+                  Назад
+                </button>
+              )}
+              {pageNumber} из {numPages}
+              {pageNumber !== numPages && (
+                <button
+                  className="px-3 py-2 rounded-2xl bg-neutral-600 sm:hover:bg-neutral-700"
+                  onClick={next}
+                >
+                  Вперед
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
