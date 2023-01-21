@@ -86,7 +86,7 @@ export default function Tutor({ filenames }) {
           <div className="flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
             <Document
               file={`/tutors/${filename}`}
-              onDocumentLoadSuccess={onDocumentLoadSuccess}
+              onLoadSuccess={onDocumentLoadSuccess}
             >
               <Page pageNumber={pageNumber} />
             </Document>
