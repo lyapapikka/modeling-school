@@ -233,7 +233,7 @@ export default function Folder() {
     editTextTrue();
   };
 
-  const saveChange = () => {
+  const saveChange = async () => {
     const newFiles = files.map((file) =>
       file.id === selection
         ? {
@@ -246,10 +246,9 @@ export default function Folder() {
     setFiles(newFiles);
     editTextFalse();
     setText("");
-  };
 
-  await;
-  supabase.from("files").upsert([{ id: selection, value: text }]);
+    await supabase.from("files").upsert([{ id: selection, value: text }]);
+  };
 
   return (
     <>
