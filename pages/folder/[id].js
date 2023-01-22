@@ -46,6 +46,7 @@ export default function Folder() {
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [wasUpdated, setWasUpdated] = useState(false);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -213,6 +214,10 @@ export default function Folder() {
 
   useEffect(() => {
     const func = async () => {
+      if (wasUpdated) {
+        wasUpdated = false;
+      }
+
       const { data: f } = await supabase
         .from("files")
         .select("*,public_users(*)")
@@ -222,7 +227,7 @@ export default function Folder() {
     };
 
     func();
-  }, [order, supabase]);
+  }, [order, supabase, wasUpdated]);
 
   if (isLoading || !session) {
     return null;
@@ -234,20 +239,24 @@ export default function Folder() {
   };
 
   const saveChange = async () => {
-    const newFiles = files.map((file) =>
-      file.id === selection
-        ? {
-            ...file,
-            value: text,
-          }
-        : file
-    );
+    // const newFiles = files.map((file) =>
+    //   file.id === selection
+    //     ? {
+    //         ...file,
+    //         value: text,
+    //       }
+    //     : file
+    // );
 
-    setFiles(newFiles);
+    // setFiles(newFiles);
+    // setOrder(order);
+    setWasUpdated(true);
     editTextFalse();
     setText("");
 
-    await supabase.from("files").upsert([{ id: selection, value: text }]);
+    await supabase
+      .from("files")
+      .upsert([{ id: selection, value: text, edited: true }]);
   };
 
   return (
@@ -378,7 +387,7 @@ export default function Folder() {
                         <div className="flex items-center mb-4">
                           {files.find((file) => file.id === f).public_users
                             ?.raw_user_meta_data?.name ? (
-                            ((
+                            <>
                               <Image
                                 src={`${
                                   process.env.NEXT_PUBLIC_SUPABASE_BUCKET
@@ -392,15 +401,13 @@ export default function Folder() {
                                 className="rounded-full"
                                 alt=""
                               />
-                            ),
-                            (
                               <div className="ml-2 line-clamp-1">
                                 {
                                   files.find((file) => file.id === f)
                                     .public_users.raw_user_meta_data.name
                                 }
                               </div>
-                            ))
+                            </>
                           ) : (
                             <div className="flex justify-center space-x-3">
                               <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
@@ -460,7 +467,7 @@ export default function Folder() {
                         <div className="flex items-center mb-4">
                           {files.find((file) => file.id === f).public_users
                             ?.raw_user_meta_data?.name ? (
-                            ((
+                            <>
                               <Image
                                 src={`${
                                   process.env.NEXT_PUBLIC_SUPABASE_BUCKET
@@ -474,15 +481,13 @@ export default function Folder() {
                                 className="rounded-full"
                                 alt=""
                               />
-                            ),
-                            (
                               <div className="ml-2 line-clamp-1">
                                 {
                                   files.find((file) => file.id === f)
                                     .public_users.raw_user_meta_data.name
                                 }
                               </div>
-                            ))
+                            </>
                           ) : (
                             <div className="flex justify-center space-x-3">
                               <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
@@ -550,7 +555,7 @@ export default function Folder() {
                         <div className="flex items-center mb-4">
                           {files.find((file) => file.id === f).public_users
                             ?.raw_user_meta_data?.name ? (
-                            ((
+                            <>
                               <Image
                                 src={`${
                                   process.env.NEXT_PUBLIC_SUPABASE_BUCKET
@@ -564,15 +569,13 @@ export default function Folder() {
                                 className="rounded-full"
                                 alt=""
                               />
-                            ),
-                            (
                               <div className="ml-2 line-clamp-1">
                                 {
                                   files.find((file) => file.id === f)
                                     .public_users.raw_user_meta_data.name
                                 }
                               </div>
-                            ))
+                            </>
                           ) : (
                             <div className="flex justify-center space-x-3">
                               <div className="w-[40px] h-[40px] rounded-full shrink-0 flex justify-center bg-neutral-800">
