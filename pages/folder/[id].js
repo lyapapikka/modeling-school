@@ -246,6 +246,37 @@ export default function Folder() {
       .upsert([{ id: selection, value: text, edited: true }]);
   };
 
+  const postUp = async (index) => {
+    const results = order.slice();
+    const firstItem = order[index];
+    results[index] = order[index + 1];
+    results[index + 1] = firstItem;
+    setOrder(results);
+    console.log(results);
+
+    // let arr = [...order];
+    // [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
+    // console.log(arr);
+    // setOrder(arr);
+
+    // await supabase
+    //   .from("folders")
+    //   .upsert([{ id: router.query.id, files: JSON.stringify(arr) }]);
+  };
+
+  const postDown = async (index) => {
+    const results = order.slice();
+    const firstItem = order[index];
+    results[firstItem] = order[index - 1];
+    results[index - 1] = firstItem;
+
+    setOrder(results);
+
+    // await supabase
+    //   .from("folders")
+    //   .upsert([{ id: router.query.id, files: JSON.stringify(arr) }]);
+  };
+
   return (
     <>
       <Head>
@@ -395,7 +426,9 @@ export default function Folder() {
                                 }
                               </div>
                               {files.find((file) => file.id === f).edited && (
-                                <div className="ml-2 text-neutral-500">изменено</div>
+                                <div className="ml-2 text-neutral-500">
+                                  изменено
+                                </div>
                               )}
                             </>
                           ) : (
@@ -440,12 +473,18 @@ export default function Folder() {
                           )}
                           <button
                             title="Переместить вверх"
+                            onClick={() =>
+                              postUp(files.findIndex((file) => file.id === f))
+                            }
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
                           >
                             <ChevronUpIcon className="w-6" />
                           </button>
                           <button
                             title="Переместить вниз"
+                            onClick={() =>
+                              postDown(files.findIndex((file) => file.id === f))
+                            }
                             className="sm:hover:bg-neutral-700 p-2 rounded-full"
                           >
                             <ChevronDownIcon className="w-6" />
