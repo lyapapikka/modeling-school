@@ -228,24 +228,28 @@ export default function Folder() {
     return null;
   }
   const editorText = (event) => {
-    setSelection(files.find((file) => file.id === event).value);
+    setSelection(files.find((file) => file.id === event).id);
     setText(files.find((file) => file.id === event).value);
     editTextTrue();
-    console.log(selection);
   };
 
-  const saveChange = (selection) => {
-    console.log(files.find((file) => file));
-    // console.log(files.find((file) => file.value === selection));
-    // changeText(files.find((file) => file.value === selection));
+  const saveChange = () => {
+    const newFiles = files.map((file) =>
+      file.id === selection
+        ? {
+            ...file,
+            value: text,
+          }
+        : file
+    );
+
+    setFiles(newFiles);
     editTextFalse();
+    setText("");
   };
 
-  // const onClickEditText = (event) => {
-  //   console.log(event);
-  //   editTextTrue;
-  //   console.log(isEditing);
-  // };
+  await;
+  supabase.from("files").upsert([{ id: selection, value: text }]);
 
   return (
     <>
