@@ -45,10 +45,19 @@ export default function Folder() {
   const [deleteDialog, setDeleteDialog] = useState(false);
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
     toast("Ссылка скопирована");
+  };
+
+  const editTextTrue = () => {
+    setIsEditing(true);
+  };
+
+  const editTextFalse = () => {
+    setIsEditing(false);
   };
 
   const showDeleteDialog = (id) => {
@@ -218,6 +227,25 @@ export default function Folder() {
   if (isLoading || !session) {
     return null;
   }
+  const editorText = (event) => {
+    setSelection(files.find((file) => file.id === event).value);
+    setText(files.find((file) => file.id === event).value);
+    editTextTrue();
+    console.log(selection);
+  };
+
+  const saveChange = (selection) => {
+    console.log(files.find((file) => file));
+    // console.log(files.find((file) => file.value === selection));
+    // changeText(files.find((file) => file.value === selection));
+    editTextFalse();
+  };
+
+  // const onClickEditText = (event) => {
+  //   console.log(event);
+  //   editTextTrue;
+  //   console.log(isEditing);
+  // };
 
   return (
     <>
@@ -305,15 +333,26 @@ export default function Folder() {
                   placeholder="Напишите что-нибудь..."
                   className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full mt-1 mb-2"
                 />
-                {text.trim() && !loading && (
-                  <button
-                    onClick={addText}
-                    className="w-full flex justify-center bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 my-2"
-                  >
-                    <CheckIcon className="w-6 mr-2" />
-                    <div className="leading-6">Добавить</div>
-                  </button>
-                )}
+
+                {text.trim() &&
+                  !loading &&
+                  (isEditing === false ? (
+                    <button
+                      onClick={addText}
+                      className="w-full flex justify-center bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 my-2"
+                    >
+                      <CheckIcon className="w-6 mr-2" />
+                      <div className="leading-6">Добавить</div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={saveChange}
+                      className="w-full flex justify-center bg-white sm:hover:bg-neutral-200 text-black rounded-2xl px-3 py-2 my-2"
+                    >
+                      <CheckIcon className="w-6 mr-2" />
+                      <div className="leading-6">Изменить</div>
+                    </button>
+                  ))}
                 {loading && (
                   <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
                     <EllipsisHorizontalIcon className="w-6 mr-2" />
@@ -386,6 +425,16 @@ export default function Folder() {
                               <TrashIcon className="w-6 stroke-red-500" />
                             </button>
                           )}
+
+                          <button
+                            title="Редактировать текст"
+                            className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
+                            onClick={() =>
+                              editorText(files.find((file) => file.id === f).id)
+                            }
+                          >
+                            <PencilSquareIcon className="w-6" />
+                          </button>
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
@@ -475,6 +524,7 @@ export default function Folder() {
                               <TrashIcon className="w-6 stroke-red-500" />
                             </button>
                           )}
+
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
@@ -567,12 +617,7 @@ export default function Folder() {
                               <TrashIcon className="w-6 stroke-red-500" />
                             </button>
                           )}
-                          <button
-                            title="Редактировать текст"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
-                          >
-                            <PencilSquareIcon className="w-6" />
-                          </button>
+
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
