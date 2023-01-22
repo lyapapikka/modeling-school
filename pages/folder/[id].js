@@ -46,7 +46,6 @@ export default function Folder() {
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [wasUpdated, setWasUpdated] = useState(false);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -214,10 +213,6 @@ export default function Folder() {
 
   useEffect(() => {
     const func = async () => {
-      if (wasUpdated) {
-        wasUpdated = false;
-      }
-
       const { data: f } = await supabase
         .from("files")
         .select("*,public_users(*)")
@@ -227,7 +222,7 @@ export default function Folder() {
     };
 
     func();
-  }, [order, supabase, wasUpdated]);
+  }, [order, supabase]);
 
   if (isLoading || !session) {
     return null;
@@ -239,20 +234,12 @@ export default function Folder() {
   };
 
   const saveChange = async () => {
-    // const newFiles = files.map((file) =>
-    //   file.id === selection
-    //     ? {
-    //         ...file,
-    //         value: text,
-    //       }
-    //     : file
-    // );
-
-    // setFiles(newFiles);
-    // setOrder(order);
-    setWasUpdated(true);
     editTextFalse();
     setText("");
+
+    await supabase
+      .from("folders")
+      .upsert([{ id: router.query.id, files: JSON.stringify(order) }]);
 
     await supabase
       .from("files")
@@ -407,6 +394,9 @@ export default function Folder() {
                                     .public_users.raw_user_meta_data.name
                                 }
                               </div>
+                              {files.find((file) => file.id === f).edited && (
+                                <div className="ml-2 text-neutral-500">изменено</div>
+                              )}
                             </>
                           ) : (
                             <div className="flex justify-center space-x-3">
@@ -423,28 +413,31 @@ export default function Folder() {
                         <div className="flex mt-2 -mx-2">
                           {session.user.id ===
                             files.find((file) => file.id === f).user_id && (
-                            <button
-                              onClick={() =>
-                                showDeleteDialog(
-                                  files.find((file) => file.id === f).id
-                                )
-                              }
-                              title="Удалить"
-                              className="sm:hover:bg-neutral-700 p-2 rounded-full block"
-                            >
-                              <TrashIcon className="w-6 stroke-red-500" />
-                            </button>
+                            <>
+                              <button
+                                onClick={() =>
+                                  showDeleteDialog(
+                                    files.find((file) => file.id === f).id
+                                  )
+                                }
+                                title="Удалить"
+                                className="sm:hover:bg-neutral-700 p-2 rounded-full block"
+                              >
+                                <TrashIcon className="w-6 stroke-red-500" />
+                              </button>
+                              <button
+                                title="Редактировать текст"
+                                className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
+                                onClick={() =>
+                                  editorText(
+                                    files.find((file) => file.id === f).id
+                                  )
+                                }
+                              >
+                                <PencilSquareIcon className="w-6" />
+                              </button>
+                            </>
                           )}
-
-                          <button
-                            title="Редактировать текст"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full mr-auto"
-                            onClick={() =>
-                              editorText(files.find((file) => file.id === f).id)
-                            }
-                          >
-                            <PencilSquareIcon className="w-6" />
-                          </button>
                           <button
                             title="Переместить вверх"
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
