@@ -90,17 +90,30 @@ export default function Folder() {
   );
 
   const changeText = ({ target: { value } }) => {
-    typingChannel.send({
-      type: "broadcast",
-      event: "typing",
-      payload: {
-        username:
-          files.find((file) => file.user_id === session.user.id).public_users
-            ?.raw_user_meta_data?.name || "Неизвестный пользователь",
-      },
-    });
     setText(value);
   };
+
+  useEffect(() => {
+    if (!text) {
+      return;
+    }
+
+    const func = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      typingChannel.send({
+        type: "broadcast",
+        event: "typing",
+        payload: {
+          username: user.user_metadata?.picture || "Неизвестный пользователь",
+        },
+      });
+    };
+
+    func();
+  }, [text, supabase, typingChannel]);
 
   const addText = async () => {
     setLoading(true);
