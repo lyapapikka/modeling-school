@@ -30,6 +30,7 @@ import api from "../../utils/api";
 import { nanoid } from "nanoid";
 import Modal from "../../components/Modal";
 import toast from "../../utils/toast";
+import swap from "../../utils/swap";
 
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
@@ -247,34 +248,27 @@ export default function Folder() {
   };
 
   const postUp = async (index) => {
-    const results = order.slice();
-    const firstItem = order[index];
-    results[index] = order[index + 1];
-    results[index + 1] = firstItem;
-    setOrder(results);
-    console.log(results);
+    setOrder(swap(order, index, index - 1));
 
-    // let arr = [...order];
-    // [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-    // console.log(arr);
-    // setOrder(arr);
-
-    // await supabase
-    //   .from("folders")
-    //   .upsert([{ id: router.query.id, files: JSON.stringify(arr) }]);
+    await supabase.from("folders").upsert([
+      {
+        id: router.query.id,
+        files: JSON.stringify(swap(order, index, index - 1)),
+      },
+    ]);
   };
 
   const postDown = async (index) => {
-    const results = order.slice();
-    const firstItem = order[index];
-    results[firstItem] = order[index - 1];
-    results[index - 1] = firstItem;
+    setOrder(swap(order, index, index + 1));
 
-    setOrder(results);
-
-    // await supabase
-    //   .from("folders")
-    //   .upsert([{ id: router.query.id, files: JSON.stringify(arr) }]);
+    await supabase
+      .from("folders")
+      .upsert([
+        {
+          id: router.query.id,
+          files: JSON.stringify(swap(order, index, index + 1)),
+        },
+      ]);
   };
 
   return (
@@ -474,7 +468,7 @@ export default function Folder() {
                           <button
                             title="Переместить вверх"
                             onClick={() =>
-                              postUp(files.findIndex((file) => file.id === f))
+                              postUp(order.findIndex((id) => id === f))
                             }
                             className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
                           >
@@ -483,7 +477,7 @@ export default function Folder() {
                           <button
                             title="Переместить вниз"
                             onClick={() =>
-                              postDown(files.findIndex((file) => file.id === f))
+                              postDown(order.findIndex((id) => id === f))
                             }
                             className="sm:hover:bg-neutral-700 p-2 rounded-full"
                           >
