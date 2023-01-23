@@ -261,14 +261,12 @@ export default function Folder() {
   const postDown = async (index) => {
     setOrder(swap(order, index, index + 1));
 
-    await supabase
-      .from("folders")
-      .upsert([
-        {
-          id: router.query.id,
-          files: JSON.stringify(swap(order, index, index + 1)),
-        },
-      ]);
+    await supabase.from("folders").upsert([
+      {
+        id: router.query.id,
+        files: JSON.stringify(swap(order, index, index + 1)),
+      },
+    ]);
   };
 
   return (
@@ -465,24 +463,31 @@ export default function Folder() {
                               </button>
                             </>
                           )}
-                          <button
-                            title="Переместить вверх"
-                            onClick={() =>
-                              postUp(order.findIndex((id) => id === f))
-                            }
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                          >
-                            <ChevronUpIcon className="w-6" />
-                          </button>
-                          <button
-                            title="Переместить вниз"
-                            onClick={() =>
-                              postDown(order.findIndex((id) => id === f))
-                            }
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                          >
-                            <ChevronDownIcon className="w-6" />
-                          </button>
+                          {order[order.findIndex((id) => id === f) - 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вверх"
+                              onClick={() =>
+                                postUp(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                            >
+                              <ChevronUpIcon className="w-6" />
+                            </button>
+                          ) : null}
+
+                          {order[order.findIndex((id) => id === f) + 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вниз"
+                              onClick={() =>
+                                postDown(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                            >
+                              <ChevronDownIcon className="w-6" />
+                            </button>
+                          ) : null}
                         </div>
                       </div>
                     ) : files.find((file) => file.id === f).type === "image" ? (
@@ -559,18 +564,31 @@ export default function Folder() {
                             </button>
                           )}
 
-                          <button
-                            title="Переместить вверх"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                          >
-                            <ChevronUpIcon className="w-6" />
-                          </button>
-                          <button
-                            title="Переместить вниз"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                          >
-                            <ChevronDownIcon className="w-6" />
-                          </button>
+                          {order[order.findIndex((id) => id === f) - 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вверх"
+                              onClick={() =>
+                                postUp(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                            >
+                              <ChevronUpIcon className="w-6" />
+                            </button>
+                          ) : null}
+
+                          {order[order.findIndex((id) => id === f) + 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вниз"
+                              onClick={() =>
+                                postDown(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                            >
+                              <ChevronDownIcon className="w-6" />
+                            </button>
+                          ) : null}
                         </div>
                       </div>
                     ) : (
@@ -650,18 +668,31 @@ export default function Folder() {
                             </button>
                           )}
 
-                          <button
-                            title="Переместить вверх"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
-                          >
-                            <ChevronUpIcon className="w-6" />
-                          </button>
-                          <button
-                            title="Переместить вниз"
-                            className="sm:hover:bg-neutral-700 p-2 rounded-full"
-                          >
-                            <ChevronDownIcon className="w-6" />
-                          </button>
+                          {order[order.findIndex((id) => id === f) - 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вверх"
+                              onClick={() =>
+                                postUp(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full ml-auto"
+                            >
+                              <ChevronUpIcon className="w-6" />
+                            </button>
+                          ) : null}
+
+                          {order[order.findIndex((id) => id === f) + 1] !==
+                          undefined ? (
+                            <button
+                              title="Переместить вниз"
+                              onClick={() =>
+                                postDown(order.findIndex((id) => id === f))
+                              }
+                              className="sm:hover:bg-neutral-700 p-2 rounded-full"
+                            >
+                              <ChevronDownIcon className="w-6" />
+                            </button>
+                          ) : null}
                         </div>
                       </div>
                     )
