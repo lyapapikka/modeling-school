@@ -47,8 +47,7 @@ export default function Folder() {
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isTyping, setIsTyping] = useState("");
-  const [typing, setTyping] = useState("");
+  const [typingChannel, setTypingChannel] = useState();
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -90,10 +89,14 @@ export default function Folder() {
   );
 
   const changeText = ({ target: { value } }) => {
-    channel.send({
+    typingChannel.send({
       type: "broadcast",
       event: "typing",
-      payload: public_users?.raw_user_meta_data?.name,
+      payload: {
+        username:
+          files.find((file) => file.user_id === session.user.id).public_users
+            ?.raw_user_meta_data?.name || "Неизвестный пользователь",
+      },
     });
     setText(value);
   };
@@ -215,14 +218,15 @@ export default function Folder() {
             }
           )
           .subscribe();
-      };
 
-      supabase
-        .channel(router.query.id)
-        .on("broadcast", { event: "typing" }, (payload) => {
+        const c = supabase.channel(`typing-${router.query.id}`);
+
+        c.on("broadcast", { event: "typing" }, (payload) => {
           console.log(payload);
-        })
-        .subscribe(() => {});
+        }).subscribe();
+
+        setTypingChannel(c);
+      };
 
       func();
     }
