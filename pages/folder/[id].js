@@ -48,6 +48,7 @@ export default function Folder() {
   const [cachedOrder, setCachedOrder] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [typingChannel, setTypingChannel] = useState();
+  const [userWhoTyping, setUserWhoTyping] = useState("");
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -222,7 +223,7 @@ export default function Folder() {
         const c = supabase.channel(`typing-${router.query.id}`);
 
         c.on("broadcast", { event: "typing" }, (payload) => {
-          console.log(payload);
+          setUserWhoTyping(payload.username);
         }).subscribe();
 
         setTypingChannel(c);
@@ -312,7 +313,9 @@ export default function Folder() {
               <div className="text-xl mr-auto line-clamp-1 mt-1">
                 {folder[0].name}
               </div>
-              <div className="text-neutral-500 pb-2">Кто-то печатает...</div>
+              <div className="text-neutral-500 pb-2">
+                {userWhoTyping ? `${userWhoTyping} печатает...` : "Папка"}
+              </div>
             </div>
             <div className="space-y-2">
               <div className="flex space-x-2 mx-2">
