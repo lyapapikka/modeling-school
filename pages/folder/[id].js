@@ -107,7 +107,7 @@ export default function Folder() {
         type: "broadcast",
         event: "typing",
         payload: {
-          username: user.user_metadata?.picture || "Неизвестный пользователь",
+          username: user.user_metadata?.name || "Неизвестный пользователь",
         },
       });
     };
@@ -328,6 +328,7 @@ export default function Folder() {
               </div>
               <div className="text-neutral-500 pb-2">
                 {userWhoTyping ? `${userWhoTyping} печатает...` : "Папка"}
+                {console.log(userWhoTyping)}
               </div>
             </div>
             <div className="space-y-2">
