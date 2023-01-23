@@ -47,6 +47,8 @@ export default function Folder() {
   const [selection, setSelection] = useState("");
   const [cachedOrder, setCachedOrder] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isTyping, setIsTyping] = useState("");
+  const [typing, setTyping] = useState("");
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -87,7 +89,14 @@ export default function Folder() {
     fetcher
   );
 
-  const changeText = ({ target: { value } }) => setText(value);
+  const changeText = ({ target: { value } }) => {
+    channel.send({
+      type: "broadcast",
+      event: "typing",
+      payload: public_users?.raw_user_meta_data?.name,
+    });
+    setText(value);
+  };
 
   const addText = async () => {
     setLoading(true);
@@ -207,6 +216,13 @@ export default function Folder() {
           )
           .subscribe();
       };
+
+      supabase
+        .channel(router.query.id)
+        .on("broadcast", { event: "typing" }, (payload) => {
+          console.log(payload);
+        })
+        .subscribe(() => {});
 
       func();
     }
