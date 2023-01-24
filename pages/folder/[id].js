@@ -5,6 +5,7 @@ import {
   useSessionContext,
   useSupabaseClient,
 } from "@supabase/auth-helpers-react";
+import useInterval from "../../utils/useInterval";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -49,6 +50,11 @@ export default function Folder() {
   const [isEditing, setIsEditing] = useState(false);
   const [typingChannel, setTypingChannel] = useState();
   const [userWhoTyping, setUserWhoTyping] = useState("");
+  const [interval, setInterval] = useState("");
+
+  useInterval(() => {
+    setUserWhoTyping("");
+  }, 4000);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
