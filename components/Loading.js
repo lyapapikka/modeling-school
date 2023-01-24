@@ -3,8 +3,8 @@ export default function Loading() {
     <div class="ml-1 flex justify-center items-center">
       <div class="flex  rounded-full justify-center items-center">
         <div class="w-2 rounded-full animate-pulse">.</div>
-        <div class="w-2 rounded-full animate-pulse-1s">.</div>
-        <div class="w-2 rounded-full animate-pulse-2s">.</div>
+        <div class="w-2 rounded-full animate-pulse">.</div>
+        <div class="w-2 rounded-full animate-pulse">.</div>
       </div>
     </div>
   );
