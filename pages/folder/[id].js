@@ -52,7 +52,7 @@ export default function Folder() {
   const [userWhoTyping, setUserWhoTyping] = useState("");
 
   useInterval(() => {
-    // setUserWhoTyping("");
+    setUserWhoTyping("");
   }, 3000);
 
   const copyLink = () => {
@@ -356,9 +356,10 @@ export default function Folder() {
                   hidden
                 />
                 {imageLoading ? (
-                  <div className="bg-neutral-900 w-full flex justify-center rounded-2xl py-4">
-                    <EllipsisHorizontalIcon className="w-6 sm:mr-2" />
-                    <div className="sm:block hidden">Загружаем</div>
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-5 my-2">
+                    <Loading>
+                      <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+                    </Loading>
                   </div>
                 ) : (
                   <label
@@ -378,7 +379,6 @@ export default function Folder() {
                 />
                 {fileLoading ? (
                   <div className="bg-neutral-900 w-full flex justify-center rounded-2xl py-4">
-                    <Loading />
                     <div className="sm:block hidden"></div>
                   </div>
                 ) : (
