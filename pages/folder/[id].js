@@ -32,7 +32,7 @@ import { nanoid } from "nanoid";
 import Modal from "../../components/Modal";
 import toast from "../../utils/toast";
 import swap from "../../utils/swap";
-
+import Loading from "../../components/Loading";
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -52,9 +52,7 @@ export default function Folder() {
   const [userWhoTyping, setUserWhoTyping] = useState("");
   const [interval, setInterval] = useState("");
 
-  useInterval(() => {
-    setUserWhoTyping("");
-  }, 4000);
+  useInterval(() => {}, 4000);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -333,7 +331,13 @@ export default function Folder() {
                 {folder[0].name}
               </div>
               <div className="text-neutral-500 pb-2">
-                {userWhoTyping ? `${userWhoTyping} печатает...` : "Папка"}
+                {userWhoTyping ? (
+                  <div className="flex justify-center">
+                    {userWhoTyping} печатает <Loading />
+                  </div>
+                ) : (
+                  "Папка"
+                )}
                 {console.log(userWhoTyping)}
               </div>
             </div>
