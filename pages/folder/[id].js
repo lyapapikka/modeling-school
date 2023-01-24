@@ -236,7 +236,7 @@ export default function Folder() {
         const c = supabase.channel(`typing-${router.query.id}`);
 
         c.on("broadcast", { event: "typing" }, (payload) => {
-          setUserWhoTyping(payload.username);
+          setUserWhoTyping(payload.payload.username);
         }).subscribe();
 
         setTypingChannel(c);
