@@ -50,9 +50,10 @@ export default function Folder() {
   const [isEditing, setIsEditing] = useState(false);
   const [typingChannel, setTypingChannel] = useState();
   const [userWhoTyping, setUserWhoTyping] = useState("");
-  const [interval, setInterval] = useState("");
 
-  useInterval(() => {}, 4000);
+  useInterval(() => {
+    // setUserWhoTyping("");
+  }, 3000);
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${origin}/folder/${id}`);
@@ -332,8 +333,11 @@ export default function Folder() {
               </div>
               <div className="text-neutral-500 pb-2">
                 {userWhoTyping ? (
-                  <div className="flex justify-center">
-                    {userWhoTyping} печатает <Loading />
+                  <div className="flex justify-center self-end">
+                    {userWhoTyping} печатает{" "}
+                    <Loading>
+                      <div className="w-0.5 h-0.5 rounded-full bg-neutral-500 mt-3"></div>
+                    </Loading>
                   </div>
                 ) : (
                   "Папка"
@@ -374,8 +378,8 @@ export default function Folder() {
                 />
                 {fileLoading ? (
                   <div className="bg-neutral-900 w-full flex justify-center rounded-2xl py-4">
-                    <EllipsisHorizontalIcon className="w-6 sm:mr-2" />
-                    <div className="sm:block hidden">Добавляем</div>
+                    <Loading />
+                    <div className="sm:block hidden"></div>
                   </div>
                 ) : (
                   <label
@@ -423,9 +427,10 @@ export default function Folder() {
                     </button>
                   ))}
                 {loading && (
-                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
-                    <EllipsisHorizontalIcon className="w-6 mr-2" />
-                    <div className="leading-6">Добавляем</div>
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-5 my-2">
+                    <Loading>
+                      <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+                    </Loading>
                   </div>
                 )}
               </div>

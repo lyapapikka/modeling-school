@@ -23,6 +23,7 @@ import useSWRInfinite from "swr/infinite";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../../../components/Post";
 import toast from "../../../utils/toast";
+import Loading from "../../../components/Loading";
 
 export default function Group() {
   const [_origin, setOrigin] = useState("");
@@ -280,8 +281,10 @@ export default function Group() {
                 )}
                 {loading && (
                   <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
-                    <EllipsisHorizontalIcon className="w-6 mr-2" />
-                    <div className="leading-6">Публикуем запись</div>
+                    <Loading>
+                      <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+                    </Loading>
+                    <div className="leading-6 ml-2">Публикуем запись</div>
                   </div>
                 )}
               </div>
