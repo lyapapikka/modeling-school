@@ -356,7 +356,7 @@ export default function Folder() {
                   hidden
                 />
                 {imageLoading ? (
-                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-5 my-2">
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10">
                     <Loading>
                       <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
                     </Loading>
@@ -427,7 +427,7 @@ export default function Folder() {
                     </button>
                   ))}
                 {loading && (
-                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-5 my-2">
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10">
                     <Loading>
                       <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
                     </Loading>

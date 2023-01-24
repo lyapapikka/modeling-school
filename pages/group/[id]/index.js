@@ -280,11 +280,10 @@ export default function Group() {
                   </button>
                 )}
                 {loading && (
-                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl px-3 py-2 my-2">
+                  <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10 my-2 self-center">
                     <Loading>
                       <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
                     </Loading>
-                    <div className="leading-6 ml-2">Публикуем запись</div>
                   </div>
                 )}
               </div>
