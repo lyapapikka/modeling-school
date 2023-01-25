@@ -11,6 +11,7 @@ import {
   LockClosedIcon,
 } from "@heroicons/react/24/outline";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import Loading from "../components/Loading";
 
 export default function New() {
   const { isLoading, session, supabaseClient } = useSessionContext();
@@ -110,9 +111,10 @@ export default function New() {
             </div>
           </button>
           {loading ? (
-            <div className="w-full rounded-2xl bg-neutral-900 justify-center flex py-2">
-              <EllipsisHorizontalIcon className="w-6 mr-2" />
-              Создаем группу
+            <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10 my-2 self-center">
+              <Loading>
+                <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+              </Loading>
             </div>
           ) : (
             name.trim() &&

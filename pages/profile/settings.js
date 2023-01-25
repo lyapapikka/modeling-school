@@ -19,7 +19,7 @@ import useSWR from "swr";
 import api from "../../utils/api";
 import fetcher from "../../utils/fetcher";
 import { nanoid } from "nanoid";
-
+import Loading from "../../components/Loading";
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -133,9 +133,10 @@ export default function Settings() {
               placeholder="Имя"
             />
             {loading ? (
-              <div className="w-full rounded-2xl bg-neutral-900 justify-center flex py-2">
-                <EllipsisHorizontalIcon className="w-6 mr-2" />
-                Сохраняем изменения
+              <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10 my-2 self-center">
+                <Loading>
+                  <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+                </Loading>
               </div>
             ) : (
               name.trim() && (
