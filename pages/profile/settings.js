@@ -27,6 +27,7 @@ export default function Settings() {
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const supabase = useSupabaseClient();
+  const [nickname, setNickname] = useState("");
 
   const { data: user, mutate } = useSWR(
     !isLoading && session ? api(`user`, session, { user: true }) : null,
@@ -34,6 +35,8 @@ export default function Settings() {
   );
 
   const changeName = ({ target: { value } }) => setName(value);
+
+  const changeNickname = ({ target: { value } }) => setNickname(value);
 
   const logout = async () => {
     await supabase.auth.signOut();
@@ -43,6 +46,7 @@ export default function Settings() {
   const saveProfile = async () => {
     setLoading(true);
     await supabase.auth.updateUser({ data: { name } });
+    await supabase.auth.updateUser({ data: { nickname } });
     router.push("/profile");
   };
 
@@ -131,6 +135,14 @@ export default function Settings() {
               onChange={changeName}
               className="bg-neutral-700 py-2 px-3 rounded-2xl block w-full"
               placeholder="Имя"
+            />
+            <input
+              disabled={loading}
+              value={nickname}
+              onChange={changeNickname}
+              title="Задайте свой псевдоним"
+              className="bg-neutral-700 py-2 px-3 rounded-2xl block w-full"
+              placeholder="Псевдоним"
             />
             {loading ? (
               <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10 my-2 self-center">

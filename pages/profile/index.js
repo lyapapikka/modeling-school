@@ -115,7 +115,7 @@ export default function Profile() {
               <div className="bg-neutral-800 w-[100px] h-[100px] rounded-full"></div>
             )}
           </div>
-          <div className="flex mt-2 pb-4 items-center justify-center">
+          <div className="flex mt-2 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center">
               {user ? (
                 user?.user_metadata?.name || "Неизвестный пользователь"
@@ -126,6 +126,18 @@ export default function Profile() {
               )}
             </div>
           </div>
+          <div className="flex pb-4 mt-2 items-center justify-center">
+            <div className="text-sm line-clamp-1 text-center">
+              {user ? (
+                user?.user_metadata?.nickname || "Псевдоним не задан"
+              ) : (
+                <div className="bg-neutral-800 w-40 rounded-2xl text-base">
+                  &nbsp;
+                </div>
+              )}
+            </div>
+          </div>
+
           <Link href="/profile/settings">
             <a className="absolute top-2 right-2 sm:hover:bg-neutral-700 p-2 rounded-full">
               <Cog6ToothIcon className="w-6" />
