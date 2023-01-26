@@ -127,9 +127,9 @@ export default function Profile() {
             </div>
           </div>
           <div className="flex pb-4 mt-2 items-center justify-center">
-            <div className="text-sm line-clamp-1 text-center">
+            <div className="text-lg line-clamp-1 text-center text-neutral-500">
               {user ? (
-                user?.user_metadata?.nickname || "Псевдоним не задан"
+                "@" + user?.user_metadata?.nickname || "Псевдоним не задан"
               ) : (
                 <div className="bg-neutral-800 w-40 rounded-2xl text-base">
                   &nbsp;
