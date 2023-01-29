@@ -20,10 +20,12 @@ function MyApp({ Component, pageProps }) {
         .select()
         .eq("user_id", user.id);
 
-      console.log(checkNickname);
-      await supabaseClient.from("public_users").select().eq("id", user.id);
+      const { data: checkNameAndPicture } = await supabaseClient
+        .from("public_users")
+        .select()
+        .eq("id", user.id);
 
-      if (checkNickname === []) {
+      if (checkNickname.length === 0) {
         await supabaseClient.from("nickname").upsert({
           user_id: user.id,
           nickname: `user-${nanoid(11)}`,
