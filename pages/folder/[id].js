@@ -16,7 +16,6 @@ import {
   ChevronUpIcon,
   DocumentIcon,
   CheckIcon,
-  EllipsisHorizontalIcon,
   PhotoIcon,
   TrashIcon,
   LinkIcon,

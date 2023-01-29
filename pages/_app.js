@@ -2,11 +2,36 @@ import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
-
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { nanoid } from "nanoid";
 function MyApp({ Component, pageProps }) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+
+  useEffect(() => {
+    const get = async () => {
+      const {
+        data: { user },
+      } = await supabaseClient.auth.getUser();
+
+      if (user) {
+        await supabaseClient.from("nickname").select().eq("user_id", user.id);
+
+        await supabaseClient
+          .from("public_users")
+          .select()
+          .eq("user_id", user.id);
+
+        await supabaseClient.from("nickname").upsert({
+          user_id: user.id,
+          nickname: `user-${nanoid(11)}`,
+        });
+      }
+      null;
+    };
+    get();
+  }, []);
 
   return (
     <SessionContextProvider
