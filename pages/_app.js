@@ -18,10 +18,7 @@ function MyApp({ Component, pageProps }) {
       if (user) {
         await supabaseClient.from("nickname").select().eq("user_id", user.id);
 
-        await supabaseClient
-          .from("public_users")
-          .select()
-          .eq("user_id", user.id);
+        await supabaseClient.from("public_users").select().eq("id", user.id);
 
         await supabaseClient.from("nickname").upsert({
           user_id: user.id,
