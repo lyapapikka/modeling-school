@@ -15,15 +15,21 @@ function MyApp({ Component, pageProps }) {
         data: { user },
       } = await supabaseClient.auth.getUser();
 
-      if (user) {
-        await supabaseClient.from("nickname").select().eq("user_id", user.id);
+      const { data: checkNickname } = await supabaseClient
+        .from("nickname")
+        .select()
+        .eq("user_id", user.id);
 
-        await supabaseClient.from("public_users").select().eq("id", user.id);
+      console.log(checkNickname);
+      await supabaseClient.from("public_users").select().eq("id", user.id);
 
+      if (checkNickname === []) {
         await supabaseClient.from("nickname").upsert({
           user_id: user.id,
           nickname: `user-${nanoid(11)}`,
         });
+      } else {
+        null;
       }
       null;
     };
