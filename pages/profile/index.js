@@ -10,19 +10,21 @@ import fetcher from "../../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  CheckCircleIcon,
   Cog6ToothIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 import Post from "../../components/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useSWRInfinite from "swr/infinite";
-
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 export default function Profile() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
   const [_origin, setOrigin] = useState("");
   const [cachedFolders, setCachedFolders] = useState([]);
-
+  const [userNickname, setUserNickname] = useState("");
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient());
   const { data: user } = useSWR(
     !isLoading && session ? api(`user`, session, { user: true }) : null,
     fetcher
@@ -71,6 +73,24 @@ export default function Profile() {
   const fetchData = () => setSize(size + 1);
 
   useEffect(() => {
+    const get = async () => {
+      const {
+        data: { user },
+      } = await supabaseClient.auth.getUser();
+      const { data: checkNickname } = await supabaseClient
+        .from("nickname")
+        .select()
+        .eq("user_id", user.id);
+      if (checkNickname[0].nickname !== "") {
+        setUserNickname(checkNickname[0].nickname);
+      } else {
+        setUserNickname(checkNickname[0].default_nickname);
+      }
+    };
+    get();
+  }, []);
+
+  useEffect(() => {
     if (!isLoading && !session) {
       router.replace("/");
     }
@@ -97,20 +117,14 @@ export default function Profile() {
         <div className="bg-neutral-900 rounded-2xl relative mb-2">
           <div className="flex justify-center pt-4">
             {user ? (
-              user?.user_metadata?.picture ? (
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile/${user.user_metadata.picture}`}
-                  width={100}
-                  height={100}
-                  objectFit="cover"
-                  className="rounded-full"
-                  alt=""
-                />
-              ) : (
-                <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
-                  <QuestionMarkCircleIcon className="w-14" />
-                </div>
-              )
+              <Image
+                src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile${user.user_metadata.picture}`}
+                width={100}
+                height={100}
+                objectFit="cover"
+                className="rounded-full"
+                alt=""
+              />
             ) : (
               <div className="bg-neutral-800 w-[100px] h-[100px] rounded-full"></div>
             )}
@@ -118,7 +132,7 @@ export default function Profile() {
           <div className="flex mt-2 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center">
               {user ? (
-                user?.user_metadata?.name || "Неизвестный пользователь"
+                user?.user_metadata?.name
               ) : (
                 <div className="bg-neutral-800 text-lg w-40 rounded-2xl">
                   &nbsp;
@@ -129,7 +143,7 @@ export default function Profile() {
           <div className="flex pb-4 mt-2 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center text-neutral-500">
               {user ? (
-                "@" + user?.user_metadata?.nickname || "Псевдоним не задан"
+                "@" + userNickname
               ) : (
                 <div className="bg-neutral-800 w-40 rounded-2xl text-base">
                   &nbsp;

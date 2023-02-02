@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { nanoid } from "nanoid";
+import randomNames from "../utils/randomNames";
+import { Avatar, Grid } from "@nextui-org/react";
+
 function MyApp({ Component, pageProps }) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
 
@@ -27,13 +30,18 @@ function MyApp({ Component, pageProps }) {
 
       if (checkNickname.length === 0) {
         await supabaseClient.from("nickname").upsert({
+          default_nickname: `user-${nanoid(11)}`,
           user_id: user.id,
-          nickname: `user-${nanoid(11)}`,
         });
-      } else {
-        null;
       }
-      null;
+
+      if (!checkNameAndPicture[0] && !checkNickname[0].default_nickname)
+        await supabaseClient.auth.updateUser({
+          data: {
+            name: randomNames(),
+            picture: "ui-avatars.com/api/?name=John+Doe",
+          },
+        });
     };
     get();
   }, []);

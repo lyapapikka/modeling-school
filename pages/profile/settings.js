@@ -69,6 +69,21 @@ export default function Settings() {
     setName(user?.user_metadata?.name || "Неизвестный пользователь");
   }, [user]);
 
+  const get = async () => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    await supabase
+      .from("nickname")
+      .update({
+        nickname: nickname,
+      })
+      .eq("user_id", user.id)
+      .select();
+  };
+  get();
+
   if (isLoading || !session) {
     return null;
   }
@@ -104,7 +119,7 @@ export default function Settings() {
               </div>
               <div className="w-full ml-2">
                 <div className="text-lg mb-2 line-clamp-1">
-                  {user?.user_metadata?.name || "Неизвестный пользователь"}
+                  {user?.user_metadata?.name}
                 </div>
                 <input
                   onChange={uploadPhoto}
