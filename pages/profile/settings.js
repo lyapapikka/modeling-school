@@ -66,7 +66,7 @@ export default function Settings() {
   }, [isLoading, session, router]);
 
   useEffect(() => {
-    setName(user?.user_metadata?.name || "Неизвестный пользователь");
+    setName(user?.user_metadata?.name);
   }, [user]);
 
   const get = async () => {

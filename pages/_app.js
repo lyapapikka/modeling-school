@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { nanoid } from "nanoid";
 import randomNames from "../utils/randomNames";
-import { Avatar, Grid } from "@nextui-org/react";
 
 function MyApp({ Component, pageProps }) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
