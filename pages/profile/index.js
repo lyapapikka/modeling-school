@@ -99,12 +99,12 @@ export default function Profile() {
         .select()
         .eq("user_id", user.id);
 
-      console.log(checkNickname.default_nickname);
+      console.log(checkNickname[0].default_nickname);
 
-      if (checkNickname.default_nickname) {
-        setUserNickname(checkNickname.default_nickname);
+      if (checkNickname[0].default_nickname) {
+        setUserNickname(checkNickname[0].default_nickname);
       } else {
-        setUserNickname(checkNickname.nickname);
+        setUserNickname(checkNickname[0].nickname);
       }
     };
     get();
