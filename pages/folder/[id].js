@@ -32,6 +32,7 @@ import Modal from "../../components/Modal";
 import toast from "../../utils/toast";
 import swap from "../../utils/swap";
 import Loading from "../../components/Loading";
+import UserPicture from "../../utils/userPicture";
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -449,19 +450,7 @@ export default function Folder() {
                           {files.find((file) => file.id === f).public_users
                             ?.raw_user_meta_data?.name ? (
                             <>
-                              <Image
-                                src={`${
-                                  process.env.NEXT_PUBLIC_SUPABASE_BUCKET
-                                }/profile/${
-                                  files.find((file) => file.id === f)
-                                    .public_users.raw_user_meta_data.picture
-                                }`}
-                                height={40}
-                                width={40}
-                                objectFit="cover"
-                                className="rounded-full"
-                                alt=""
-                              />
+                              <UserPicture size={40} fz={15} />
                               <div className="ml-2 line-clamp-1">
                                 {
                                   files.find((file) => file.id === f)

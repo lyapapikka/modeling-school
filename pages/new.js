@@ -76,40 +76,7 @@ export default function New() {
             className="bg-neutral-700 block resize-none py-2 px-3 rounded-2xl w-full"
             placeholder="Описание"
           />
-          <button
-            disabled={loading}
-            onClick={setPublic}
-            className={`flex items-center ${
-              visibility !== "public"
-                ? "bg-neutral-900 sm:hover:bg-neutral-800"
-                : "bg-white text-black sm:hover:bg-neutral-200"
-            } rounded-2xl py-3 pr-3 w-full`}
-          >
-            <GlobeAltIcon className="w-6 shrink-0 mx-4" />
-            <div className="text-start">
-              <div className="font-medium">Публичная группа</div>
-              <div className="text-neutral-600">
-                Группа будет видна в разделе рекомендаций
-              </div>
-            </div>
-          </button>
-          <button
-            disabled={loading}
-            onClick={setPrivate}
-            className={`flex items-center ${
-              visibility !== "private"
-                ? "bg-neutral-900 sm:hover:bg-neutral-800"
-                : "bg-white text-black sm:hover:bg-neutral-200"
-            } rounded-2xl py-3 pr-3 w-full`}
-          >
-            <LockClosedIcon className="w-6 shrink-0 mx-4" />
-            <div className="text-start">
-              <div className="font-medium">Частная группа</div>
-              <div className="text-neutral-600">
-                Группа будет доступна только по ссылке
-              </div>
-            </div>
-          </button>
+
           {loading ? (
             <div className="w-full flex justify-center bg-neutral-900 rounded-2xl h-10 my-2 self-center">
               <Loading>

@@ -9,6 +9,8 @@ import useSWR from "swr";
 import fetcher from "../../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
+import getInitials from "/utils/getInitials";
+import UserPicture from "../../utils/UserPicture";
 import {
   CheckCircleIcon,
   Cog6ToothIcon,
@@ -18,6 +20,7 @@ import Post from "../../components/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useSWRInfinite from "swr/infinite";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { Avatar } from "@mui/material";
 export default function Profile() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -25,10 +28,23 @@ export default function Profile() {
   const [cachedFolders, setCachedFolders] = useState([]);
   const [userNickname, setUserNickname] = useState("");
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+  const [initials, setInitials] = useState("");
+
   const { data: user } = useSWR(
     !isLoading && session ? api(`user`, session, { user: true }) : null,
     fetcher
   );
+
+  useEffect(() => {
+    const setNameInitials = async () => {
+      const {
+        data: { user },
+      } = await supabaseClient.auth.getUser();
+
+      setInitials(getInitials(user.user_metadata.name));
+    };
+    setNameInitials();
+  }, []);
 
   const {
     data: archive,
@@ -77,14 +93,18 @@ export default function Profile() {
       const {
         data: { user },
       } = await supabaseClient.auth.getUser();
+
       const { data: checkNickname } = await supabaseClient
         .from("nickname")
         .select()
         .eq("user_id", user.id);
-      if (checkNickname[0].nickname !== "") {
-        setUserNickname(checkNickname[0].nickname);
+
+      console.log(checkNickname.default_nickname);
+
+      if (checkNickname.default_nickname) {
+        setUserNickname(checkNickname.default_nickname);
       } else {
-        setUserNickname(checkNickname[0].default_nickname);
+        setUserNickname(checkNickname.nickname);
       }
     };
     get();
@@ -116,18 +136,7 @@ export default function Profile() {
         </div>
         <div className="bg-neutral-900 rounded-2xl relative mb-2">
           <div className="flex justify-center pt-4">
-            {user ? (
-              <Image
-                src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile${user.user_metadata.picture}`}
-                width={100}
-                height={100}
-                objectFit="cover"
-                className="rounded-full"
-                alt=""
-              />
-            ) : (
-              <div className="bg-neutral-800 w-[100px] h-[100px] rounded-full"></div>
-            )}
+            <UserPicture size={100} fz={40} />
           </div>
           <div className="flex mt-2 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center">
@@ -143,7 +152,9 @@ export default function Profile() {
           <div className="flex pb-4 mt-2 items-center justify-center">
             <div className="text-lg line-clamp-1 text-center text-neutral-500">
               {user ? (
-                "@" + userNickname
+                userNickname ? (
+                  "@" + userNickname
+                ) : null
               ) : (
                 <div className="bg-neutral-800 w-40 rounded-2xl text-base">
                   &nbsp;

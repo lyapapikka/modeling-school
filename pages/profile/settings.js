@@ -20,6 +20,9 @@ import api from "../../utils/api";
 import fetcher from "../../utils/fetcher";
 import { nanoid } from "nanoid";
 import Loading from "../../components/Loading";
+import { NEXT_BUILTIN_DOCUMENT } from "next/dist/shared/lib/constants";
+import { NoFallbackError } from "next/dist/server/base-server";
+import UserPicture from "../../utils/userPicture";
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -43,10 +46,28 @@ export default function Settings() {
     router.push("/");
   };
 
+  useEffect(() => {
+    const { data: checkNickname } = supabase
+      .from("nickname")
+      .select()
+      .eq("user_id", user.id);
+    setNickname();
+    console.log(checkNickname);
+  }, []);
+
   const saveProfile = async () => {
     setLoading(true);
     await supabase.auth.updateUser({ data: { name } });
-    await supabase.auth.updateUser({ data: { nickname } });
+    const get = async () => {
+      await supabase
+        .from("nickname")
+        .update({
+          nickname: nickname,
+        })
+        .eq("user_id", user.id)
+        .select();
+    };
+    get();
     router.push("/profile");
   };
 
@@ -69,21 +90,6 @@ export default function Settings() {
     setName(user?.user_metadata?.name);
   }, [user]);
 
-  const get = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    await supabase
-      .from("nickname")
-      .update({
-        nickname: nickname,
-      })
-      .eq("user_id", user.id)
-      .select();
-  };
-  get();
-
   if (isLoading || !session) {
     return null;
   }
@@ -102,20 +108,7 @@ export default function Settings() {
           <div className="px-2 space-y-4">
             <div className="flex items-center">
               <div className="shrink-0">
-                {user?.user_metadata?.picture ? (
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile/${user.user_metadata.picture}`}
-                    width={100}
-                    height={100}
-                    objectFit="cover"
-                    className="rounded-full"
-                    alt=""
-                  />
-                ) : (
-                  <div className="w-[100px] h-[100px] bg-neutral-800 rounded-full flex justify-center">
-                    <QuestionMarkCircleIcon className="w-14" />
-                  </div>
-                )}
+                <UserPicture size={100} fz={40} />
               </div>
               <div className="w-full ml-2">
                 <div className="text-lg mb-2 line-clamp-1">
@@ -151,11 +144,11 @@ export default function Settings() {
               className="bg-neutral-700 py-2 px-3 rounded-2xl block w-full"
               placeholder="Имя"
             />
+
             <input
               disabled={loading}
               value={nickname}
               onChange={changeNickname}
-              title="Задайте свой псевдоним"
               className="bg-neutral-700 py-2 px-3 rounded-2xl block w-full"
               placeholder="Псевдоним"
             />
@@ -166,7 +159,7 @@ export default function Settings() {
                 </Loading>
               </div>
             ) : (
-              name.trim() && (
+              name && (
                 <button
                   onClick={saveProfile}
                   className="w-full rounded-2xl bg-white sm:hover:bg-neutral-200 text-black justify-center flex py-2"

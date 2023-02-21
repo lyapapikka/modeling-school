@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { nanoid } from "nanoid";
 import randomNames from "../utils/randomNames";
+import { Stack, Avatar, AvatarGroup } from "@mui/material";
 
 function MyApp({ Component, pageProps }) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient());
@@ -22,7 +23,7 @@ function MyApp({ Component, pageProps }) {
         .select()
         .eq("user_id", user.id);
 
-      const { data: checkNameAndPicture } = await supabaseClient
+      const { data: checkName } = await supabaseClient
         .from("public_users")
         .select()
         .eq("id", user.id);
@@ -33,14 +34,13 @@ function MyApp({ Component, pageProps }) {
           user_id: user.id,
         });
       }
-
-      if (!checkNameAndPicture[0] && !checkNickname[0].default_nickname)
+      if (checkName.length === 0) {
         await supabaseClient.auth.updateUser({
           data: {
             name: randomNames(),
-            picture: "ui-avatars.com/api/?name=John+Doe",
           },
         });
+      }
     };
     get();
   }, []);
