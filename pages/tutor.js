@@ -89,27 +89,22 @@ export default function Tutor({ filenames }) {
       </Content>
       {showDocument && (
         <div className="fixed inset-0 flex justify-center items-center z-[999999] text-center">
-          <div
-            className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
-            onClick={closeDocument}
-          ></div>
           <div className="rotate-90 sm:rotate-[auto] flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
-            <Document
-              file={`/tutors/${filename}`}
-              onLoadSuccess={onDocumentLoadSuccess}
-              loading="Загрузка..."
-            >
-              <Page
-                loading="Загрузка..."
-                onClick={toggleHandling}
-                width={
-                  window.screen.width < 600
-                    ? window.screen.width + 100
-                    : window.screen.width - 600
-                }
-                pageNumber={pageNumber}
-              />
-            </Document>
+            <div
+              className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
+              onClick={closeDocument}
+            ></div>
+            <div className="flex items-center relative cursor-default">
+              <iframe
+                id="pdf-js-viewer"
+                src={`/tutors/${filename}`}
+                title="webviewer"
+                frameborder=""
+                width="1000"
+                height="400"
+              ></iframe>
+            </div>
+
             {showHandling && (
               <div className="flex absolute z-[999999] items-center space-x-10">
                 {pageNumber > 1 ? (
