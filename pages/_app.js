@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
       }
     };
     get();
-  }, []);
+  }, [supabaseClient]);
 
   return (
     <SessionContextProvider

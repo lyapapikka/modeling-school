@@ -342,7 +342,6 @@ export default function Folder() {
                 ) : (
                   "Папка"
                 )}
-                {console.log(userWhoTyping)}
               </div>
             </div>
             <div className="space-y-2">

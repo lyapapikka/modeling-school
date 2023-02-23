@@ -44,7 +44,7 @@ export default function Profile() {
       setInitials(getInitials(user.user_metadata.name));
     };
     setNameInitials();
-  }, []);
+  }, [supabaseClient.auth]);
 
   const {
     data: archive,
@@ -99,8 +99,6 @@ export default function Profile() {
         .select()
         .eq("user_id", user.id);
 
-      console.log(checkNickname[0].default_nickname);
-
       if (checkNickname[0].default_nickname) {
         setUserNickname(checkNickname[0].default_nickname);
       } else {
@@ -108,7 +106,7 @@ export default function Profile() {
       }
     };
     get();
-  }, []);
+  }, [supabaseClient]);
 
   useEffect(() => {
     if (!isLoading && !session) {

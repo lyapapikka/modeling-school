@@ -52,8 +52,7 @@ export default function Settings() {
       .select()
       .eq("user_id", user.id);
     setNickname();
-    console.log(checkNickname);
-  }, []);
+  }, [supabase]);
 
   const saveProfile = async () => {
     setLoading(true);

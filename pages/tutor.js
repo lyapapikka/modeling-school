@@ -99,41 +99,10 @@ export default function Tutor({ filenames }) {
                 id="pdf-js-viewer"
                 src={`/tutors/${filename}`}
                 title="webviewer"
-                frameborder=""
                 width="1000"
-                height="400"
+                height="570"
               ></iframe>
             </div>
-
-            {showHandling && (
-              <div className="flex absolute z-[999999] items-center space-x-10">
-                {pageNumber > 1 ? (
-                  <div>
-                    <button
-                      className="p-4 rounded-full bg-neutral-600 sm:hover:bg-neutral-500"
-                      onClick={prev}
-                    >
-                      <ChevronLeftIcon className="w-6" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-[56px] h-[56px]"></div>
-                )}
-                <div className="bg-neutral-600 rounded-full px-4 aspect-square items-center flex">
-                  {pageNumber} из {numPages}
-                </div>
-                {pageNumber !== numPages && (
-                  <div>
-                    <button
-                      className="p-4 rounded-full bg-neutral-600 sm:hover:bg-neutral-500"
-                      onClick={next}
-                    >
-                      <ChevronRightIcon className="w-6" />
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
       )}
