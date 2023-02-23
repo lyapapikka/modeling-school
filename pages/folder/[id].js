@@ -32,7 +32,7 @@ import Modal from "../../components/Modal";
 import toast from "../../utils/toast";
 import swap from "../../utils/swap";
 import Loading from "../../components/Loading";
-import UserPicture from "../../utils/userPicture";
+import UserPicture from "../../utils/UserPicture";
 export default function Folder() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();

@@ -22,7 +22,7 @@ import { nanoid } from "nanoid";
 import Loading from "../../components/Loading";
 import { NEXT_BUILTIN_DOCUMENT } from "next/dist/shared/lib/constants";
 import { NoFallbackError } from "next/dist/server/base-server";
-import UserPicture from "../../utils/userPicture";
+import UserPicture from "../../utils/UserPicture";
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();
@@ -46,13 +46,13 @@ export default function Settings() {
     router.push("/");
   };
 
-  useEffect(() => {
-    const { data: checkNickname } = supabase
-      .from("nickname")
-      .select()
-      .eq("user_id", user.id);
-    setNickname();
-  }, [user.id, supabase]);
+  // useEffect(() => {
+  //   const { data: checkNickname } = supabase
+  //     .from("nickname")
+  //     .select()
+  //     .eq("user_id", user.id);
+  //   setNickname();
+  // }, [user.id, supabase]);
 
   const saveProfile = async () => {
     setLoading(true);

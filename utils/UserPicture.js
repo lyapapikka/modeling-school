@@ -8,21 +8,15 @@ import { green, pink, black, grey } from "@mui/material/colors";
 export default function UserPicture({ size, fz }) {
   const supabaseClient = useSupabaseClient();
   const [initials, setInitials] = useState("");
-
   const user = useUser();
-
   const { error } = supabaseClient.from("countries").delete().eq("id", 1);
-
-  console.log(user);
 
   useEffect(() => {
     const setNameInitials = async () => {
       const {
         data: { user },
       } = await supabaseClient.auth.getUser();
-
       setInitials(getInitials(user.user_metadata.name));
-      console.log(initials);
     };
     setNameInitials();
   }, []);
