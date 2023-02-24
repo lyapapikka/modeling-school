@@ -74,37 +74,20 @@ export default function Tutor({ filenames }) {
         </div>
         <div className="space-y-2">
           {filenames.map((f, i) => (
-            <button
-              onClick={() => openDocument(f)}
-              className="flex ml-auto bg-neutral-900 sm:hover:bg-neutral-800 px-4 py-2 rounded-2xl w-full items-center"
+            <a
+              href={`/tutors/${f}`}
+              className="flex ml-auto bg-neutral-900 sm:hover:bg-neutral-800
+              px-4 py-2 rounded-2xl w-full items-center"
               key={i}
             >
               <div className="rounded-full p-2 bg-neutral-700">
                 <DocumentIcon className="w-6" />
               </div>
               <div className="ml-4">{f}</div>
-            </button>
+            </a>
           ))}
         </div>
       </Content>
-      {showDocument && (
-        <div className="fixed inset-0 flex justify-center items-center">
-          <div className="flex items-center justify-center">
-            <div
-              className="fixed inset-0 bg-black opacity-80 cursor-pointer"
-              onClick={closeDocument}
-            ></div>
-            <div className="flex items-center relative cursor-default ">
-              <iframe
-                id="pdf-js-viewer"
-                src={`/tutors/${filename}`}
-                title="webviewer"
-                className="h-screen w-[80vw]"
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
