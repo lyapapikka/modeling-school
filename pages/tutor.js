@@ -76,7 +76,7 @@ export default function Tutor({ filenames }) {
           {filenames.map((f, i) => (
             <button
               onClick={() => openDocument(f)}
-              className="flex ml-auto block bg-neutral-900 sm:hover:bg-neutral-800 px-4 py-2 rounded-2xl w-full items-center"
+              className="flex ml-auto bg-neutral-900 sm:hover:bg-neutral-800 px-4 py-2 rounded-2xl w-full items-center"
               key={i}
             >
               <div className="rounded-full p-2 bg-neutral-700">
@@ -88,19 +88,18 @@ export default function Tutor({ filenames }) {
         </div>
       </Content>
       {showDocument && (
-        <div className="fixed inset-0 flex justify-center items-center z-[999999] text-center">
-          <div className="rotate-90 sm:rotate-[auto] flex flex-col w-full items-center min-h-screen px-4 py-8 justify-center">
+        <div className="fixed inset-0 flex justify-center items-center">
+          <div className="flex items-center justify-center">
             <div
-              className="fixed inset-0 w-full h-full bg-black opacity-80 cursor-pointer"
+              className="fixed inset-0 bg-black opacity-80 cursor-pointer"
               onClick={closeDocument}
             ></div>
-            <div className="flex items-center relative cursor-default">
+            <div className="flex items-center relative cursor-default ">
               <iframe
                 id="pdf-js-viewer"
                 src={`/tutors/${filename}`}
                 title="webviewer"
-                width="1000"
-                height="570"
+                className="h-screen w-[80vw]"
               ></iframe>
             </div>
           </div>
