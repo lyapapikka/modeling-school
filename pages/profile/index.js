@@ -132,41 +132,43 @@ export default function Profile() {
         <div className="text-xl font-bold pl-4 pb-4 bg-neutral-900 rounded-b-2xl mb-2">
           Профиль
         </div>
-        <div className="bg-neutral-900 rounded-2xl relative mb-2">
-          <div className="flex justify-center pt-4">
-            <UserPicture size={100} fz={40} />
-          </div>
-          <div className="flex mt-2 items-center justify-center">
-            <div className="text-lg line-clamp-1 text-center">
-              {user ? (
-                user?.user_metadata?.name
-              ) : (
-                <div className="bg-neutral-800 text-lg w-40 rounded-2xl">
-                  &nbsp;
-                </div>
-              )}
+        {userNickname && user?.user_metadata?.name ? (
+          <div className="bg-neutral-900 rounded-2xl relative mb-2">
+            <div className="flex justify-center pt-4">
+              <UserPicture size={100} fz={40} />
             </div>
-          </div>
-          <div className="flex pb-4 mt-2 items-center justify-center">
-            <div className="text-lg line-clamp-1 text-center text-neutral-500">
-              {user ? (
-                userNickname ? (
-                  "@" + userNickname
-                ) : null
-              ) : (
-                <div className="bg-neutral-800 w-40 rounded-2xl text-base">
-                  &nbsp;
-                </div>
-              )}
+            <div className="flex mt-2 items-center justify-center">
+              <div className="text-lg line-clamp-1 text-center">
+                {user ? (
+                  user?.user_metadata?.name
+                ) : (
+                  <div className="bg-neutral-800 text-lg w-40 rounded-2xl">
+                    &nbsp;
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+            <div className="flex pb-4 mt-2 items-center justify-center">
+              <div className="text-lg line-clamp-1 text-center text-neutral-500">
+                {user ? (
+                  userNickname ? (
+                    "@" + userNickname
+                  ) : null
+                ) : (
+                  <div className="bg-neutral-800 w-40 rounded-2xl text-base">
+                    &nbsp;
+                  </div>
+                )}
+              </div>
+            </div>
 
-          <Link href="/profile/settings">
-            <a className="absolute top-2 right-2 sm:hover:bg-neutral-700 p-2 rounded-full">
-              <Cog6ToothIcon className="w-6" />
-            </a>
-          </Link>
-        </div>
+            <Link href="/profile/settings">
+              <a className="absolute top-2 right-2 sm:hover:bg-neutral-700 p-2 rounded-full">
+                <Cog6ToothIcon className="w-6" />
+              </a>
+            </Link>
+          </div>
+        ) : null}
         <div className="space-y-2 mb-8">
           {archive && cachedFolders ? (
             archive[0].length === 0 ? (
