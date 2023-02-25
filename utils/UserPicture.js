@@ -4,6 +4,7 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import getInitials from "../utils/getInitials";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { green, pink, black, grey } from "@mui/material/colors";
+import Image from "next/image";
 
 export default function UserPicture({ size, fz }) {
   const supabaseClient = useSupabaseClient();
