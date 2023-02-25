@@ -22,7 +22,7 @@ import { nanoid } from "nanoid";
 import Loading from "../../components/Loading";
 import { NEXT_BUILTIN_DOCUMENT } from "next/dist/shared/lib/constants";
 import { NoFallbackError } from "next/dist/server/base-server";
-import UserPicture from "../../utils/UserPicture";
+import UserPicture from "../../components/UserPicture";
 export default function Settings() {
   const { isLoading, session } = useSessionContext();
   const router = useRouter();

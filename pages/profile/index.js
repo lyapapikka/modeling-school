@@ -10,7 +10,7 @@ import fetcher from "../../utils/fetcher";
 import Link from "next/link";
 import Image from "next/image";
 import getInitials from "/utils/getInitials";
-import UserPicture from "../../utils/UserPicture";
+import UserPicture from "../../components/UserPicture";
 import {
   CheckCircleIcon,
   Cog6ToothIcon,
