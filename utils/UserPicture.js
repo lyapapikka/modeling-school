@@ -27,7 +27,7 @@ export default function UserPicture({ size, fz }) {
       {user ? (
         user.user_metadata.picture ? (
           <Image
-            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile${user.user_metadata.picture}`}
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_BUCKET}/profile/${user.user_metadata.picture}`}
             width={100}
             height={100}
             objectFit="cover"
