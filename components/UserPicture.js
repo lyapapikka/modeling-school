@@ -18,6 +18,7 @@ export default function UserPicture({ size, fz }) {
       const {
         data: { user },
       } = await supabaseClient.auth.getUser();
+
       setInitials(getInitials(user.user_metadata.name));
     };
     setNameInitials();
