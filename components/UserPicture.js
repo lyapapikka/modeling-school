@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function UserPicture({ size, fz }) {
   const supabaseClient = useSupabaseClient();
   const [initials, setInitials] = useState("");
-  const user = useUser();
+  const [user, setUser] = useState();
   const { error } = supabaseClient.from("countries").delete().eq("id", 1);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function UserPicture({ size, fz }) {
       const {
         data: { user },
       } = await supabaseClient.auth.getUser();
-
+      setUser(user);
       setInitials(getInitials(user.user_metadata.name));
     };
     setNameInitials();
