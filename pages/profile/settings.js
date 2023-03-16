@@ -14,6 +14,7 @@ import {
   PowerIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
+
 import Image from "next/image";
 import useSWR from "swr";
 import api from "../../utils/api";
@@ -121,9 +122,10 @@ export default function Settings() {
                   hidden
                 />
                 {imageLoading ? (
-                  <div className="w-full rounded-2xl bg-neutral-900 justify-center flex py-2">
-                    <EllipsisHorizontalIcon className="w-6 mr-2" />
-                    Обновляем фото
+                  <div className="w-full rounded-2xl bg-neutral-900 justify-center flex py-4">
+                    <Loading>
+                      <div className="w-1.5 h-1.5 rounded-full bg-neutral-500 self-center"></div>
+                    </Loading>
                   </div>
                 ) : (
                   <label
