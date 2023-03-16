@@ -9,6 +9,7 @@ import {
   FolderPlusIcon,
   XMarkIcon,
   FolderIcon,
+  DocumentPlusIcon,
 } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
@@ -37,7 +38,9 @@ export default function Post({
   const supabase = useSupabaseClient();
   const [folderName, setFolderName] = useState("");
   const router = useRouter();
+  const { id } = router.query;
   const [loading, setLoading] = useState(false);
+  const [checkOwner, setCheckOwner] = useState(Boolean);
 
   const changeFolderName = ({ target: { value } }) => setFolderName(value);
 
@@ -88,6 +91,21 @@ export default function Post({
 
   useEffect(() => {
     setOrigin(origin);
+  }, []);
+
+  useEffect(() => {
+    const checkOwnerId = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      const { data: owner } = await supabase
+        .from("groups")
+        .select("owner_id")
+        .eq("id", id);
+      setCheckOwner(user.id == owner[0].owner_id);
+    };
+    checkOwnerId();
   }, []);
 
   return (
@@ -151,6 +169,14 @@ export default function Post({
         </div>
         <div className="flex mb-2 mt-2 items-center">
           <div className="flex mr-auto">
+            {checkOwner ? (
+              <button
+                title="Создать задачу"
+                className="p-2 -m-2 sm:hover:bg-neutral-700 rounded-full mr-3"
+              >
+                <DocumentPlusIcon className="w-6" />
+              </button>
+            ) : null}
             <button
               title="Создать папку"
               onClick={() => showCreateFolderDialog(postData.id)}
