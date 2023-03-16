@@ -18,28 +18,30 @@ function MyApp({ Component, pageProps }) {
         data: { user },
       } = await supabaseClient.auth.getUser();
 
-      const { data: checkNickname } = await supabaseClient
-        .from("nickname")
-        .select()
-        .eq("user_id", user.id);
+      if (user) {
+        const { data: checkNickname } = await supabaseClient
+          .from("nickname")
+          .select()
+          .eq("user_id", user.id);
 
-      const { data: checkName } = await supabaseClient
-        .from("public_users")
-        .select()
-        .eq("id", user.id);
+        const { data: checkName } = await supabaseClient
+          .from("public_users")
+          .select()
+          .eq("id", user.id);
 
-      if (checkNickname.length === 0) {
-        await supabaseClient.from("nickname").upsert({
-          default_nickname: `user-${nanoid(11)}`,
-          user_id: user.id,
-        });
-      }
-      if (checkName.length === 0) {
-        await supabaseClient.auth.updateUser({
-          data: {
-            name: randomNames(),
-          },
-        });
+        if (checkNickname.length === 0) {
+          await supabaseClient.from("nickname").upsert({
+            default_nickname: `user-${nanoid(11)}`,
+            user_id: user.id,
+          });
+        }
+        if (checkName.length === 0) {
+          await supabaseClient.auth.updateUser({
+            data: {
+              name: randomNames(),
+            },
+          });
+        }
       }
     };
     get();

@@ -1,5 +1,6 @@
 import { Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import getInitials from "../utils/getInitials";
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
