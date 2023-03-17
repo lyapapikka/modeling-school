@@ -309,7 +309,7 @@ export default function Post({
                 <div className="flex mt-4">
                   <input
                     className="w-full rounded-2xl p-2"
-                    placeholder="Ссылка на Google Drive"
+                    placeholder="Ссылка на Google Forms"
                   />
                 </div>
                 <div className="mt-4">
