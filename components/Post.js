@@ -10,6 +10,8 @@ import {
   XMarkIcon,
   FolderIcon,
   DocumentPlusIcon,
+  LightBulbIcon,
+  CheckIcon,
 } from "@heroicons/react/24/outline";
 import { BookmarkIcon as BookmarkIconSolid } from "@heroicons/react/24/solid";
 import Modal from "../components/Modal";
@@ -18,6 +20,8 @@ import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "../utils/toast";
 import { useRouter } from "next/router";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 export default function Post({
   groupId,
@@ -31,6 +35,8 @@ export default function Post({
   folders,
 }) {
   const [modal, setModal] = useState(false);
+  const [createTasks, setCreateTasks] = useState([]);
+  const [modalTasks, setModalTasks] = useState(false);
   const [_origin, setOrigin] = useState("");
   const [selection, setSelection] = useState("");
   const [deleteDialog, setDeleteDialog] = useState(false);
@@ -55,6 +61,9 @@ export default function Post({
 
   const showModal = () => setModal(true);
   const hideModal = () => setModal(false);
+
+  const showModalTasks = () => setModalTasks(true);
+  const hideModalTasks = () => setModalTasks(false);
 
   const showCreateFolderDialog = (id) => {
     setSelection(id);
@@ -103,7 +112,7 @@ export default function Post({
         .from("groups")
         .select("owner_id")
         .eq("id", id);
-      setCheckOwner(user.id == owner[0].owner_id);
+      setCheckOwner(user.id === owner[0].owner_id);
     };
     checkOwnerId();
   }, []);
@@ -230,6 +239,88 @@ export default function Post({
               <LinkIcon className="w-6" />
             </button>
           </div>
+          <button
+            title="Открыть список задач"
+            className="flex p-2 -m-2 sm:hover:bg-neutral-700 rounded-full"
+            onClick={showModalTasks}
+          >
+            Задачи
+            <LightBulbIcon className="ml-2 w-6" />
+          </button>
+          {modalTasks && (
+            <Modal onClose={hideModalTasks}>
+              <div className="p-2">
+                <div className="flex justify-between items-center ">
+                  <div>Выберите тип задач</div>
+                  <button
+                    className="p-2 sm:hover:bg-neutral-700 rounded-full"
+                    onClick={hideModalTasks}
+                  >
+                    <XMarkIcon className="w-6" />
+                  </button>
+                </div>
+
+                <div className="flex flex-col items-start">
+                  <FormGroup>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          sx={{
+                            color: grey[800],
+                            "&.Mui-checked": {
+                              color: grey[600],
+                            },
+                          }}
+                        />
+                      }
+                      label="Треугольники"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          sx={{
+                            color: grey[800],
+                            "&.Mui-checked": {
+                              color: grey[600],
+                            },
+                          }}
+                        />
+                      }
+                      label="Круги"
+                    />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          defaultChecked
+                          sx={{
+                            color: grey[800],
+                            "&.Mui-checked": {
+                              color: grey[600],
+                            },
+                          }}
+                        />
+                      }
+                      label="Квадраты"
+                    />
+                  </FormGroup>
+                </div>
+                <div className="flex flex-col mt-4">
+                  <div className="self-start">Ссылка на Google Drive</div>
+                  <div className="flex mt-4">
+                    <input className="" value="" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <button className="w-full rounded-2xl bg-neutral-800 sm:hover:bg-neutral-700 text-white justify-center flex py-2">
+                    <CheckIcon className="w-6 mr-2" />
+                    Создать задачу
+                  </button>
+                </div>
+              </div>
+            </Modal>
+          )}
         </div>
         {folders.filter((f) => f.post_id === postData.id)[0] ? (
           <button
