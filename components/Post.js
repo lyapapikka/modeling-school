@@ -306,11 +306,11 @@ export default function Post({
                     />
                   </FormGroup>
                 </div>
-                <div className="flex flex-col mt-4">
-                  <div className="self-start">Ссылка на Google Drive</div>
-                  <div className="flex mt-4">
-                    <input className="" value="" />
-                  </div>
+                <div className="flex mt-4">
+                  <input
+                    className="w-full rounded-2xl p-2"
+                    placeholder="Ссылка на Google Drive"
+                  />
                 </div>
                 <div className="mt-4">
                   <button className="w-full rounded-2xl bg-neutral-800 sm:hover:bg-neutral-700 text-white justify-center flex py-2">
