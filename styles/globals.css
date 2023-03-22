@@ -4,6 +4,8 @@
 
 :root {
   color-scheme: dark;
+  background-image: url(../public/image/background-monochrome.jpg);
+  background-size: cover
 }
 
 .Toastify__toast {
