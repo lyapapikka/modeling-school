@@ -115,7 +115,7 @@ export default function Post({
       setCheckOwner(user.id === owner[0].owner_id);
     };
     checkOwnerId();
-  }, []);
+  }, [id, supabase]);
 
   return (
     <>

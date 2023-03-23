@@ -22,7 +22,7 @@ export default function UserPicture({ size, fz }) {
       setInitials(getInitials(user.user_metadata.name));
     };
     setNameInitials();
-  }, []);
+  }, [supabaseClient.auth]);
 
   return (
     <div>
