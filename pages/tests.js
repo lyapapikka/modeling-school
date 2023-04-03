@@ -5,7 +5,7 @@ export default function Tests(props) {
 
   const draw = (ctx, frameCount) => {
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    ctx.fillStyle = "#fff";
+
     ctx.beginPath();
   };
 
@@ -27,5 +27,13 @@ export default function Tests(props) {
     };
   }, [draw]);
 
-  return <canvas ref={canvasRef} {...props} width="300px" height="300px" />;
+  return (
+    <canvas
+      ref={canvasRef}
+      {...props}
+      width="500px"
+      height="500px"
+      className=""
+    />
+  );
 }
