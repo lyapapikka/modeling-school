@@ -4,9 +4,17 @@
 
 :root {
   color-scheme: dark;
-  background-image: url(../public/image/background-monochrome.jpg);
-  background-size: cover
+  
+  background: 
+  linear-gradient(rgba(6, 6, 6, 0.7), rgba(18, 18, 18, 0.8)), 
+  url(../public/image/background-monochrome.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: top;   
+  background-size: cover;
 }
+
 
 .Toastify__toast {
   @apply rounded-2xl !important;
